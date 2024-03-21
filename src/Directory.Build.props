@@ -1,0 +1,15 @@
+<Project>
+	<PropertyGroup>
+		<AnalysisMode>all</AnalysisMode>
+		<Authors>Jason Bock</Authors>
+		<Copyright>Copyright © 2024</Copyright>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>latest</LangVersion>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<NoWarn>CA1861</NoWarn>
+		<Nullable>enable</Nullable>
+		<TargetFramework>net8.0</TargetFramework>
+		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+		<Version>0.1.0</Version>
+	</PropertyGroup>
+</Project>

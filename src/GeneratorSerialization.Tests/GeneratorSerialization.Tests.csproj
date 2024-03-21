@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<AssemblyName>GeneratorSerialization.Tests</AssemblyName>
+		<NoWarn>CA2007,CA1861</NoWarn>
+		<RootNamespace>GeneratorSerialization.Tests</RootNamespace>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\GeneratorSerialization\GeneratorSerialization.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.NUnit">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
