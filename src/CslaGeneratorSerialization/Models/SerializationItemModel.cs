@@ -1,0 +1,3 @@
+﻿namespace CslaGeneratorSerialization.Models;
+
+internal sealed record SerializationItemModel(string PropertyInfoFieldName, TypeReferenceModel PropertyInfoContainingType, TypeReferenceModel PropertyInfoDataType);

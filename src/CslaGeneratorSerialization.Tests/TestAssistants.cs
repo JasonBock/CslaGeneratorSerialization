@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Csla.Core;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using NuGet.Frameworks;
@@ -64,6 +65,7 @@ internal static class TestAssistants
 		}
 
 		test.TestState.AdditionalReferences.Add(typeof(TGenerator).Assembly);
+		test.TestState.AdditionalReferences.Add(typeof(BusinessBase).Assembly);
 
 		if (additionalReferences is not null)
 		{

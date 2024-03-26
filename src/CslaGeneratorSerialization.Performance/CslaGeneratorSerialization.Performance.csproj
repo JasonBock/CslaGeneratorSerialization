@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
+	</ItemGroup>
+</Project>

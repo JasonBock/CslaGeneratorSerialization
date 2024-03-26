@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<AssemblyName>GeneratorSerialization</AssemblyName>
+		<AssemblyName>CslaGeneratorSerialization</AssemblyName>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<Description>A custom CSLA serializer using C# source generator</Description>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -9,22 +9,24 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
-		<PackageId>GeneratorSerialization</PackageId>
+		<NoWarn>CS1591</NoWarn>
+		<PackageId>CslaGeneratorSerialization</PackageId>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageProjectUrl>https://github.com/JasonBock/GeneratorSerialization</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/JasonBock/CslaGeneratorSerialization</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>A changelog is available at https://github.com/JasonBock/GeneratorSerialization/blob/main/changelog.md</PackageReleaseNotes>
+		<PackageReleaseNotes>A changelog is available at https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/changelog.md</PackageReleaseNotes>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<PackageTags>CSLA C# .NET serialization</PackageTags>
 		<PackageVersion>$(Version)</PackageVersion>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/jasonbock/GeneratorSerialization</RepositoryUrl>
-		<RootNamespace>GeneratorSerialization</RootNamespace>
+		<RepositoryUrl>https://github.com/jasonbock/CslaGeneratorSerialization</RepositoryUrl>
+		<RootNamespace>CslaGeneratorSerialization</RootNamespace>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Csla" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">

@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<AssemblyName>GeneratorSerialization.Tests</AssemblyName>
+		<AssemblyName>CslaGeneratorSerialization.Tests</AssemblyName>
 		<NoWarn>CA2007,CA1861</NoWarn>
-		<RootNamespace>GeneratorSerialization.Tests</RootNamespace>
+		<RootNamespace>CslaGeneratorSerialization.Tests</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\GeneratorSerialization\GeneratorSerialization.csproj" />
+		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" />
@@ -20,6 +20,7 @@
 			<NoWarn>NU1608</NoWarn>
 		</PackageReference>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NuGet.Frameworks" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit.Analyzers">
 			<PrivateAssets>all</PrivateAssets>
