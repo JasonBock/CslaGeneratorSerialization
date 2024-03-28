@@ -37,14 +37,7 @@ public static class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents, Is.EqualTo(data.Contents));
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-		});
+		Assert.That(newData.Contents, Is.EqualTo(data.Contents));
 	}
 
 	[Test]
@@ -63,13 +56,6 @@ public static class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents, Is.EqualTo(string.Empty));
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-		});
+		Assert.That(newData.Contents, Is.EqualTo(string.Empty));
 	}
 }

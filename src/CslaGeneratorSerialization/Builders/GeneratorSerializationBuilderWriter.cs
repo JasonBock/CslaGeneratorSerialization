@@ -1,5 +1,6 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using CslaGeneratorSerialization.Models;
+using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Builders;
@@ -19,7 +20,8 @@ internal static class GeneratorSerializationBuilderWriter
 
 		foreach (var item in model.Items)
 		{
-			GeneratorSerializationBuilderWriter.BuildWriteOperation(indentWriter, item);
+			var itemId = 0;
+			GeneratorSerializationBuilderWriter.BuildWriteOperation(indentWriter, item, itemId++);
 		}
 
 		indentWriter.WriteLines(
@@ -44,21 +46,22 @@ internal static class GeneratorSerializationBuilderWriter
 		indentWriter.WriteLine("}");
 	}
 
-	private static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item)
+	private static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, int itemId)
 	{
 		// Note that all of the "Write" invocations should either be handled
 		// natively by BinaryWriter or by an extension method I've created.
 		var propertyRead = $"{item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}";
+		var valueVariable = $"value{itemId}";
 
 		if (item.PropertyInfoDataType.IsSerializable)
 		{
 			indentWriter.WriteLines(
 				$$"""
-				var value = this.ReadProperty({{propertyRead}});
+				var {{valueVariable}} = this.ReadProperty({{propertyRead}});
 
-				if (value is not null)
+				if ({{valueVariable}} is not null)
 				{
-					(var isDuplicate, var id) = context.GetReference(value);
+					(var isDuplicate, var id) = context.GetReference({{valueVariable}});
 
 					if (isDuplicate)
 					{
@@ -68,7 +71,7 @@ internal static class GeneratorSerializationBuilderWriter
 					else
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						((global::CslaGeneratorSerialization.IGeneratorSerializable)value).SetState(context);
+						((global::CslaGeneratorSerialization.IGeneratorSerializable){{valueVariable}}).SetState(context);
 					}
 				}
 				else
@@ -81,13 +84,17 @@ internal static class GeneratorSerializationBuilderWriter
 			!item.PropertyInfoDataType.IsValueType)
 		{
 			var valueToWrite = item.PropertyInfoDataType.IsValueType ?
-				"value.Value" : "value";
+				$"{valueVariable}.Value" :
+				item.PropertyInfoDataType.Array is not null &&
+					item.PropertyInfoDataType.Array.ElementType.SpecialType == SpecialType.System_Byte &&
+					item.PropertyInfoDataType.Array.Rank == 1 ?
+					$"({valueVariable}.Length, {valueVariable})" : valueVariable;
 
 			indentWriter.WriteLines(
 				$$"""
-				var value = this.ReadProperty({{propertyRead}});
+				var {{valueVariable}} = this.ReadProperty({{propertyRead}});
 
-				if (value is not null)
+				if ({{valueVariable}} is not null)
 				{
 					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 					context.Writer.Write({{valueToWrite}});

@@ -96,20 +96,13 @@ internal static class GeneratorSerializationBuilderReader
 					var arrayMethod = item.PropertyInfoDataType.Array.Rank == 1 ? "Array" : "ArrayArray";
 					var loadProperty = GetLoadProperty(item, $"context.Reader.ReadByte{arrayMethod}()");
 
-					if (item.PropertyInfoDataType.IsNullable)
-					{
-						return
-							$$"""
-							if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-							{
-								{{loadProperty}}
-							}
-							""";
-					}
-					else
-					{
-						return loadProperty;
-					}
+					return
+						$$"""
+						if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+						{
+							{{loadProperty}}
+						}
+						""";
 				}
 			}
 		}

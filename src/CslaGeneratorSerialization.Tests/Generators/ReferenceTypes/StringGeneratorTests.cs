@@ -45,12 +45,12 @@ public static class StringGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
-					var value = this.ReadProperty(global::Domains.Data.ContentsProperty);
+					var value0 = this.ReadProperty(global::Domains.Data.ContentsProperty);
 					
-					if (value is not null)
+					if (value0 is not null)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value);
+						context.Writer.Write(value0);
 					}
 					else
 					{

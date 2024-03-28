@@ -5,10 +5,14 @@ public static class BinaryReaderExtensions
 	public static SerializationState ReadStateValue(this BinaryReader reader) =>
 		(SerializationState)reader.ReadByte();
 
-	public static byte[] ReadByteArray(this BinaryReader reader) =>
-		reader.ReadBytes(reader.ReadInt32());
+   public static byte[] ReadByteArray(this BinaryReader reader)
+   {
+		var length = reader.ReadInt32();
+		var buffer = reader.ReadBytes(length);
+		return buffer;
+   }
 
-	public static byte[][] ReadByteArrayArray(this BinaryReader reader)
+   public static byte[][] ReadByteArrayArray(this BinaryReader reader)
 	{
 		var outerCount = reader.ReadInt32();
 		var result = new byte[outerCount][];

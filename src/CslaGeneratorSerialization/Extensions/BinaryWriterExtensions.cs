@@ -2,10 +2,10 @@
 
 public static class BinaryWriterExtensions
 {
-	public static void Write(this BinaryWriter writer, byte[] value)
+	public static void Write(this BinaryWriter writer, (int length, byte[] buffer) value)
 	{
-		writer.Write(value.Length);
-		writer.Write(value);
+		writer.Write(value.length);
+		writer.Write(value.buffer);
 	}
 
 	public static void Write(this BinaryWriter writer, byte[][] value)

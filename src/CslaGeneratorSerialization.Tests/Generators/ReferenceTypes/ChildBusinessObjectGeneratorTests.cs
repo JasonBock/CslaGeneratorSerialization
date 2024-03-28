@@ -58,11 +58,11 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
-					var value = this.ReadProperty(global::Domains.Data.ContentsProperty);
+					var value0 = this.ReadProperty(global::Domains.Data.ContentsProperty);
 					
-					if (value is not null)
+					if (value0 is not null)
 					{
-						(var isDuplicate, var id) = context.GetReference(value);
+						(var isDuplicate, var id) = context.GetReference(value0);
 					
 						if (isDuplicate)
 						{
@@ -72,7 +72,7 @@ public static class ChildBusinessObjectGeneratorTests
 						else
 						{
 							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)value).SetState(context);
+							((global::CslaGeneratorSerialization.IGeneratorSerializable)value0).SetState(context);
 						}
 					}
 					else
@@ -145,12 +145,12 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
-					var value = this.ReadProperty(global::Domains.ChildData.ChildContentsProperty);
+					var value0 = this.ReadProperty(global::Domains.ChildData.ChildContentsProperty);
 					
-					if (value is not null)
+					if (value0 is not null)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value);
+						context.Writer.Write(value0);
 					}
 					else
 					{

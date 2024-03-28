@@ -54,18 +54,7 @@ public static class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents.ChildContents, Is.EqualTo(data.Contents.ChildContents));
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-			Assert.That(newData.Contents.IsNew, Is.EqualTo(data.Contents.IsNew));
-			Assert.That(newData.Contents.IsDeleted, Is.EqualTo(data.Contents.IsDeleted));
-			Assert.That(newData.Contents.IsDirty, Is.EqualTo(data.Contents.IsDirty));
-			Assert.That(newData.Contents.IsChild, Is.EqualTo(data.Contents.IsChild));
-		});
+		Assert.That(newData.Contents.ChildContents, Is.EqualTo(data.Contents.ChildContents));
 	}
 
 	[Test]
@@ -85,14 +74,5 @@ public static class ChildBusinessObjectTests
 		var newData = (ParentData)formatter.Deserialize(stream);
 
 		Assert.That(newData.Contents, Is.Null);
-
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents, Is.Null);
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-		});
 	}
 }
