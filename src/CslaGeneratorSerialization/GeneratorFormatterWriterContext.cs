@@ -16,9 +16,10 @@ public sealed class GeneratorFormatterWriterContext
 		}
 		else
 		{
-			this.references.Add(mobileObject, this.idCounter);
+			var id = this.idCounter;
+			this.references.Add(mobileObject, id);
 			this.idCounter++;
-			return (false, this.idCounter);
+			return (false, id);
 		}
 	}
 

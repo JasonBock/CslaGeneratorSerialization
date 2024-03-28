@@ -4,6 +4,7 @@ namespace CslaGeneratorSerialization;
 
 public sealed class GeneratorFormatterReaderContext
 {
+	private int idCounter;
 	private readonly Dictionary<int, IGeneratorSerializable> references = [];
 
    internal GeneratorFormatterReaderContext(ApplicationContext context, BinaryReader reader) => 
@@ -12,12 +13,14 @@ public sealed class GeneratorFormatterReaderContext
 	public T CreateInstance<T>() =>
 		this.Context.CreateInstance<T>();
 
-	public IGeneratorSerializable this[int id]
+   public void AddReference(IGeneratorSerializable reference)
 	{
-		get => this.references[id];
-		set => this.references[id] = value;
+		this.references.Add(this.idCounter, reference);
+		this.idCounter++;
 	}
 
-	private ApplicationContext Context { get; }
+   public IGeneratorSerializable this[int id] => this.references[id];
+
+   private ApplicationContext Context { get; }
 	public BinaryReader Reader { get; }
 }

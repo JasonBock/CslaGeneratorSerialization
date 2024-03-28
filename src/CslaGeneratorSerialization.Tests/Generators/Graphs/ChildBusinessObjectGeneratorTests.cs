@@ -109,6 +109,7 @@ public static class ChildBusinessObjectGeneratorTests
 							var newValue = context.CreateInstance<Domains.ChildData>();
 							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
 							this.LoadProperty(global::Domains.Data.ContentsProperty, newValue);
+							context.AddReference(newValue);
 							break;
 						case global::CslaGeneratorSerialization.SerializationState.Null:
 							break;

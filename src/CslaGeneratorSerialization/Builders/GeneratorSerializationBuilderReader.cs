@@ -138,6 +138,7 @@ internal static class GeneratorSerializationBuilderReader
 						var newValue = context.CreateInstance<{{propertyType.FullName}}>();
 						((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
 						{{GetLoadProperty(item, "newValue")}}
+						context.AddReference(newValue);
 						break;
 					case global::CslaGeneratorSerialization.SerializationState.Null:
 						break;
