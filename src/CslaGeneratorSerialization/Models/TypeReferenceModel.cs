@@ -8,6 +8,7 @@ internal sealed record TypeReferenceModel
 {
 	internal TypeReferenceModel(ITypeSymbol type, Compilation compilation)
 	{
+
 		this.Name = type.Name;
 		this.Namespace =
 			type.ContainingNamespace is not null ?
@@ -29,26 +30,40 @@ internal sealed record TypeReferenceModel
 		// will target the type and gen the code for it.
 		this.IsSerializable = type.IsGeneratorSerializable() || type.IsMobileObject();
 		this.SpecialType = type.SpecialType;
+		this.TypeKind = type.TypeKind;
 
 		if (type is IArrayTypeSymbol arrayTypeSymbol)
 		{
 			this.Array = new ArrayTypeReferenceModel(arrayTypeSymbol, compilation);
 		}
-	
-		this.TypeArguments = type is INamedTypeSymbol namedTypeSymbol ?
-			namedTypeSymbol.TypeArguments.Select(
-				_ => new TypeReferenceModel(_, compilation)).ToImmutableArray() : [];
+
+		if (type is INamedTypeSymbol namedTypeSymbol)
+		{
+			this.TypeArguments = namedTypeSymbol.TypeArguments.Select(
+				_ => new TypeReferenceModel(_, compilation)).ToImmutableArray();
+
+			if (namedTypeSymbol.EnumUnderlyingType is not null)
+			{
+				this.EnumUnderlyingType = new TypeReferenceModel(namedTypeSymbol.EnumUnderlyingType, compilation);
+			}
+		}
+		else
+		{
+			this.TypeArguments = [];
+		}
 	}
 
 	internal ArrayTypeReferenceModel? Array { get; }
+	internal TypeReferenceModel? EnumUnderlyingType { get; }
 	internal string FullName { get; }
 	internal string FullyQualifiedName { get; }
 	internal bool IsArray { get; }
 	internal bool IsSerializable { get; }
-   internal bool IsNullable { get; }
+	internal bool IsNullable { get; }
 	internal bool IsValueType { get; }
 	internal string Name { get; }
 	internal string? Namespace { get; }
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
+	internal TypeKind TypeKind { get; }
 }

@@ -6,8 +6,23 @@ internal sealed record ArrayTypeReferenceModel
 {
 	internal ArrayTypeReferenceModel(IArrayTypeSymbol arrayType, Compilation compilation)
 	{
-		this.ElementType = new TypeReferenceModel((INamedTypeSymbol)arrayType.ElementType, compilation);
-		this.Rank = arrayType.Rank;
+		(var elementType, var rank) = ArrayTypeReferenceModel.GetElementType(arrayType);
+		(this.ElementType, this.Rank) = (new TypeReferenceModel(elementType, compilation), rank);
+	}
+
+	private static (ITypeSymbol element, int ranks) GetElementType(IArrayTypeSymbol arrayType)
+	{
+		var rank = 1;
+
+		var elementType = arrayType.ElementType;
+
+		while (elementType is IArrayTypeSymbol rootElementType)
+		{
+			rank++;
+			elementType = rootElementType.ElementType;
+		}
+
+		return (elementType, rank);
 	}
 
 	internal TypeReferenceModel ElementType { get; }

@@ -45,6 +45,7 @@ public static class BooleanGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
+					// global::Domains.Data.ContentsProperty
 					context.Writer.Write(this.ReadProperty(global::Domains.Data.ContentsProperty));
 					
 					// Set base object state
@@ -65,6 +66,7 @@ public static class BooleanGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
+					// global::Domains.Data.ContentsProperty
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBoolean());
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
@@ -129,6 +131,7 @@ public static class BooleanGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
+					// global::Domains.Data.ContentsProperty
 					var value0 = this.ReadProperty(global::Domains.Data.ContentsProperty);
 					
 					if (value0 is not null)
@@ -159,6 +162,7 @@ public static class BooleanGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
+					// global::Domains.Data.ContentsProperty
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
 						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBoolean());

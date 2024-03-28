@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Generators.Collections;
 
-public static class ByteArrayTests
+public static class ByteArrayArrayTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -19,9 +19,9 @@ public static class ByteArrayTests
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
-				public static readonly PropertyInfo<byte[]> ContentsProperty =
-					RegisterProperty<byte[]>(_ => _.Contents);
-				public byte[] Contents
+				public static readonly PropertyInfo<byte[][]> ContentsProperty =
+					RegisterProperty<byte[][]>(_ => _.Contents);
+				public byte[][] Contents
 				{
 					get => this.GetProperty(Data.ContentsProperty);
 					set => this.SetProperty(Data.ContentsProperty, value);
@@ -51,7 +51,7 @@ public static class ByteArrayTests
 					if (value0 is not null)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write((value0.Length, value0));
+						context.Writer.Write(value0);
 					}
 					else
 					{
@@ -79,7 +79,7 @@ public static class ByteArrayTests
 					// global::Domains.Data.ContentsProperty
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
-						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadByteArray());
+						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadByteArrayArray());
 					}
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.

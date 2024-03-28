@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Generators.ValueTypes;
 
-public static class CharGeneratorTests
+public static class EnumGeneratorTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -15,13 +15,15 @@ public static class CharGeneratorTests
 
 			namespace Domains;
 
+			public enum States { First, Second, Third }
+
 			[Serializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
-				public static readonly PropertyInfo<char> ContentsProperty =
-					RegisterProperty<char>(_ => _.Contents);
-				public char Contents
+				public static readonly PropertyInfo<States> ContentsProperty =
+					RegisterProperty<States>(_ => _.Contents);
+				public States Contents
 				{
 					get => this.GetProperty(Data.ContentsProperty);
 					set => this.SetProperty(Data.ContentsProperty, value);
@@ -46,7 +48,7 @@ public static class CharGeneratorTests
 				{
 					// Set custom object state
 					// global::Domains.Data.ContentsProperty
-					context.Writer.Write(this.ReadProperty(global::Domains.Data.ContentsProperty));
+					context.Writer.Write((int)this.ReadProperty(global::Domains.Data.ContentsProperty));
 					
 					// Set base object state
 					context.Writer.Write(this.IsNew);
@@ -67,7 +69,7 @@ public static class CharGeneratorTests
 				{
 					// Get custom object state
 					// global::Domains.Data.ContentsProperty
-					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadChar());
+					this.LoadProperty(global::Domains.Data.ContentsProperty, (global::Domains.States)context.Reader.ReadInt32());
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
 					//Ugly, but...means must.
@@ -101,13 +103,15 @@ public static class CharGeneratorTests
 
 			namespace Domains;
 
+			public enum States { First, Second, Third }
+			
 			[Serializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
-				public static readonly PropertyInfo<char?> ContentsProperty =
-					RegisterProperty<char?>(_ => _.Contents);
-				public char? Contents
+				public static readonly PropertyInfo<States?> ContentsProperty =
+					RegisterProperty<States?>(_ => _.Contents);
+				public States? Contents
 				{
 					get => this.GetProperty(Data.ContentsProperty);
 					set => this.SetProperty(Data.ContentsProperty, value);
@@ -137,7 +141,7 @@ public static class CharGeneratorTests
 					if (value0 is not null)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0.Value);
+						context.Writer.Write((int)value0.Value);
 					}
 					else
 					{
@@ -165,7 +169,7 @@ public static class CharGeneratorTests
 					// global::Domains.Data.ContentsProperty
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
-						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadChar());
+						this.LoadProperty(global::Domains.Data.ContentsProperty, (global::Domains.States)context.Reader.ReadInt32());
 					}
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.

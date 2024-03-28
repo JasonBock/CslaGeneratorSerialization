@@ -1,7 +1,7 @@
 ﻿using GeneratorSerialization.Tests;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.Tests.Generators.ValueTypes;
+namespace CslaGeneratorSerialization.Tests.Generators.Graphs;
 
 public static class ChildBusinessObjectGeneratorTests
 {
@@ -58,6 +58,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
+					// global::Domains.Data.ContentsProperty
 					var value0 = this.ReadProperty(global::Domains.Data.ContentsProperty);
 					
 					if (value0 is not null)
@@ -98,6 +99,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
+					// global::Domains.Data.ContentsProperty
 					switch (context.Reader.ReadStateValue())
 					{
 						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
@@ -145,6 +147,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
+					// global::Domains.ChildData.ChildContentsProperty
 					var value0 = this.ReadProperty(global::Domains.ChildData.ChildContentsProperty);
 					
 					if (value0 is not null)
@@ -175,6 +178,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
+					// global::Domains.ChildData.ChildContentsProperty
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
 						this.LoadProperty(global::Domains.ChildData.ChildContentsProperty, context.Reader.ReadString());

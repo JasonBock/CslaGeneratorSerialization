@@ -37,7 +37,7 @@ public static class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream);
 
-		Assert.That(newData.Contents, Is.EqualTo(data.Contents));
+		Assert.That(newData.Contents, Is.EqualTo("ABC"));
 	}
 
 	[Test]

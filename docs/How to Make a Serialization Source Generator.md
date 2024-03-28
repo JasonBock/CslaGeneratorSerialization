@@ -39,24 +39,31 @@ Plan of attack:
     * OnGet/SetState and OnGet/SetChildren is here - https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/BusinessBase.cs
 * Get the generator to do a file creation that does "just enough" to get that scaffolding in place.
 * Handle an object that has just simple fields with no child state, and see if that works.
-* Add child objects
-* Ensure string tables and duplicate references are handled correctly.
-* Claims
-* Tests
+* Add all cases
     * Value types
-    * Reference types
-    * Duplicates
+        * Enums
+    * DONE - Reference types
+    * DONE - "Special" types:
+        * DONE - `byte[]`
+        * DONE - `byte[][]`
+        * DONE - `char[]`
+        * DONE - `List<int>`
+    * DONE - `IGeneratorSerializable` and duplicates
+    * Different base types and different base fields to store/load (e.g. `BusinessListBase`)
+    * Inheritance hierarchies and loading/storing fields (e.g. `Customer` derives from `Person` and ensure everything is serialized correctly)
     * "Invalid" - e.g. symbol has diagnostics, or no managed backing fields.
+    * Claims
+* Tests
 
 MobileFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |
 |---------- |---------:|----------:|----------:|-------:|-------:|----------:|
-| Roundtrip | 7.981 us | 0.0393 us | 0.0307 us | 1.4038 | 0.0305 |  23.83 KB |
+| Roundtrip | 7.618 us | 0.0797 us | 0.0745 us | 1.4038 | 0.0305 |  23.83 KB |
 
 GeneratorFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Allocated |
 |---------- |---------:|----------:|----------:|-------:|----------:|
-| Roundtrip | 2.054 us | 0.0122 us | 0.0114 us | 0.1755 |   3.08 KB |
+| Roundtrip | 1.925 us | 0.0072 us | 0.0057 us | 0.1678 |   2.88 KB |
 
 Issues
 * It is weird that `SerializationFormatter` is `static`, but that's probably a holdover from an earlier design, and changing it might break people. That said, I really should be able to get the configured `ISerializationFormatter` instance from DI, not as a static property.

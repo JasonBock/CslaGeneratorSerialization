@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
 
 [Serializable]
 public sealed partial class ParentData
@@ -54,7 +54,7 @@ public static class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream);
 
-		Assert.That(newData.Contents.ChildContents, Is.EqualTo(data.Contents.ChildContents));
+		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}
 
 	[Test]

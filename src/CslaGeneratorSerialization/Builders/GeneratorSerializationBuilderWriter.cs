@@ -13,20 +13,20 @@ internal static class GeneratorSerializationBuilderWriter
 			"""
 			void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 			{
+				// Set custom object state
 			""");
 		indentWriter.Indent++;
 
-		indentWriter.WriteLine("// Set custom object state");
+		var itemId = 0;
 
 		foreach (var item in model.Items)
 		{
-			var itemId = 0;
 			GeneratorSerializationBuilderWriter.BuildWriteOperation(indentWriter, item, itemId++);
+			indentWriter.WriteLine();
 		}
 
 		indentWriter.WriteLines(
 			"""
-
 			// Set base object state
 			context.Writer.Write(this.IsNew);
 			context.Writer.Write(this.IsDeleted);
@@ -53,7 +53,15 @@ internal static class GeneratorSerializationBuilderWriter
 		var propertyRead = $"{item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}";
 		var valueVariable = $"value{itemId}";
 
-		if (item.PropertyInfoDataType.IsSerializable)
+		indentWriter.WriteLine($"// {propertyRead}");
+
+		var propertyType = item.PropertyInfoDataType;
+
+		if (propertyType.TypeKind == TypeKind.Enum)
+		{
+			indentWriter.WriteLine($"context.Writer.Write(({propertyType.EnumUnderlyingType!.FullyQualifiedName})this.ReadProperty({propertyRead}));");
+		}
+		else if (propertyType.IsSerializable)
 		{
 			indentWriter.WriteLines(
 				$$"""
@@ -80,15 +88,36 @@ internal static class GeneratorSerializationBuilderWriter
 				}
 				""");
 		}
-		else if (item.PropertyInfoDataType.IsNullable ||
-			!item.PropertyInfoDataType.IsValueType)
+		else if (propertyType.FullyQualifiedName == "global::System.Collections.Generic.List<int>")
 		{
-			var valueToWrite = item.PropertyInfoDataType.IsValueType ?
+			indentWriter.WriteLines(
+				$$"""
+				var {{valueVariable}} = this.ReadProperty({{propertyRead}});
+
+				if ({{valueVariable}} is not null)
+				{
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+					context.Writer.Write({{valueVariable}});
+				}
+				else
+				{
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+				}
+				""");
+		}
+		else if (propertyType.IsNullable ||
+			!propertyType.IsValueType)
+		{
+			var valueToWrite = propertyType.IsValueType ?
 				$"{valueVariable}.Value" :
-				item.PropertyInfoDataType.Array is not null &&
-					item.PropertyInfoDataType.Array.ElementType.SpecialType == SpecialType.System_Byte &&
-					item.PropertyInfoDataType.Array.Rank == 1 ?
-					$"({valueVariable}.Length, {valueVariable})" : valueVariable;
+					propertyType.Array is not null &&
+						(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char) &&
+							propertyType.Array.Rank == 1 ?
+							$"({valueVariable}.Length, {valueVariable})" :
+					valueVariable;
+
+			var enumCast = propertyType.IsNullable && propertyType.TypeArguments[0].TypeKind == TypeKind.Enum ?
+				$"({propertyType.TypeArguments[0].EnumUnderlyingType!.FullyQualifiedName})" : string.Empty;
 
 			indentWriter.WriteLines(
 				$$"""
@@ -97,7 +126,7 @@ internal static class GeneratorSerializationBuilderWriter
 				if ({{valueVariable}} is not null)
 				{
 					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-					context.Writer.Write({{valueToWrite}});
+					context.Writer.Write({{enumCast}}{{valueToWrite}});
 				}
 				else
 				{

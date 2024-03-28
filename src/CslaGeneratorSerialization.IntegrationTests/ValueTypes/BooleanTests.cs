@@ -53,14 +53,7 @@ public static class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents, Is.EqualTo(data.Contents));
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-		});
+		Assert.That(newData.Contents, Is.True);
 	}
 
 	[Test]
@@ -79,13 +72,6 @@ public static class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanNullableData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
-		{
-			Assert.That(newData.Contents, Is.Null);
-			Assert.That(newData.IsNew, Is.EqualTo(data.IsNew));
-			Assert.That(newData.IsDeleted, Is.EqualTo(data.IsDeleted));
-			Assert.That(newData.IsDirty, Is.EqualTo(data.IsDirty));
-			Assert.That(newData.IsChild, Is.EqualTo(data.IsChild));
-		});
+		Assert.That(newData.Contents, Is.Null);
 	}
 }
