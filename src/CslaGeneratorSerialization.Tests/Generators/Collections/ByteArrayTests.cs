@@ -1,9 +1,9 @@
 ﻿using GeneratorSerialization.Tests;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.Tests.Generators.ValueTypes;
+namespace CslaGeneratorSerialization.Tests.Generators.Collections;
 
-public static class CharGeneratorTests
+public static class ByteArrayTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -19,9 +19,9 @@ public static class CharGeneratorTests
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
-				public static readonly PropertyInfo<char> ContentsProperty =
-					RegisterProperty<char>(_ => _.Contents);
-				public char Contents
+				public static readonly PropertyInfo<byte[]> ContentsProperty =
+					RegisterProperty<byte[]>(_ => _.Contents);
+				public byte[] Contents
 				{
 					get => this.GetProperty(Data.ContentsProperty);
 					set => this.SetProperty(Data.ContentsProperty, value);
@@ -45,7 +45,17 @@ public static class CharGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// Set custom object state
-					context.Writer.Write(this.ReadProperty(global::Domains.Data.ContentsProperty));
+					var value = this.ReadProperty(global::Domains.Data.ContentsProperty);
+					
+					if (value is not null)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						context.Writer.Write(value);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+					}
 					
 					// Set base object state
 					context.Writer.Write(this.IsNew);
@@ -65,7 +75,7 @@ public static class CharGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
-					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadChar());
+					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadByteArray());
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
 					//Ugly, but...means must.
@@ -97,15 +107,17 @@ public static class CharGeneratorTests
 			using Csla;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[Serializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
-				public static readonly PropertyInfo<char?> ContentsProperty =
-					RegisterProperty<char?>(_ => _.Contents);
-				public char? Contents
+				public static readonly PropertyInfo<byte[]?> ContentsProperty =
+					RegisterProperty<byte[]?>(_ => _.Contents);
+				public byte[]? Contents
 				{
 					get => this.GetProperty(Data.ContentsProperty);
 					set => this.SetProperty(Data.ContentsProperty, value);
@@ -134,7 +146,7 @@ public static class CharGeneratorTests
 					if (value is not null)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value.Value);
+						context.Writer.Write(value);
 					}
 					else
 					{
@@ -161,7 +173,7 @@ public static class CharGeneratorTests
 					// Get custom object state
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
-						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadChar());
+						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadByteArray());
 					}
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.

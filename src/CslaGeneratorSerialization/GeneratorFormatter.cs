@@ -23,9 +23,8 @@ public sealed class GeneratorFormatter
 			throw new NotSupportedException("The given object must implement IGeneratorSerializable.");
 		}
 
-		var generatedGraph = new GeneratorFormatterReader(generatorGraph, reader).Graph;
-
-		return generatedGraph;
+		generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, reader));
+		return generatorGraph;
 	}
 
 	public object Deserialize(byte[] serializationStream)
@@ -52,7 +51,10 @@ public sealed class GeneratorFormatter
 			throw new NotSupportedException("The given object must implement IGeneratorSerializable.");
 		}
 
-		_ = new GeneratorFormatterWriter(serializationStream, generatorGraph);
+		var writer = new BinaryWriter(serializationStream);
+		writer.Write(graph.GetType().AssemblyQualifiedName);
+
+		generatorGraph.SetState(new GeneratorFormatterWriterContext(writer));
 	}
 
 	/// <summary>

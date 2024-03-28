@@ -17,7 +17,7 @@ public class RoundtripSerialization
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
-			o.Serialization(so => so.SerializationFormatter(typeof(GeneratorFormatter))));
+			o.Serialization(so => so.SerializationFormatter(typeof(MobileFormatter))));
 		var provider = services.BuildServiceProvider();
 		var applicationContext = provider.GetService<ApplicationContext>()!;
 		var portal = provider.GetRequiredService<IDataPortal<Person>>();
@@ -26,7 +26,7 @@ public class RoundtripSerialization
 		person.Name = "Jason";
 		person.Age = 53;
 
-		(this.person, this.formatter) = (person, new GeneratorFormatter(applicationContext));
+		(this.person, this.formatter) = (person, new MobileFormatter(applicationContext));
 	}
 
 	[Benchmark]

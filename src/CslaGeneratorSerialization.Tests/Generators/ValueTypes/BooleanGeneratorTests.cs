@@ -42,49 +42,43 @@ public static class BooleanGeneratorTests
 			public sealed partial class Data
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
-				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::System.IO.BinaryWriter writer)
+				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					writer.Write(this.GetType().FullName!);
-					
 					// Set custom object state
-					writer.Write(this.ReadProperty(global::Domains.Data.ContentsProperty));
-					
-					// Set any children...
+					context.Writer.Write(this.ReadProperty(global::Domains.Data.ContentsProperty));
 					
 					// Set base object state
-					writer.Write(this.IsNew);
-					writer.Write(this.IsDeleted);
-					writer.Write(this.IsDirty);
-					writer.Write(this.IsChild);
-					writer.Write(this.DisableIEditableObject);
+					context.Writer.Write(this.IsNew);
+					context.Writer.Write(this.IsDeleted);
+					context.Writer.Write(this.IsDirty);
+					context.Writer.Write(this.IsChild);
+					context.Writer.Write(this.DisableIEditableObject);
 					
 					//The only way I can get these is through Reflection.
 					//Ugly, but...means must.
 					var type = this.GetType();
-					writer.Write((bool)type.GetField("_neverCommitted")!.GetValue(this)!);
-					writer.Write((int)type.GetField("_editLevelAdded")!.GetValue(this)!);
-					writer.Write((int)type.GetField("_identity")!.GetValue(this)!);
+					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
+					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
+					context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
 				}
 				
-				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::System.IO.BinaryReader reader)
+				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
-					this.LoadProperty(global::Domains.Data.ContentsProperty, reader.ReadBoolean());
-					
-					// Get any children...
+					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBoolean());
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
 					//Ugly, but...means must.
 					var type = this.GetType();
-					type.GetField("_isNew")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isDeleted")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isDirty")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isChild")!.SetValue(this, reader.ReadBoolean());
-					this.DisableIEditableObject = reader.ReadBoolean();
+					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
+					this.DisableIEditableObject = context.Reader.ReadBoolean();
 					
-					type.GetField("_neverCommitted")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_editLevelAdded")!.SetValue(this, reader.ReadInt32());
-					type.GetField("_identity")!.SetValue(this, reader.ReadInt32());
+					type.GetFieldInHierarchy("_neverCommitted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_editLevelAdded")!.SetValue(this, context.Reader.ReadInt32());
+					type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
 				}
 			}
 			
@@ -132,61 +126,56 @@ public static class BooleanGeneratorTests
 			public sealed partial class Data
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
-				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::System.IO.BinaryWriter writer)
+				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					writer.Write(this.GetType().FullName!);
-					
 					// Set custom object state
 					var value = this.ReadProperty(global::Domains.Data.ContentsProperty);
 					
 					if (value is not null)
 					{
-						writer.Write(value.Value);
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						context.Writer.Write(value.Value);
 					}
 					else
 					{
-						writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 					}
 					
-					// Set any children...
-					
 					// Set base object state
-					writer.Write(this.IsNew);
-					writer.Write(this.IsDeleted);
-					writer.Write(this.IsDirty);
-					writer.Write(this.IsChild);
-					writer.Write(this.DisableIEditableObject);
+					context.Writer.Write(this.IsNew);
+					context.Writer.Write(this.IsDeleted);
+					context.Writer.Write(this.IsDirty);
+					context.Writer.Write(this.IsChild);
+					context.Writer.Write(this.DisableIEditableObject);
 					
 					//The only way I can get these is through Reflection.
 					//Ugly, but...means must.
 					var type = this.GetType();
-					writer.Write((bool)type.GetField("_neverCommitted")!.GetValue(this)!);
-					writer.Write((int)type.GetField("_editLevelAdded")!.GetValue(this)!);
-					writer.Write((int)type.GetField("_identity")!.GetValue(this)!);
+					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
+					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
+					context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
 				}
 				
-				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::System.IO.BinaryReader reader)
+				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// Get custom object state
-					if (reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
-						this.LoadProperty(global::Domains.Data.ContentsProperty, reader.ReadBoolean());
+						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBoolean());
 					}
-					
-					// Get any children...
 					
 					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
 					//Ugly, but...means must.
 					var type = this.GetType();
-					type.GetField("_isNew")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isDeleted")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isDirty")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_isChild")!.SetValue(this, reader.ReadBoolean());
-					this.DisableIEditableObject = reader.ReadBoolean();
+					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
+					this.DisableIEditableObject = context.Reader.ReadBoolean();
 					
-					type.GetField("_neverCommitted")!.SetValue(this, reader.ReadBoolean());
-					type.GetField("_editLevelAdded")!.SetValue(this, reader.ReadInt32());
-					type.GetField("_identity")!.SetValue(this, reader.ReadInt32());
+					type.GetFieldInHierarchy("_neverCommitted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetFieldInHierarchy("_editLevelAdded")!.SetValue(this, context.Reader.ReadInt32());
+					type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
 				}
 			}
 			

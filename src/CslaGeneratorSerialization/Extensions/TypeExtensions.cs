@@ -4,7 +4,7 @@ namespace CslaGeneratorSerialization.Extensions;
 
 public static class TypeExtensions
 {
-	public static FieldInfo? GetField(this Type self, string name)
+	public static FieldInfo? GetFieldInHierarchy(this Type self, string name)
 	{
 		var baseType = self;
 

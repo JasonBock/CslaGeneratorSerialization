@@ -2,7 +2,23 @@
 
 public static class BinaryWriterExtensions
 {
-   public static void Write(this BinaryWriter writer, DateTime value) => 
+	public static void Write(this BinaryWriter writer, byte[] value)
+	{
+		writer.Write(value.Length);
+		writer.Write(value);
+	}
+
+	public static void Write(this BinaryWriter writer, byte[][] value)
+	{
+		writer.Write(value.Length);
+
+		foreach(var innerValue in value)
+		{
+			writer.Write(innerValue);
+		}
+	}
+
+	public static void Write(this BinaryWriter writer, DateTime value) => 
 		writer.Write(value.Ticks);
 
    public static void Write(this BinaryWriter writer, DateTimeOffset value)

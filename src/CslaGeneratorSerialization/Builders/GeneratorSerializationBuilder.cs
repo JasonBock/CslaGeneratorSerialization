@@ -44,7 +44,6 @@ internal sealed class GeneratorSerializationBuilder
 			""");
 
 		indentWriter.Indent++;
-		// ... where the magic happens ...
 		GeneratorSerializationBuilderWriter.Build(indentWriter, model);
 		indentWriter.WriteLine();
 		GeneratorSerializationBuilderReader.Build(indentWriter, model);

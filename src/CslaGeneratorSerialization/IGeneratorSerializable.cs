@@ -2,6 +2,6 @@
 
 public interface IGeneratorSerializable
 {
-	void SetState(BinaryWriter writer);
-	void GetState(BinaryReader reader);
+	void SetState(GeneratorFormatterWriterContext writer);
+	void GetState(GeneratorFormatterReaderContext reader);
 }

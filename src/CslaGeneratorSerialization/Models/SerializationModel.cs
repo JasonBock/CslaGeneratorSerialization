@@ -31,10 +31,10 @@ internal sealed record SerializationModel
 		{
 			var fieldContainingType = _.ContainingType;
 			var fieldType = (INamedTypeSymbol)_.Type;
-			var propertyInfoType = (INamedTypeSymbol)fieldType.TypeArguments[0];
+			var propertyInfoType = fieldType.TypeArguments[0];
 			return new SerializationItemModel(_.Name, 
 				new TypeReferenceModel(fieldContainingType, compilation), new TypeReferenceModel(propertyInfoType, compilation));
-		}).ToImmutableArray();
+		}).OrderBy(_ => _.PropertyInfoDataType.IsSerializable).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
 	}
 
 	internal TypeReferenceModel BusinessObject { get; }

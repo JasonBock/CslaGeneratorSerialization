@@ -1,6 +1,5 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using CslaGeneratorSerialization.Models;
-using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Builders;
@@ -11,17 +10,12 @@ internal static class GeneratorSerializationBuilderWriter
 	{
 		indentWriter.WriteLines(
 			"""
-			void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::System.IO.BinaryWriter writer)
+			void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 			{
 			""");
 		indentWriter.Indent++;
 
-		indentWriter.WriteLines(
-			"""
-			writer.Write(this.GetType().FullName!);
-
-			// Set custom object state
-			""");
+		indentWriter.WriteLine("// Set custom object state");
 
 		foreach (var item in model.Items)
 		{
@@ -31,21 +25,19 @@ internal static class GeneratorSerializationBuilderWriter
 		indentWriter.WriteLines(
 			"""
 
-			// Set any children...
-			
 			// Set base object state
-			writer.Write(this.IsNew);
-			writer.Write(this.IsDeleted);
-			writer.Write(this.IsDirty);
-			writer.Write(this.IsChild);
-			writer.Write(this.DisableIEditableObject);
+			context.Writer.Write(this.IsNew);
+			context.Writer.Write(this.IsDeleted);
+			context.Writer.Write(this.IsDirty);
+			context.Writer.Write(this.IsChild);
+			context.Writer.Write(this.DisableIEditableObject);
 
 			//The only way I can get these is through Reflection.
 			//Ugly, but...means must.
 			var type = this.GetType();
-			writer.Write((bool)type.GetField("_neverCommitted")!.GetValue(this)!);
-			writer.Write((int)type.GetField("_editLevelAdded")!.GetValue(this)!);
-			writer.Write((int)type.GetField("_identity")!.GetValue(this)!);
+			context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
+			context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
+			context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
 			""");
 
 		indentWriter.Indent--;
@@ -58,8 +50,7 @@ internal static class GeneratorSerializationBuilderWriter
 		// natively by BinaryWriter or by an extension method I've created.
 		var propertyRead = $"{item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}";
 
-		if (item.PropertyInfoDataType.IsNullable ||
-			!item.PropertyInfoDataType.IsValueType)
+		if (item.PropertyInfoDataType.IsSerializable)
 		{
 			indentWriter.WriteLines(
 				$$"""
@@ -67,17 +58,49 @@ internal static class GeneratorSerializationBuilderWriter
 
 				if (value is not null)
 				{
-					writer.Write(value.Value);
+					(var isDuplicate, var id) = context.GetReference(value);
+
+					if (isDuplicate)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
+						context.Writer.Write(id);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						((global::CslaGeneratorSerialization.IGeneratorSerializable)value).SetState(context);
+					}
 				}
 				else
 				{
-					writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+				}
+				""");
+		}
+		else if (item.PropertyInfoDataType.IsNullable ||
+			!item.PropertyInfoDataType.IsValueType)
+		{
+			var valueToWrite = item.PropertyInfoDataType.IsValueType ?
+				"value.Value" : "value";
+
+			indentWriter.WriteLines(
+				$$"""
+				var value = this.ReadProperty({{propertyRead}});
+
+				if (value is not null)
+				{
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+					context.Writer.Write({{valueToWrite}});
+				}
+				else
+				{
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 				}
 				""");
 		}
 		else
 		{
-			indentWriter.WriteLine($"writer.Write(this.ReadProperty({propertyRead}));");
+			indentWriter.WriteLine($"context.Writer.Write(this.ReadProperty({propertyRead}));");
 		}
 	}
 }
