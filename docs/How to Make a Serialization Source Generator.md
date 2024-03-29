@@ -52,19 +52,25 @@ Plan of attack:
     * DONE - Should abstract BOs be targeted? They can't be created, so...not sure about this. Maybe, but then make sure to add `abstract` to the partial class.
     * DONE - Inheritance hierarchies and loading/storing fields (e.g. `Customer` derives from `Person` and ensure everything is serialized correctly)
     * DONE - "Invalid" - e.g. symbol has diagnostics, or no managed backing fields.
-    * Different base types and different base fields to store/load (e.g. `BusinessListBase`)
-    * Claims
+    * Claims - `System.Security.Claims.ClaimsPrincipal`
+        * On serialization, then pass that into a `Security.CslaClaimsPrincipal(...)` constructor. That new `CslaClaimsPrincipal` is an `IMobileObject`, so just treat that as such from that point on in terms of duplication. However, the way it serializes is to call `WriteTo()` on its own (this is defined on `ClaimsPrincipal`), and then pass that as a `(int length, byte[] buffer)` to the main stream. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L143 for details
+        * On deserialization, read the `byte[]` value, and pass that into a new `BinaryReader`, which will in turn be passed to `new Security.CslaClaimsPrincipal(reader)`. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L269 for details.
+    * Different base types and different base fields to store/load 
+        * `BusinessListBase`
+        * `CommandBase`
 * Tests
 
 MobileFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |
 |---------- |---------:|----------:|----------:|-------:|-------:|----------:|
-| Roundtrip | 7.618 us | 0.0797 us | 0.0745 us | 1.4038 | 0.0305 |  23.83 KB |
+| Roundtrip | 7.884 us | 0.0546 us | 0.0456 us | 1.4038 | 0.0305 |  24.14 KB |
 
 GeneratorFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Allocated |
 |---------- |---------:|----------:|----------:|-------:|----------:|
-| Roundtrip | 1.925 us | 0.0072 us | 0.0057 us | 0.1678 |   2.88 KB |
+| Roundtrip | 2.778 us | 0.0192 us | 0.0180 us | 0.2518 |   4.26 KB |
+
+2.84 times faster and 5.67 times less memory allocation (and all in Gen0)
 
 Issues
 * It is weird that `SerializationFormatter` is `static`, but that's probably a holdover from an earlier design, and changing it might break people. That said, I really should be able to get the configured `ISerializationFormatter` instance from DI, not as a static property.
