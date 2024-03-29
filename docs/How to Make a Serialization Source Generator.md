@@ -40,8 +40,8 @@ Plan of attack:
 * Get the generator to do a file creation that does "just enough" to get that scaffolding in place.
 * Handle an object that has just simple fields with no child state, and see if that works.
 * Add all cases
-    * Value types
-        * Enums
+    * DONE - Value types
+        * DONE - Enums
     * DONE - Reference types
     * DONE - "Special" types:
         * DONE - `byte[]`
@@ -49,9 +49,10 @@ Plan of attack:
         * DONE - `char[]`
         * DONE - `List<int>`
     * DONE - `IGeneratorSerializable` and duplicates
+    * DONE - Should abstract BOs be targeted? They can't be created, so...not sure about this. Maybe, but then make sure to add `abstract` to the partial class.
+    * DONE - Inheritance hierarchies and loading/storing fields (e.g. `Customer` derives from `Person` and ensure everything is serialized correctly)
+    * DONE - "Invalid" - e.g. symbol has diagnostics, or no managed backing fields.
     * Different base types and different base fields to store/load (e.g. `BusinessListBase`)
-    * Inheritance hierarchies and loading/storing fields (e.g. `Customer` derives from `Person` and ensure everything is serialized correctly)
-    * "Invalid" - e.g. symbol has diagnostics, or no managed backing fields.
     * Claims
 * Tests
 

@@ -10,25 +10,23 @@ internal sealed record TypeReferenceModel
 	{
 
 		this.Name = type.Name;
-		this.Namespace =
-			type.ContainingNamespace is not null ?
-				!type.ContainingNamespace.IsGlobalNamespace ?
-					type.ContainingNamespace.ToDisplayString() :
-					null :
-				null;
-
+		this.Namespace = type.GetNamespace();
 		this.FullName = !string.IsNullOrWhiteSpace(this.Namespace) ?
 			$"{this.Namespace}.{this.Name}" : this.Name;
 		this.FullyQualifiedName = type.GetFullyQualifiedName(compilation);
 
 		this.IsValueType = type.IsValueType;
 		this.IsNullable = type.NullableAnnotation == NullableAnnotation.Annotated;
+		this.IsSealed = type.IsSealed;
+		this.IsAbstract = type.IsAbstract;
 		// The reason we have to check both conditions here is that a BO in this project
 		// may not have code generated yet for serialization, but...
 		// it may have been done in another project. So we have to check
 		// for both conditions, and then hope (?) that this custom serializer
 		// will target the type and gen the code for it.
 		this.IsSerializable = type.IsGeneratorSerializable() || type.IsMobileObject();
+
+
 		this.SpecialType = type.SpecialType;
 		this.TypeKind = type.TypeKind;
 
@@ -57,9 +55,11 @@ internal sealed record TypeReferenceModel
 	internal TypeReferenceModel? EnumUnderlyingType { get; }
 	internal string FullName { get; }
 	internal string FullyQualifiedName { get; }
+	internal bool IsAbstract { get; }
 	internal bool IsArray { get; }
-	internal bool IsSerializable { get; }
 	internal bool IsNullable { get; }
+	internal bool IsSealed { get; }
+	internal bool IsSerializable { get; }
 	internal bool IsValueType { get; }
 	internal string Name { get; }
 	internal string? Namespace { get; }

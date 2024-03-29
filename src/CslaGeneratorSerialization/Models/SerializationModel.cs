@@ -8,9 +8,15 @@ internal sealed record SerializationModel
 {
 	internal static bool TryCreate(INamedTypeSymbol type, Compilation compilation, out SerializationModel? model)
 	{
-		var propertyInfoFields = new List<IFieldSymbol>(
-			type.GetMembers().OfType<IFieldSymbol>()
-				.Where(_ => _.IsStatic && _.DeclaredAccessibility == Accessibility.Public && _.IsPropertyInfo()));
+		if (type.HasErrors())
+		{
+			// This one will stop everything. There's no need to move on
+			// if the given type is in error.
+			model = null;
+			return false;
+		}
+
+		var propertyInfoFields = type.GetPropertyInfoFields();
 
 		if (propertyInfoFields.Count > 0)
 		{
@@ -32,7 +38,7 @@ internal sealed record SerializationModel
 			var fieldContainingType = _.ContainingType;
 			var fieldType = (INamedTypeSymbol)_.Type;
 			var propertyInfoType = fieldType.TypeArguments[0];
-			return new SerializationItemModel(_.Name, 
+			return new SerializationItemModel(_.Name,
 				new TypeReferenceModel(fieldContainingType, compilation), new TypeReferenceModel(propertyInfoType, compilation));
 		}).OrderBy(_ => _.PropertyInfoDataType.IsSerializable).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
 	}

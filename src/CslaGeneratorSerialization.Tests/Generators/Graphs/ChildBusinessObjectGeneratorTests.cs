@@ -205,7 +205,8 @@ public static class ChildBusinessObjectGeneratorTests
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
 				(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.ChildData_GeneratorSerialization.g.cs", childGeneratedCode)],
+				(typeof(GeneratorSerializationGenerator), "Domains.ChildData_GeneratorSerialization.g.cs", childGeneratedCode)
+			],
 			[]);
 	}
 }

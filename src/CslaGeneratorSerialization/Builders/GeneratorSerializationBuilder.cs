@@ -36,9 +36,12 @@ internal sealed class GeneratorSerializationBuilder
 				""");
 		}
 
+		var derivation = model.BusinessObject.IsSealed ? "sealed " :
+			model.BusinessObject.IsAbstract ? "abstract " : string.Empty;
+
 		indentWriter.WriteLines(
 			$$"""
-			public sealed partial class {{this.Model.BusinessObject.Name}}
+			public {{derivation}}partial class {{this.Model.BusinessObject.Name}}
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
 			""");

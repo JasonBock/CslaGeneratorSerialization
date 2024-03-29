@@ -5,6 +5,24 @@ namespace CslaGeneratorSerialization.Extensions;
 
 internal static class ITypeSymbolExtensions
 {
+	internal static string GetNamespace(this ITypeSymbol self)
+	{
+		var namespaces = new List<INamespaceSymbol>();
+
+		var @namespace = self.ContainingNamespace;
+
+		while (@namespace is not null &&
+			!@namespace.IsGlobalNamespace)
+		{
+			namespaces.Add(@namespace);
+			@namespace = @namespace.ContainingNamespace;
+		}
+
+		namespaces.Reverse();
+
+		return string.Join(".", namespaces.Select(_ => _.Name));
+	}
+
 	internal static string GetFullyQualifiedName(this ITypeSymbol self, Compilation compilation)
 	{
 		const string GlobalPrefix = "global::";
@@ -36,11 +54,15 @@ internal static class ITypeSymbolExtensions
 		return symbolName;
 	}
 
+	internal static bool HasErrors(this ITypeSymbol self) =>
+		self.TypeKind == TypeKind.Error ||
+			(self is INamedTypeSymbol namedSelf && namedSelf.TypeArguments.Any(_ => _.HasErrors()));
+
 	internal static bool IsMobileObject(this ITypeSymbol self) =>
-		(self.Name == nameof(IMobileObject) && self.ContainingAssembly.Name == "Csla") ||
+		(self.Name == nameof(IMobileObject) && self.GetNamespace() == "Csla.Serialization.Mobile" && self.ContainingAssembly.Name == "Csla") ||
 			self.AllInterfaces.Any(_ => _.IsMobileObject());
 
 	internal static bool IsGeneratorSerializable(this ITypeSymbol self) =>
-		(self.Name == nameof(IGeneratorSerializable) && self.ContainingAssembly.Name == "CslaGeneratorSerializable") ||
+		(self.Name == nameof(IGeneratorSerializable) && self.GetNamespace() == "CslaGeneratorSerialization" && self.ContainingAssembly.Name == "CslaGeneratorSerialization") ||
 			self.AllInterfaces.Any(_ => _.IsGeneratorSerializable());
 }
