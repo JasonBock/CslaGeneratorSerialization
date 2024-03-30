@@ -2,13 +2,15 @@
 
 public sealed class GeneratorFormatterWriterContext
 {
-	private int idCounter;
+	private int referenceIdCounter;
+	private int typeNameIdCounter;
 	private readonly Dictionary<IGeneratorSerializable, int> references = new(new IGeneratorSerializableEqualityComparer());
+	private readonly Dictionary<int, int> typeNames = [];
 
 	internal GeneratorFormatterWriterContext(BinaryWriter writer) =>
 		this.Writer = writer;
 
-	public (bool isDuplicate, int id) GetReference(IGeneratorSerializable mobileObject)
+	public (bool, int) GetReference(IGeneratorSerializable mobileObject)
 	{
 		if (this.references.TryGetValue(mobileObject, out var value))
 		{
@@ -16,9 +18,26 @@ public sealed class GeneratorFormatterWriterContext
 		}
 		else
 		{
-			var id = this.idCounter;
+			var id = this.referenceIdCounter;
 			this.references.Add(mobileObject, id);
-			this.idCounter++;
+			this.referenceIdCounter++;
+			return (false, id);
+		}
+	}
+
+	public (bool, int) GetTypeName(string typeName)
+	{
+	  var typeNameHashCode = typeName.GetHashCode();
+
+	  if (this.typeNames.TryGetValue(typeNameHashCode, out var value))
+		{
+			return (true, value);
+		}
+		else
+		{
+			var id = this.typeNameIdCounter;
+			this.typeNames.Add(typeNameHashCode, id);
+			this.typeNameIdCounter++;
 			return (false, id);
 		}
 	}

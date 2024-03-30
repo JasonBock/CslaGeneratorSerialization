@@ -12,7 +12,7 @@ public sealed partial class ParentData
 	private void Create() =>
 		this.Contents = this.ApplicationContext.GetRequiredService<IChildDataPortal<ChildData>>().CreateChild();
 
-	public static readonly PropertyInfo<ChildData> ContentsProperty =
+   public static readonly PropertyInfo<ChildData> ContentsProperty =
 		RegisterProperty<ChildData>(_ => _.Contents);
 	public ChildData Contents
 	{

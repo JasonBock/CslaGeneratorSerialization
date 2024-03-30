@@ -69,15 +69,39 @@ internal static class GeneratorSerializationBuilderWriter
 
 				if ({{valueVariable}} is not null)
 				{
-					(var isDuplicate, var id) = context.GetReference({{valueVariable}});
+					(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}});
 
-					if (isDuplicate)
+					if (isReferenceDuplicate)
 					{
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-						context.Writer.Write(id);
+						context.Writer.Write(referenceId);
 					}
 					else
 					{
+				""");
+
+			if (!propertyType.IsSealed)
+			{
+				indentWriter.WriteLines(
+					$$"""
+							var {{valueVariable}}TypeName = {{valueVariable}}.GetType().FullName!;
+							(var isTypeNameDuplicate, var typeNameId) = context.GetTypeName({{valueVariable}}TypeName);
+
+							if (isTypeNameDuplicate)
+							{
+								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
+								context.Writer.Write(typeNameId);
+							}
+							else
+							{
+								context.Writer.Write({{valueVariable}}TypeName);
+							}
+
+					""");
+			}
+
+			indentWriter.WriteLines(
+				$$"""
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 						((global::CslaGeneratorSerialization.IGeneratorSerializable){{valueVariable}}).SetState(context);
 					}

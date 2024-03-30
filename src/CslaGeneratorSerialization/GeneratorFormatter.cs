@@ -34,7 +34,7 @@ public sealed class GeneratorFormatter
 	}
 
 	/// <summary>
-	/// Serialize an object graph into XML.
+	/// Serialize an object graph.
 	/// </summary>
 	/// <param name="serializationStream">
 	/// Stream to which the serialized data
@@ -53,7 +53,6 @@ public sealed class GeneratorFormatter
 
 		var writer = new BinaryWriter(serializationStream);
 		writer.Write(graph.GetType().AssemblyQualifiedName);
-
 		generatorGraph.SetState(new GeneratorFormatterWriterContext(writer));
 	}
 

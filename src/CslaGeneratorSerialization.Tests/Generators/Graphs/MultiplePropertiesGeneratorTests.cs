@@ -95,12 +95,12 @@ public static class MultiplePropertiesGeneratorTests
 					
 					if (value2 is not null)
 					{
-						(var isDuplicate, var id) = context.GetReference(value2);
+						(var isReferenceDuplicate, var referenceId) = context.GetReference(value2);
 					
-						if (isDuplicate)
+						if (isReferenceDuplicate)
 						{
 							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(id);
+							context.Writer.Write(referenceId);
 						}
 						else
 						{
@@ -144,7 +144,7 @@ public static class MultiplePropertiesGeneratorTests
 					switch (context.Reader.ReadStateValue())
 					{
 						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.Data.ChildContentsProperty, context[context.Reader.ReadInt32()]);
+							this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.GetReference(context.Reader.ReadInt32()));
 							break;
 						case global::CslaGeneratorSerialization.SerializationState.Value:
 							var newValue = context.CreateInstance<Domains.ChildData>();

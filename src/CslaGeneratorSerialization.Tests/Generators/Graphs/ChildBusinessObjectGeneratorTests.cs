@@ -63,12 +63,12 @@ public static class ChildBusinessObjectGeneratorTests
 					
 					if (value0 is not null)
 					{
-						(var isDuplicate, var id) = context.GetReference(value0);
+						(var isReferenceDuplicate, var referenceId) = context.GetReference(value0);
 					
-						if (isDuplicate)
+						if (isReferenceDuplicate)
 						{
 							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(id);
+							context.Writer.Write(referenceId);
 						}
 						else
 						{
@@ -103,7 +103,7 @@ public static class ChildBusinessObjectGeneratorTests
 					switch (context.Reader.ReadStateValue())
 					{
 						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.Data.ContentsProperty, context[context.Reader.ReadInt32()]);
+							this.LoadProperty(global::Domains.Data.ContentsProperty, context.GetReference(context.Reader.ReadInt32()));
 							break;
 						case global::CslaGeneratorSerialization.SerializationState.Value:
 							var newValue = context.CreateInstance<Domains.ChildData>();

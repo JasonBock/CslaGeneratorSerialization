@@ -33,12 +33,12 @@ Each value:
 
 Plan of attack:
 
-* Create a `IGeneratorSerializable` interface that would be used on the partial classes. It'll need `Serialize()` and `Deserialize()` methods, as well as the ability to get/set the object's state (similar to what is done with `IMobileObject` and `Get/SetState()` and `Get/SetChildren()`). 
-    * See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/MobileObject.cs for how it's done.
-    * OnGet/SetState is here - https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/UndoableBase.cs
-    * OnGet/SetState and OnGet/SetChildren is here - https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/BusinessBase.cs
-* Get the generator to do a file creation that does "just enough" to get that scaffolding in place.
-* Handle an object that has just simple fields with no child state, and see if that works.
+* DONE - Create a `IGeneratorSerializable` interface that would be used on the partial classes. It'll need `Serialize()` and `Deserialize()` methods, as well as the ability to get/set the object's state (similar to what is done with `IMobileObject` and `Get/SetState()` and `Get/SetChildren()`). 
+    * DONE - See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/MobileObject.cs for how it's done.
+    * DONE - OnGet/SetState is here - https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/UndoableBase.cs
+    * DONE - OnGet/SetState and OnGet/SetChildren is here - https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Core/BusinessBase.cs
+* DONE - Get the generator to do a file creation that does "just enough" to get that scaffolding in place.
+* DONE - Handle an object that has just simple fields with no child state, and see if that works.
 * Add all cases
     * DONE - Value types
         * DONE - Enums
@@ -56,9 +56,23 @@ Plan of attack:
         * On serialization, then pass that into a `Security.CslaClaimsPrincipal(...)` constructor. That new `CslaClaimsPrincipal` is an `IMobileObject`, so just treat that as such from that point on in terms of duplication. However, the way it serializes is to call `WriteTo()` on its own (this is defined on `ClaimsPrincipal`), and then pass that as a `(int length, byte[] buffer)` to the main stream. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L143 for details
         * On deserialization, read the `byte[]` value, and pass that into a new `BinaryReader`, which will in turn be passed to `new Security.CslaClaimsPrincipal(reader)`. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L269 for details.
     * Different base types and different base fields to store/load 
+        * `ReadOnlyBase`
+        * `ReadOnlyListBase`
         * `BusinessListBase`
         * `CommandBase`
-* Tests
+        * Maybe...or defer to later
+            * `ReadOnlyBindingListBase`
+            * `BusinessBindingListBase`
+            * `DynamicListBase`
+            * `DynamicBindingListBase`
+            * `MobileDictionary`
+            * `MobileList`
+    * What if an object wants to participate in the serialization process without using `PropertyInfo`s? I thought there was something akin to that in CSLA proper. Maybe use `OnCustomGet/SetState()` that are DIM that people can override. Here's a sharplab.io link demonstrating this: https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwAICYAMBYAUBgRj1UwAJUCA6ASQHkBuPPAJQHto5gwBLABwAooAUwDupAHKswAWwCGAG34BKJY3wEAnMrVsOXPoNGkAwhADOwVtOWqm6gGzkALKV1ROPAdQDKQngu4ALyFSYFkwAHMhYCU8AG88UiTyTX4wyOjKAHFogBUAT14hZUoAMQh5eXFZaSFbXGTQ8KjgSgARITM/bgDgwQr5AEJ6xvSWylMLKw6u/3kg4qgB4fpGxOSxzN85hf7KlfWkzdbJy2ltnvm+pf36gF87VABmUm4oYD8AM1kAYxCfbq9ITxQ7OUgzQFXYoAITe4XyzCEsjgflIYCRKLAI2SqBcp2mnUhu1hUHhiORqPRFKxpDiKS0ACIATtghNzGcISzikoGapSA8GjiXBcgfwSfCAOo8D5gUgiaV+bFJXEmdlWEVQsVwsD5KXcGVyhU0ukURnMy4LNlTc5Evo8vkCgXEF4YCRSOTyUEgUjmoEgwXKly+qHtQlcrWknXkzFojGK2n0/gMyQyBSh2YWu281YCxoq4OWjXE7W6o2G/Xxk2pZPutNFrMOvBO/Au9Cq61en314G4BIBsEF1mczMwkvRylx42Jhn46Tp23c7P80H57tWjlhkcRsmT2PUpQJ01J2frgkZ0X2nMroNr7vbnV6g3yitTo8ztVzu+X5f91cL082uG4oPmWz4ygeVaMies5fkujpAA
+    * What if the target in `PropertyInfo<>` is an interface? Or my base type is `IBusinessBase<>`? Deserialization may need the name of the concrete type. So, if the serializable type is not `sealed`, then we need to get the name of the type at runtime and store that into a `Dictionary<,>`, akin to what I'm doing with duplicate references.
+        * On serialization, store the count and number of type strings at the "front" of the stream (basically need to create two and combine them).
+        * On deserialization, read the count, and deserialize the `string`/`int` pairs if any exist.
+    * Is there a way to let a user register custom type serialization support? Would that be runtime, or could it be compile-time?
+* Tests (of course)
 
 MobileFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |
