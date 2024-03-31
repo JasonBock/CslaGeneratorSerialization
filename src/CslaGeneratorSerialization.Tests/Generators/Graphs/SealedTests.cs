@@ -231,7 +231,9 @@ public static class SealedTests
 						}
 						else
 						{
-							var value0TypeName = value0.GetType().FullName!;
+							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
+					
+							var value0TypeName = value0.GetType().AssemblyQualifiedName!;
 							(var isTypeNameDuplicate, var typeNameId) = context.GetTypeName(value0TypeName);
 					
 							if (isTypeNameDuplicate)
@@ -241,10 +243,10 @@ public static class SealedTests
 							}
 							else
 							{
+								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 								context.Writer.Write(value0TypeName);
 							}
 					
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 							((global::CslaGeneratorSerialization.IGeneratorSerializable)value0).SetState(context);
 						}
 					}

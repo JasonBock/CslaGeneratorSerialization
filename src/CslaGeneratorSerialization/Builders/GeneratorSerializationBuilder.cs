@@ -1,5 +1,6 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using CslaGeneratorSerialization.Models;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using System.CodeDom.Compiler;
 using System.Text;
@@ -37,20 +38,27 @@ internal sealed class GeneratorSerializationBuilder
 		}
 
 		var derivation = model.BusinessObject.IsSealed ? "sealed " :
-			model.BusinessObject.IsAbstract ? "abstract " : string.Empty;
+			model.BusinessObject.TypeKind != TypeKind.Interface && model.BusinessObject.IsAbstract ? 
+				"abstract " : 
+				string.Empty;
+		var typeKind = model.BusinessObject.TypeKind == TypeKind.Interface ?
+			"interface" : "class";
 
 		indentWriter.WriteLines(
 			$$"""
-			public {{derivation}}partial class {{this.Model.BusinessObject.Name}}
+			public {{derivation}}partial {{typeKind}} {{this.Model.BusinessObject.Name}}
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
 			""");
 
-		indentWriter.Indent++;
-		GeneratorSerializationBuilderWriter.Build(indentWriter, model);
-		indentWriter.WriteLine();
-		GeneratorSerializationBuilderReader.Build(indentWriter, model);
-		indentWriter.Indent--;
+		if (model.BusinessObject.TypeKind == TypeKind.Class)
+		{
+			indentWriter.Indent++;
+			GeneratorSerializationBuilderWriter.Build(indentWriter, model);
+			indentWriter.WriteLine();
+			GeneratorSerializationBuilderReader.Build(indentWriter, model);
+			indentWriter.Indent--;
+		}
 
 		indentWriter.WriteLine("}");
 

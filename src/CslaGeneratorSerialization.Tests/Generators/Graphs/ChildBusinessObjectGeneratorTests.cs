@@ -72,7 +72,7 @@ public static class ChildBusinessObjectGeneratorTests
 						}
 						else
 						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
 							((global::CslaGeneratorSerialization.IGeneratorSerializable)value0).SetState(context);
 						}
 					}

@@ -16,11 +16,24 @@ internal sealed record SerializationModel
 			return false;
 		}
 
-		var propertyInfoFields = type.GetPropertyInfoFields();
-
-		if (propertyInfoFields.Count > 0)
+		if (type.TypeKind == TypeKind.Class)
 		{
-			model = new SerializationModel(type, propertyInfoFields, compilation);
+			var propertyInfoFields = type.GetPropertyInfoFields();
+
+			if (propertyInfoFields.Count > 0)
+			{
+				model = new SerializationModel(type, propertyInfoFields, compilation);
+				return true;
+			}
+			else
+			{
+				model = null;
+				return false;
+			}
+		}
+		else if (type.TypeKind == TypeKind.Interface)
+		{
+			model = new SerializationModel(type, [], compilation);
 			return true;
 		}
 		else

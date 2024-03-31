@@ -78,13 +78,15 @@ internal static class GeneratorSerializationBuilderWriter
 					}
 					else
 					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
 				""");
 
 			if (!propertyType.IsSealed)
 			{
 				indentWriter.WriteLines(
 					$$"""
-							var {{valueVariable}}TypeName = {{valueVariable}}.GetType().FullName!;
+
+							var {{valueVariable}}TypeName = {{valueVariable}}.GetType().AssemblyQualifiedName!;
 							(var isTypeNameDuplicate, var typeNameId) = context.GetTypeName({{valueVariable}}TypeName);
 
 							if (isTypeNameDuplicate)
@@ -94,6 +96,7 @@ internal static class GeneratorSerializationBuilderWriter
 							}
 							else
 							{
+								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 								context.Writer.Write({{valueVariable}}TypeName);
 							}
 
@@ -102,7 +105,6 @@ internal static class GeneratorSerializationBuilderWriter
 
 			indentWriter.WriteLines(
 				$$"""
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
 						((global::CslaGeneratorSerialization.IGeneratorSerializable){{valueVariable}}).SetState(context);
 					}
 				}
