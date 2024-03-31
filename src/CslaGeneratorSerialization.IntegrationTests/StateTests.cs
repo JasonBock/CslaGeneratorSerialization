@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes;
+namespace CslaGeneratorSerialization.IntegrationTests.StateTestsDomain;
 
 [Serializable]
 public sealed partial class StateData

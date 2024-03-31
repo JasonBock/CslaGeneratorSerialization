@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Collections;
+namespace CslaGeneratorSerialization.IntegrationTests.Collections.ListOfInt32TestsDomain;
 
 [Serializable]
 public sealed partial class ListOfInt32Data

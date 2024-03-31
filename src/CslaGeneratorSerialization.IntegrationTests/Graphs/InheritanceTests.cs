@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InheritanceTestsDomain;
 
 [Serializable]
 public abstract partial class AbstractData

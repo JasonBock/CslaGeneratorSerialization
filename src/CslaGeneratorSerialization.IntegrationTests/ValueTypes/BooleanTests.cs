@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes;
+namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.BooleanTestsDomain;
 
 [Serializable]
 public sealed partial class BooleanData

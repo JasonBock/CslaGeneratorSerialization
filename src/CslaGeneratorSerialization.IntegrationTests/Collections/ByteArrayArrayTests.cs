@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Collections;
+namespace CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayArrayTestsDomain;
 
 [Serializable]
 public sealed partial class ByteArrayArrayData

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes;
+namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.EnumTestsDomain;
 
 public enum States { First, Second, Third }
 

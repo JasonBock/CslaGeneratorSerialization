@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs.DuplicateTestsDomain;
 
 [Serializable]
 public sealed partial class Node
