@@ -61,6 +61,43 @@ internal static class GeneratorSerializationBuilderWriter
 		{
 			indentWriter.WriteLine($"context.Writer.Write(({propertyType.EnumUnderlyingType!.FullyQualifiedName})this.ReadProperty({propertyRead}));");
 		}
+		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		{
+			indentWriter.WriteLines(
+				$$"""
+				var {{valueVariable}} = this.ReadProperty({{propertyRead}});
+				
+				if ({{valueVariable}} is not null)
+				{
+					var {{valueVariable}}Principal = new global::Csla.Security.CslaClaimsPrincipal(this.ReadProperty({{propertyRead}}));
+					(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}}Principal);
+				
+					if (isReferenceDuplicate)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
+						context.Writer.Write(referenceId);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+
+						using (var {{valueVariable}}stream = new global::System.IO.MemoryStream())
+						{
+							using (var {{valueVariable}}writer = new global::System.IO.BinaryWriter({{valueVariable}}stream))
+							{
+								{{valueVariable}}Principal.WriteTo({{valueVariable}}writer);
+								var {{valueVariable}}buffer = {{valueVariable}}stream.ToArray();
+								context.Writer.Write(({{valueVariable}}buffer.Length, {{valueVariable}}buffer));
+							}
+						}
+					}
+				}
+				else
+				{
+					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+				}
+				""");
+		}
 		else if (propertyType.IsSerializable)
 		{
 			indentWriter.WriteLines(

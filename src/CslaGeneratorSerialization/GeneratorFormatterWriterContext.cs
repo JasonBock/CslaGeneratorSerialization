@@ -4,13 +4,13 @@ public sealed class GeneratorFormatterWriterContext
 {
 	private int referenceIdCounter;
 	private int typeNameIdCounter;
-	private readonly Dictionary<IGeneratorSerializable, int> references = new(new IGeneratorSerializableEqualityComparer());
+	private readonly Dictionary<object, int> references = new(new IGeneratorSerializableEqualityComparer());
 	private readonly Dictionary<int, int> typeNames = [];
 
 	internal GeneratorFormatterWriterContext(BinaryWriter writer) =>
 		this.Writer = writer;
 
-	public (bool, int) GetReference(IGeneratorSerializable mobileObject)
+	public (bool, int) GetReference(object mobileObject)
 	{
 		if (this.references.TryGetValue(mobileObject, out var value))
 		{
@@ -45,12 +45,12 @@ public sealed class GeneratorFormatterWriterContext
 	public BinaryWriter Writer { get; }
 
 	private sealed class IGeneratorSerializableEqualityComparer
-		: EqualityComparer<IGeneratorSerializable>
+		: EqualityComparer<object>
 	{
-		public override bool Equals(IGeneratorSerializable x, IGeneratorSerializable y) => 
+		public override bool Equals(object x, object y) => 
 			object.ReferenceEquals(x, y);
 
-		public override int GetHashCode(IGeneratorSerializable obj) => 
+		public override int GetHashCode(object obj) => 
 			obj.GetHashCode();
 	}
 }

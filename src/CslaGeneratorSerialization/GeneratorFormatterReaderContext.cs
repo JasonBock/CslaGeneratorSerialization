@@ -6,7 +6,7 @@ public sealed class GeneratorFormatterReaderContext
 {
 	private int referenceIdCounter;
 	private int typeNameIdCounter;
-	private readonly Dictionary<int, IGeneratorSerializable> references = [];
+	private readonly Dictionary<int, object> references = [];
 	private readonly Dictionary<int, string> typeNames = [];
 
 	internal GeneratorFormatterReaderContext(ApplicationContext context, BinaryReader reader) => 
@@ -18,7 +18,7 @@ public sealed class GeneratorFormatterReaderContext
 	public T CreateInstance<T>(string typeName) =>
 		(T)this.Context.CreateInstance(Type.GetType(typeName));
 
-   public void AddReference(IGeneratorSerializable reference)
+   public void AddReference(object reference)
 	{
 		this.references.Add(this.referenceIdCounter, reference);
 		this.referenceIdCounter++;
@@ -30,7 +30,7 @@ public sealed class GeneratorFormatterReaderContext
 		this.typeNameIdCounter++;
 	}
 	
-	public IGeneratorSerializable GetReference(int referenceId) => this.references[referenceId];
+	public object GetReference(int referenceId) => this.references[referenceId];
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
 	private ApplicationContext Context { get; }

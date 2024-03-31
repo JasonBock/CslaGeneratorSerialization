@@ -1,7 +1,6 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using CslaGeneratorSerialization.Models;
 using Microsoft.CodeAnalysis;
-using System;
 using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Builders;
@@ -112,8 +111,7 @@ internal static class GeneratorSerializationBuilderReader
 				}
 			}
 		}
-
-		if (propertyType.TypeKind == TypeKind.Enum)
+		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
 			var loadProperty = GetLoadProperty(item,
 				$"({propertyType.FullyQualifiedName}){GetValueTypeReadOperation(propertyType.EnumUnderlyingType!)}");
@@ -121,6 +119,34 @@ internal static class GeneratorSerializationBuilderReader
 				$$"""
 				// {{item.PropertyInfoContainingType.FullyQualifiedName}}.{{item.PropertyInfoFieldName}}
 				{{loadProperty}}
+				""");
+		}
+		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		{
+			indentWriter.WriteLines(
+				$$"""
+				// {{item.PropertyInfoContainingType.FullyQualifiedName}}.{{item.PropertyInfoFieldName}}
+				switch (context.Reader.ReadStateValue())
+				{
+					case global::CslaGeneratorSerialization.SerializationState.Duplicate:
+						{{GetLoadProperty(item, "context.GetReference(context.Reader.ReadInt32())")}}
+						break;
+					case global::CslaGeneratorSerialization.SerializationState.Value:
+						var buffer = context.Reader.ReadByteArray();
+				
+						using (var stream = new global::System.IO.MemoryStream(buffer))
+						{
+							using (var reader = new global::System.IO.BinaryReader(stream))
+							{
+								var principal = new global::Csla.Security.CslaClaimsPrincipal(reader);
+								{{GetLoadProperty(item, "principal")}}
+								context.AddReference(principal);
+							}
+						}
+						break;
+					case global::CslaGeneratorSerialization.SerializationState.Null:
+						break;
+				}
 				""");
 		}
 		else if (propertyType.IsSerializable)
