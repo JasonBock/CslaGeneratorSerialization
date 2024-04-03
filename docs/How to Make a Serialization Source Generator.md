@@ -81,9 +81,7 @@ Plan of attack:
                     * `AllowRemove` (bool)
                     * `RaiseListChangedEvents` (bool)
                     * `_supportsChangeNotificationCore` (bool)
-            * Children:
-
-        * `CommandBase`
+        * DONE - `CommandBase`
         * Maybe...or defer to later
             * `ReadOnlyBindingListBase`
             * `BusinessBindingListBase`
