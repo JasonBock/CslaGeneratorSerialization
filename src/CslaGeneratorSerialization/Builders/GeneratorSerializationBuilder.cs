@@ -61,6 +61,15 @@ internal sealed class GeneratorSerializationBuilder
 				case StereotypeKind.BusinessListBase:
 					BusinessListBaseBuilder.Build(indentWriter, model);
 					break;
+				case StereotypeKind.CommandBase:
+					CommandBaseBuilder.Build(indentWriter, model);
+					break;
+				case StereotypeKind.ReadOnlyBase:
+					ReadOnlyBaseBuilder.Build(indentWriter, model);
+					break;
+				case StereotypeKind.ReadOnlyListBase:
+					ReadOnlyListBaseBuilder.Build(indentWriter, model);
+					break;
 			}
 		}
 

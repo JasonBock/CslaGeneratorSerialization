@@ -4,5 +4,8 @@ public enum StereotypeKind
 {
 	None,
 	BusinessBase,
-	BusinessListBase
+	BusinessListBase,
+	CommandBase,
+	ReadOnlyBase,
+	ReadOnlyListBase
 }

@@ -63,11 +63,13 @@ Plan of attack:
     * (This would be a good idea **if** we weren't forced to target NS 2.0, because DIMs aren't supported there :( ) What if an object wants to participate in the serialization process without using `PropertyInfo`s? I thought there was something akin to that in CSLA proper. Maybe use `OnCustomGet/SetState()` that are DIM that people can override. Here's a sharplab.io link demonstrating this: https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwAICYAMBYAUBgRj1UwAJUCA6ASQHkBuPPAJQHto5gwBLABwAooAUwDupAHKswAWwCGAG34BKJY3wEAnMrVsOXPoNGkAwhADOwVtOWqm6gGzkALKV1ROPAdQDKQngu4ALyFSYFkwAHMhYCU8AG88UiTyTX4wyOjKAHFogBUAT14hZUoAMQh5eXFZaSFbXGTQ8KjgSgARITM/bgDgwQr5AEJ6xvSWylMLKw6u/3kg4qgB4fpGxOSxzN85hf7KlfWkzdbJy2ltnvm+pf36gF87VABmUm4oYD8AM1kAYxCfbq9ITxQ7OUgzQFXYoAITe4XyzCEsjgflIYCRKLAI2SqBcp2mnUhu1hUHhiORqPRFKxpDiKS0ACIATtghNzGcISzikoGapSA8GjiXBcgfwSfCAOo8D5gUgiaV+bFJXEmdlWEVQsVwsD5KXcGVyhU0ukURnMy4LNlTc5Evo8vkCgXEF4YCRSOTyUEgUjmoEgwXKly+qHtQlcrWknXkzFojGK2n0/gMyQyBSh2YWu281YCxoq4OWjXE7W6o2G/Xxk2pZPutNFrMOvBO/Au9Cq61en314G4BIBsEF1mczMwkvRylx42Jhn46Tp23c7P80H57tWjlhkcRsmT2PUpQJ01J2frgkZ0X2nMroNr7vbnV6g3yitTo8ztVzu+X5f91cL082uG4oPmWz4ygeVaMies5fkujpAA
     * Is there a way to let a user register custom type serialization support? Would that be runtime, or could it be compile-time?
     * Maybe I should use `AutoSerializableAttribute` instead.
-    * How do I get the "target"? For example, a `BusinessListBase<,>`, what is `C`? How do I discover that at compile-time? Or, a `PropertyInfo<>`. It's possible someone created their own derivation of this type, so how do I find the generic argument?
+    * How do I get the "target"?
+        * DONE - A `BusinessListBase<,>`, what is `C`? How do I discover that at compile-time?
+        * `PropertyInfo<>`. It's possible someone created their own derivation of this type, so how do I find the generic argument?
     * Different base types and different base fields to store/load. One idea is to have a set of extension methods that would load/store these values based on the type, rather than generating that code for each type. 
-        * `ReadOnlyBase`
-        * `ReadOnlyListBase`
-        * `BusinessListBase`
+        * DONE - `ReadOnlyBase`
+        * DONE - `ReadOnlyListBase`
+        * DONE - `BusinessListBase`
             * State: 
                 * `BusinessListBase`
                     * `_isChild` (bool)
@@ -91,6 +93,7 @@ Plan of attack:
             * `MobileList`
     * Add an analyzer to warn users of unhandled types (though this may go away if I add in support for custom serialization)
 * Tests (of course)
+    * Ensure that tests here are covered - https://github.com/MarimerLLC/csla/tree/main/Source/Csla.test/Serialization
 
 MobileFormatter:
 | Method    | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |

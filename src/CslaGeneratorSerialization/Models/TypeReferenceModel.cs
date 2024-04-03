@@ -20,11 +20,11 @@ internal sealed record TypeReferenceModel
 		this.IsSealed = type.IsSealed;
 		this.IsAbstract = type.IsAbstract;
 
-		(var kind, var targetType) = stereotypes.GetStereotype(type, compilation);
+		(var kind, var targetType) = stereotypes.GetStereotype(type);
 
 		(this.BusinessObjectKind, this.BusinessObjectTarget) = kind switch
 		{
-			StereotypeKind.BusinessListBase => (kind, new TypeReferenceModel(targetType!, compilation, stereotypes)),
+			StereotypeKind.BusinessListBase or StereotypeKind.ReadOnlyListBase => (kind, new TypeReferenceModel(targetType!, compilation, stereotypes)),
 			_ => (kind, null)
 		};
 	

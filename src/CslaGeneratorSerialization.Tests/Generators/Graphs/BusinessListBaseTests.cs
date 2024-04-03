@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Generators.Graphs;
 
-public static class ListTests
+public static class BusinessListBaseTests
 {
 	[Test]
 	public static async Task GenerateAsync()
