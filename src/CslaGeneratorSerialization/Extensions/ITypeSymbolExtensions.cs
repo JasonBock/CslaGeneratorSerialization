@@ -5,6 +5,24 @@ namespace CslaGeneratorSerialization.Extensions;
 
 internal static class ITypeSymbolExtensions
 {
+	internal static bool DerivesFrom(this ITypeSymbol self, ITypeSymbol other)
+	{
+		var target = self.OriginalDefinition;
+
+		while (target is not null)
+		{
+			if (SymbolEqualityComparer.Default.Equals(target, other) ||
+				target.AllInterfaces.Any(_ => _.DerivesFrom(other)))
+			{
+				return true;
+			}
+
+			target = target.BaseType?.OriginalDefinition ?? null;
+		}
+
+		return false;
+	}
+
 	internal static string GetNamespace(this ITypeSymbol self)
 	{
 		var namespaces = new List<INamespaceSymbol>();
@@ -23,12 +41,20 @@ internal static class ITypeSymbolExtensions
 		return string.Join(".", namespaces.Select(_ => _.Name));
 	}
 
-	internal static string GetFullyQualifiedName(this ITypeSymbol self, Compilation compilation)
+	internal static string GetFullyQualifiedName(this ITypeSymbol self, Compilation compilation, bool includeNullableAnnotation = true)
 	{
 		const string GlobalPrefix = "global::";
 
-		var symbolFormatter = SymbolDisplayFormat.FullyQualifiedFormat
-			.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+		var symbolFormatter = SymbolDisplayFormat.FullyQualifiedFormat;
+
+		if (includeNullableAnnotation)
+		{
+			symbolFormatter = symbolFormatter.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+		}
+		else
+		{
+			symbolFormatter = symbolFormatter.RemoveMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+		}
 
 		var symbolName = self.ToDisplayString(symbolFormatter);
 

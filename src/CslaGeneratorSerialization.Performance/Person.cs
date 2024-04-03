@@ -1,4 +1,5 @@
 ﻿using Csla;
+using Csla.Serialization;
 using System.ComponentModel.DataAnnotations;
 
 namespace CslaGeneratorSerialization.Performance;
@@ -54,5 +55,20 @@ public sealed partial class Person
 	{
 		get => this.GetProperty(Person.NameProperty);
 		set => this.SetProperty(Person.NameProperty, value);
+	}
+}
+
+[Serializable]
+public partial class People
+	: BusinessListBase<People, Person>
+{
+	public void Foo()
+	{
+		foreach(var person in this)
+		{
+			foreach(var deletedPerson in this.DeletedList)
+			{
+			}
+		}
 	}
 }

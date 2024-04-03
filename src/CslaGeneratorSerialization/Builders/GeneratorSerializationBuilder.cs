@@ -53,11 +53,15 @@ internal sealed class GeneratorSerializationBuilder
 
 		if (model.BusinessObject.TypeKind == TypeKind.Class)
 		{
-			indentWriter.Indent++;
-			GeneratorSerializationBuilderWriter.Build(indentWriter, model);
-			indentWriter.WriteLine();
-			GeneratorSerializationBuilderReader.Build(indentWriter, model);
-			indentWriter.Indent--;
+			switch (model.BusinessObject.BusinessObjectKind)
+			{
+				case StereotypeKind.BusinessBase:
+					BusinessBaseBuilder.Build(indentWriter, model);
+					break;
+				case StereotypeKind.BusinessListBase:
+					BusinessListBaseBuilder.Build(indentWriter, model);
+					break;
+			}
 		}
 
 		indentWriter.WriteLine("}");

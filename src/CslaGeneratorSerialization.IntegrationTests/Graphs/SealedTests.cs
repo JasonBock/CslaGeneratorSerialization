@@ -8,6 +8,9 @@ namespace CslaGeneratorSerialization.IntegrationTests.Graphs.SealedTestsDomain;
 public partial class BaseData
 	: BusinessBase<BaseData>
 {
+	[Create]
+	private void Create() { }
+
 	public static readonly PropertyInfo<string> CoreProperty =
 		BaseData.RegisterProperty<string>(_ => _.Core);
 	public string Core

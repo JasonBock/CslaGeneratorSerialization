@@ -9,6 +9,7 @@
 		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Csla" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.NUnit">
 			<NoWarn>NU1608</NoWarn>

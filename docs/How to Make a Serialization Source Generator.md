@@ -52,13 +52,35 @@ Plan of attack:
     * DONE - Should abstract BOs be targeted? They can't be created, so...not sure about this. Maybe, but then make sure to add `abstract` to the partial class.
     * DONE - Inheritance hierarchies and loading/storing fields (e.g. `Customer` derives from `Person` and ensure everything is serialized correctly)
     * DONE - "Invalid" - e.g. symbol has diagnostics, or no managed backing fields.
-    * Claims - `System.Security.Claims.ClaimsPrincipal`
-        * On serialization, then pass that into a `Security.CslaClaimsPrincipal(...)` constructor. That new `CslaClaimsPrincipal` is an `IMobileObject`, so just treat that as such from that point on in terms of duplication. However, the way it serializes is to call `WriteTo()` on its own (this is defined on `ClaimsPrincipal`), and then pass that as a `(int length, byte[] buffer)` to the main stream. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L143 for details
-        * On deserialization, read the `byte[]` value, and pass that into a new `BinaryReader`, which will in turn be passed to `new Security.CslaClaimsPrincipal(reader)`. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L269 for details.
-    * Different base types and different base fields to store/load 
+    * DONE - What if the target in `PropertyInfo<>` is an interface? Or my base type is `IBusinessBase`? Deserialization may need the name of the concrete type. So, if the serializable type is not `sealed`, then we need to get the name of the type at runtime and store that into a `Dictionary<,>`, akin to what I'm doing with duplicate references.
+        * DONE - On serialization, store the count and number of type strings at the "front" of the stream (basically need to create two and combine them).
+        * DONE - On deserialization, read the count, and deserialize the `string`/`int` pairs if any exist.
+        * DONE - Can use a `Dictionary<int, int>` and keep track of the string hash codes, not the strings themselves.
+        * DONE - Should change the reader to not return a string, but add to the stream as needed
+    * DONE - Claims - `System.Security.Claims.ClaimsPrincipal`
+        * DONE - On serialization, then pass that into a `Security.CslaClaimsPrincipal(...)` constructor. That new `CslaClaimsPrincipal` is an `IMobileObject`, so just treat that as such from that point on in terms of duplication. However, the way it serializes is to call `WriteTo()` on its own (this is defined on `ClaimsPrincipal`), and then pass that as a `(int length, byte[] buffer)` to the main stream. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L143 for details
+        * DONE - On deserialization, read the `byte[]` value, and pass that into a new `BinaryReader`, which will in turn be passed to `new Security.CslaClaimsPrincipal(reader)`. See https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L269 for details.
+    * (This would be a good idea **if** we weren't forced to target NS 2.0, because DIMs aren't supported there :( ) What if an object wants to participate in the serialization process without using `PropertyInfo`s? I thought there was something akin to that in CSLA proper. Maybe use `OnCustomGet/SetState()` that are DIM that people can override. Here's a sharplab.io link demonstrating this: https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwAICYAMBYAUBgRj1UwAJUCA6ASQHkBuPPAJQHto5gwBLABwAooAUwDupAHKswAWwCGAG34BKJY3wEAnMrVsOXPoNGkAwhADOwVtOWqm6gGzkALKV1ROPAdQDKQngu4ALyFSYFkwAHMhYCU8AG88UiTyTX4wyOjKAHFogBUAT14hZUoAMQh5eXFZaSFbXGTQ8KjgSgARITM/bgDgwQr5AEJ6xvSWylMLKw6u/3kg4qgB4fpGxOSxzN85hf7KlfWkzdbJy2ltnvm+pf36gF87VABmUm4oYD8AM1kAYxCfbq9ITxQ7OUgzQFXYoAITe4XyzCEsjgflIYCRKLAI2SqBcp2mnUhu1hUHhiORqPRFKxpDiKS0ACIATtghNzGcISzikoGapSA8GjiXBcgfwSfCAOo8D5gUgiaV+bFJXEmdlWEVQsVwsD5KXcGVyhU0ukURnMy4LNlTc5Evo8vkCgXEF4YCRSOTyUEgUjmoEgwXKly+qHtQlcrWknXkzFojGK2n0/gMyQyBSh2YWu281YCxoq4OWjXE7W6o2G/Xxk2pZPutNFrMOvBO/Au9Cq61en314G4BIBsEF1mczMwkvRylx42Jhn46Tp23c7P80H57tWjlhkcRsmT2PUpQJ01J2frgkZ0X2nMroNr7vbnV6g3yitTo8ztVzu+X5f91cL082uG4oPmWz4ygeVaMies5fkujpAA
+    * Is there a way to let a user register custom type serialization support? Would that be runtime, or could it be compile-time?
+    * Maybe I should use `AutoSerializableAttribute` instead.
+    * How do I get the "target"? For example, a `BusinessListBase<,>`, what is `C`? How do I discover that at compile-time? Or, a `PropertyInfo<>`. It's possible someone created their own derivation of this type, so how do I find the generic argument?
+    * Different base types and different base fields to store/load. One idea is to have a set of extension methods that would load/store these values based on the type, rather than generating that code for each type. 
         * `ReadOnlyBase`
         * `ReadOnlyListBase`
         * `BusinessListBase`
+            * State: 
+                * `BusinessListBase`
+                    * `_isChild` (bool)
+                    * `_editLevel` (int)
+                    * `_identity` (int)
+                * `ObservableBindingList`
+                    * `AllowEdit` (bool)
+                    * `AllowNew` (bool)
+                    * `AllowRemove` (bool)
+                    * `RaiseListChangedEvents` (bool)
+                    * `_supportsChangeNotificationCore` (bool)
+            * Children:
+
         * `CommandBase`
         * Maybe...or defer to later
             * `ReadOnlyBindingListBase`
@@ -67,11 +89,7 @@ Plan of attack:
             * `DynamicBindingListBase`
             * `MobileDictionary`
             * `MobileList`
-    * What if an object wants to participate in the serialization process without using `PropertyInfo`s? I thought there was something akin to that in CSLA proper. Maybe use `OnCustomGet/SetState()` that are DIM that people can override. Here's a sharplab.io link demonstrating this: https://sharplab.io/#v2:C4LgTgrgdgNAJiA1AHwAICYAMBYAUBgRj1UwAJUCA6ASQHkBuPPAJQHto5gwBLABwAooAUwDupAHKswAWwCGAG34BKJY3wEAnMrVsOXPoNGkAwhADOwVtOWqm6gGzkALKV1ROPAdQDKQngu4ALyFSYFkwAHMhYCU8AG88UiTyTX4wyOjKAHFogBUAT14hZUoAMQh5eXFZaSFbXGTQ8KjgSgARITM/bgDgwQr5AEJ6xvSWylMLKw6u/3kg4qgB4fpGxOSxzN85hf7KlfWkzdbJy2ltnvm+pf36gF87VABmUm4oYD8AM1kAYxCfbq9ITxQ7OUgzQFXYoAITe4XyzCEsjgflIYCRKLAI2SqBcp2mnUhu1hUHhiORqPRFKxpDiKS0ACIATtghNzGcISzikoGapSA8GjiXBcgfwSfCAOo8D5gUgiaV+bFJXEmdlWEVQsVwsD5KXcGVyhU0ukURnMy4LNlTc5Evo8vkCgXEF4YCRSOTyUEgUjmoEgwXKly+qHtQlcrWknXkzFojGK2n0/gMyQyBSh2YWu281YCxoq4OWjXE7W6o2G/Xxk2pZPutNFrMOvBO/Au9Cq61en314G4BIBsEF1mczMwkvRylx42Jhn46Tp23c7P80H57tWjlhkcRsmT2PUpQJ01J2frgkZ0X2nMroNr7vbnV6g3yitTo8ztVzu+X5f91cL082uG4oPmWz4ygeVaMies5fkujpAA
-    * What if the target in `PropertyInfo<>` is an interface? Or my base type is `IBusinessBase<>`? Deserialization may need the name of the concrete type. So, if the serializable type is not `sealed`, then we need to get the name of the type at runtime and store that into a `Dictionary<,>`, akin to what I'm doing with duplicate references.
-        * On serialization, store the count and number of type strings at the "front" of the stream (basically need to create two and combine them).
-        * On deserialization, read the count, and deserialize the `string`/`int` pairs if any exist.
-    * Is there a way to let a user register custom type serialization support? Would that be runtime, or could it be compile-time?
+    * Add an analyzer to warn users of unhandled types (though this may go away if I add in support for custom serialization)
 * Tests (of course)
 
 MobileFormatter:

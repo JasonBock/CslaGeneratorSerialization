@@ -4,6 +4,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" />
+		<PackageReference Include="Csla" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
 	</ItemGroup>
 	<ItemGroup>

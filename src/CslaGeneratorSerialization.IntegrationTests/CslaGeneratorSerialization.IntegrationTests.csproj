@@ -2,13 +2,14 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization.IntegrationTests</AssemblyName>
-		<NoWarn>CA1822,CA1861</NoWarn>
+		<NoWarn>CA1724,CA1822,CA1861</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.IntegrationTests</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" OutputItemType="Analyzer" />
 	</ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Csla" />
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NUnit" />

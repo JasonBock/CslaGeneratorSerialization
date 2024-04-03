@@ -18,18 +18,8 @@ internal sealed record SerializationModel
 
 		if (type.TypeKind == TypeKind.Class)
 		{
-			var propertyInfoFields = type.GetPropertyInfoFields();
-
-			if (propertyInfoFields.Count > 0)
-			{
-				model = new SerializationModel(type, propertyInfoFields, compilation);
-				return true;
-			}
-			else
-			{
-				model = null;
-				return false;
-			}
+			model = new SerializationModel(type, type.GetPropertyInfoFields(), compilation);
+			return true;
 		}
 		else if (type.TypeKind == TypeKind.Interface)
 		{
@@ -45,15 +35,16 @@ internal sealed record SerializationModel
 
 	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, Compilation compilation)
 	{
-		this.BusinessObject = new TypeReferenceModel(businessObjectType, compilation);
+		var stereotypes = new Stereotypes(compilation);
+		this.BusinessObject = new TypeReferenceModel(businessObjectType, compilation, stereotypes);
 		this.Items = propertyInfoFields.Select(_ =>
 		{
 			var fieldContainingType = _.ContainingType;
 			var fieldType = (INamedTypeSymbol)_.Type;
 			var propertyInfoType = fieldType.TypeArguments[0];
 			return new SerializationItemModel(_.Name,
-				new TypeReferenceModel(fieldContainingType, compilation), new TypeReferenceModel(propertyInfoType, compilation));
-		}).OrderBy(_ => _.PropertyInfoDataType.IsSerializable).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
+				new TypeReferenceModel(fieldContainingType, compilation, stereotypes), new TypeReferenceModel(propertyInfoType, compilation, stereotypes));
+		}).OrderBy(_ => _.PropertyInfoDataType.BusinessObjectKind).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
 	}
 
 	internal TypeReferenceModel BusinessObject { get; }

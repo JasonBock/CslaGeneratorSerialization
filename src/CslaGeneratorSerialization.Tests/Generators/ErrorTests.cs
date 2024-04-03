@@ -19,39 +19,19 @@ public static class ErrorTests
 
 			[Serializable]
 			public sealed partial class Data
-				: BusinessBase<Data>
+				BusinessBase<Data>
 			{
-				// Bad method declaration
-				public void Proc
 			}
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[],
 			[
-				new DiagnosticResult("CS0670", DiagnosticSeverity.Error).WithSpan(11, 9, 11, 13),
-				new DiagnosticResult("CS1002", DiagnosticSeverity.Error).WithSpan(11, 18, 11, 18),
+				new DiagnosticResult("CS1513", DiagnosticSeverity.Error).WithSpan(7, 33, 7, 33),
+				new DiagnosticResult("CS1514", DiagnosticSeverity.Error).WithSpan(7, 33, 7, 33),
+				new DiagnosticResult("CS0116", DiagnosticSeverity.Error).WithSpan(8, 19, 8, 20),
+				new DiagnosticResult("CS1022", DiagnosticSeverity.Error).WithSpan(9, 1, 9, 2),
+				new DiagnosticResult("CS1022", DiagnosticSeverity.Error).WithSpan(10, 1, 10, 2),
 			]);
-	}
-
-	[Test]
-	public static async Task CreateWhenBusinessObjectHasNoFieldsAsync()
-	{
-		var code =
-			"""
-			using Csla;
-			using System;
-
-			namespace Domains;
-			
-			[Serializable]
-			public sealed partial class Data
-				: BusinessBase<Data>
-			{ }
-			""";
-
-		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[],
-			[]);
 	}
 }

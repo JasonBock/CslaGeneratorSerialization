@@ -45,9 +45,8 @@ public static class ListOfInt32Tests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.Data.ContentsProperty
-					var value0 = this.ReadProperty(global::Domains.Data.ContentsProperty);
+					var value0 = this.ReadProperty<global::System.Collections.Generic.List<int>>(global::Domains.Data.ContentsProperty);
 					
 					if (value0 is not null)
 					{
@@ -59,15 +58,12 @@ public static class ListOfInt32Tests
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 					}
 					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -76,15 +72,12 @@ public static class ListOfInt32Tests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.Data.ContentsProperty
 					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 					{
 						this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadListOfInt32());
 					}
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());

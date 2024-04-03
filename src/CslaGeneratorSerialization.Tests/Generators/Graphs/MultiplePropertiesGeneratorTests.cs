@@ -73,25 +73,14 @@ public static class MultiplePropertiesGeneratorTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.Data.Int32ContentsProperty
-					context.Writer.Write(this.ReadProperty(global::Domains.Data.Int32ContentsProperty));
+					context.Writer.Write(this.ReadProperty<int>(global::Domains.Data.Int32ContentsProperty));
 					
 					// global::Domains.Data.StringContentsProperty
-					var value1 = this.ReadProperty(global::Domains.Data.StringContentsProperty);
-					
-					if (value1 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value1);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.Data.StringContentsProperty));
 					
 					// global::Domains.Data.ChildContentsProperty
-					var value2 = this.ReadProperty(global::Domains.Data.ChildContentsProperty);
+					var value2 = this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ChildContentsProperty);
 					
 					if (value2 is not null)
 					{
@@ -113,15 +102,12 @@ public static class MultiplePropertiesGeneratorTests
 						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 					}
 					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -130,15 +116,11 @@ public static class MultiplePropertiesGeneratorTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.Data.Int32ContentsProperty
 					this.LoadProperty(global::Domains.Data.Int32ContentsProperty, context.Reader.ReadInt32());
 					
 					// global::Domains.Data.StringContentsProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.Data.StringContentsProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.Data.StringContentsProperty, context.Reader.ReadString());
 					
 					// global::Domains.Data.ChildContentsProperty
 					switch (context.Reader.ReadStateValue())
@@ -147,7 +129,7 @@ public static class MultiplePropertiesGeneratorTests
 							this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.GetReference(context.Reader.ReadInt32()));
 							break;
 						case global::CslaGeneratorSerialization.SerializationState.Value:
-							var newValue = context.CreateInstance<Domains.ChildData>();
+							var newValue = context.CreateInstance<global::Domains.ChildData>();
 							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
 							this.LoadProperty(global::Domains.Data.ChildContentsProperty, newValue);
 							context.AddReference(newValue);
@@ -156,8 +138,6 @@ public static class MultiplePropertiesGeneratorTests
 							break;
 					}
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
@@ -188,29 +168,15 @@ public static class MultiplePropertiesGeneratorTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.ChildData.ValueProperty
-					var value0 = this.ReadProperty(global::Domains.ChildData.ValueProperty);
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.ChildData.ValueProperty));
 					
-					if (value0 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
-					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -219,15 +185,9 @@ public static class MultiplePropertiesGeneratorTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.ChildData.ValueProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.ChildData.ValueProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.ChildData.ValueProperty, context.Reader.ReadString());
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());

@@ -57,29 +57,15 @@ public static class InheritanceTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.BaseData.CoreProperty
-					var value0 = this.ReadProperty(global::Domains.BaseData.CoreProperty);
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.BaseData.CoreProperty));
 					
-					if (value0 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
-					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -88,15 +74,9 @@ public static class InheritanceTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.BaseData.CoreProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
@@ -127,32 +107,18 @@ public static class InheritanceTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.BaseData.CoreProperty
-					var value0 = this.ReadProperty(global::Domains.BaseData.CoreProperty);
-					
-					if (value0 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.BaseData.CoreProperty));
 					
 					// global::Domains.DerivedData.CustomProperty
-					context.Writer.Write(this.ReadProperty(global::Domains.DerivedData.CustomProperty));
+					context.Writer.Write(this.ReadProperty<int>(global::Domains.DerivedData.CustomProperty));
 					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -161,18 +127,12 @@ public static class InheritanceTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.BaseData.CoreProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
 					
 					// global::Domains.DerivedData.CustomProperty
 					this.LoadProperty(global::Domains.DerivedData.CustomProperty, context.Reader.ReadInt32());
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
@@ -248,29 +208,15 @@ public static class InheritanceTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.BaseData.CoreProperty
-					var value0 = this.ReadProperty(global::Domains.BaseData.CoreProperty);
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.BaseData.CoreProperty));
 					
-					if (value0 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
-					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -279,15 +225,9 @@ public static class InheritanceTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.BaseData.CoreProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
@@ -318,32 +258,18 @@ public static class InheritanceTests
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// Set custom object state
 					// global::Domains.BaseData.CoreProperty
-					var value0 = this.ReadProperty(global::Domains.BaseData.CoreProperty);
-					
-					if (value0 is not null)
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-						context.Writer.Write(value0);
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Writer.Write(this.ReadProperty<string>(global::Domains.BaseData.CoreProperty));
 					
 					// global::Domains.DerivedData.CustomProperty
-					context.Writer.Write(this.ReadProperty(global::Domains.DerivedData.CustomProperty));
+					context.Writer.Write(this.ReadProperty<int>(global::Domains.DerivedData.CustomProperty));
 					
-					// Set base object state
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
 					
-					//The only way I can get these is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
@@ -352,18 +278,12 @@ public static class InheritanceTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// Get custom object state
 					// global::Domains.BaseData.CoreProperty
-					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-					{
-						this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
-					}
+					this.LoadProperty(global::Domains.BaseData.CoreProperty, context.Reader.ReadString());
 					
 					// global::Domains.DerivedData.CustomProperty
 					this.LoadProperty(global::Domains.DerivedData.CustomProperty, context.Reader.ReadInt32());
 					
-					//The only way I can get these (except for DisableIEditableObject) is through Reflection.
-					//Ugly, but...means must.
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());

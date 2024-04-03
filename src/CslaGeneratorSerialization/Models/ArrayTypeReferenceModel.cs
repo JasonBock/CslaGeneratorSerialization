@@ -4,10 +4,10 @@ namespace CslaGeneratorSerialization.Models;
 
 internal sealed record ArrayTypeReferenceModel
 {
-	internal ArrayTypeReferenceModel(IArrayTypeSymbol arrayType, Compilation compilation)
+	internal ArrayTypeReferenceModel(IArrayTypeSymbol arrayType, Compilation compilation, Stereotypes stereotypes)
 	{
 		(var elementType, var rank) = ArrayTypeReferenceModel.GetElementType(arrayType);
-		(this.ElementType, this.Rank) = (new TypeReferenceModel(elementType, compilation), rank);
+		(this.ElementType, this.Rank) = (new TypeReferenceModel(elementType, compilation, stereotypes), rank);
 	}
 
 	private static (ITypeSymbol element, int ranks) GetElementType(IArrayTypeSymbol arrayType)
