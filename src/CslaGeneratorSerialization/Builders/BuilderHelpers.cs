@@ -5,6 +5,7 @@ namespace CslaGeneratorSerialization.Builders;
 
 internal static class BuilderHelpers
 {
+	// TODO: This can probably go away...
 	internal static string GetLoadProperty(SerializationItemModel item, string readerInvocation) =>
 		$"this.LoadProperty({item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}, {readerInvocation});";
 

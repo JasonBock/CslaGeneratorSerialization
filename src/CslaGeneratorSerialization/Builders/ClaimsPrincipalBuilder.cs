@@ -67,5 +67,4 @@ internal static class ClaimsPrincipalBuilder
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 			}
 			""");
-
 }

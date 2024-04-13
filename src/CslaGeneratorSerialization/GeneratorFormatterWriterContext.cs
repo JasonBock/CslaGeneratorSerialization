@@ -42,6 +42,47 @@ public sealed class GeneratorFormatterWriterContext
 		}
 	}
 
+	public void Write(IGeneratorSerializable? value, bool isNotSealed)
+	{
+		if (value is not null)
+		{
+			(var isReferenceDuplicate, var referenceId) = this.GetReference(value);
+
+			if (isReferenceDuplicate)
+			{
+				this.Writer.Write((byte)SerializationState.Duplicate);
+				this.Writer.Write(referenceId);
+			}
+			else
+			{
+				this.Writer.Write((byte)SerializationState.Value);
+
+				if (isNotSealed)
+				{
+					var valueTypeName = value.GetType().AssemblyQualifiedName!;
+					(var isTypeNameDuplicate, var typeNameId) = this.GetTypeName(valueTypeName);
+
+					if (isTypeNameDuplicate)
+					{
+						this.Writer.Write((byte)SerializationState.Duplicate);
+						this.Writer.Write(typeNameId);
+					}
+					else
+					{
+						this.Writer.Write((byte)SerializationState.Value);
+						this.Writer.Write(valueTypeName);
+					}
+				}
+
+				value.SetState(this);
+			}
+		}
+		else
+		{
+			this.Writer.Write((byte)SerializationState.Null);
+		}
+	}
+
 	public BinaryWriter Writer { get; }
 
 	private sealed class IGeneratorSerializableEqualityComparer

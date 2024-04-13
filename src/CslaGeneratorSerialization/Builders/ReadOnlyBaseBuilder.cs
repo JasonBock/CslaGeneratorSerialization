@@ -131,7 +131,7 @@ internal static class ReadOnlyBaseBuilder
 		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
-			StereotypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			StereotypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
 		}
 		else if (propertyType.FullyQualifiedName == "global::System.Collections.Generic.List<int>")
 		{
