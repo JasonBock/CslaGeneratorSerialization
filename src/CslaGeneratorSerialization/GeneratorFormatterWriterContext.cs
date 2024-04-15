@@ -7,8 +7,8 @@ public sealed class GeneratorFormatterWriterContext
 	private readonly Dictionary<object, int> references = new(new IGeneratorSerializableEqualityComparer());
 	private readonly Dictionary<int, int> typeNames = [];
 
-	internal GeneratorFormatterWriterContext(BinaryWriter writer) =>
-		this.Writer = writer;
+	internal GeneratorFormatterWriterContext(CustomSerializationResolver resolver, BinaryWriter writer) =>
+		(this.Resolver, this.Writer) = (resolver, writer);
 
 	public (bool, int) GetReference(object mobileObject)
 	{
@@ -82,6 +82,11 @@ public sealed class GeneratorFormatterWriterContext
 			this.Writer.Write((byte)SerializationState.Null);
 		}
 	}
+
+   public void WriteCustom<TType>(TType value) => 
+		this.Resolver.Resolve<TType>().Write(value, this.Writer);
+
+   private CustomSerializationResolver Resolver { get; }
 
 	public BinaryWriter Writer { get; }
 

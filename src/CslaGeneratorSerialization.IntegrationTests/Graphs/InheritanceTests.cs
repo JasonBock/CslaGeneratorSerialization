@@ -74,7 +74,7 @@ public static class InheritanceTests
 	public static void RoundtripFromAbstractType()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<DerivedFromAbstractData>>();
 		var data = portal.Create();
 
@@ -97,7 +97,7 @@ public static class InheritanceTests
 	public static void RoundtripFromBaseType()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<DerivedFromBaseData>>();
 		var data = portal.Create();
 

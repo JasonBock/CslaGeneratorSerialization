@@ -15,15 +15,15 @@ public sealed partial class ParentPropertiesData
 	public static readonly PropertyInfo<string> StringContentsProperty =
 		RegisterProperty<string>(_ => _.StringContents);
 	public string StringContents
-   {
-	  get => this.GetProperty(ParentPropertiesData.StringContentsProperty);
+	{
+		get => this.GetProperty(ParentPropertiesData.StringContentsProperty);
 		set => this.SetProperty(ParentPropertiesData.StringContentsProperty, value);
 	}
 
 	public static readonly PropertyInfo<ChildPropertiesData> ChildContentsProperty =
 		RegisterProperty<ChildPropertiesData>(_ => _.ChildContents);
 	public ChildPropertiesData ChildContents
-   {
+	{
 		get => this.GetProperty(ParentPropertiesData.ChildContentsProperty);
 		set => this.SetProperty(ParentPropertiesData.ChildContentsProperty, value);
 	}
@@ -31,7 +31,7 @@ public sealed partial class ParentPropertiesData
 	public static readonly PropertyInfo<int> Int32ContentsProperty =
 		RegisterProperty<int>(_ => _.Int32Contents);
 	public int Int32Contents
-   {
+	{
 		get => this.GetProperty(ParentPropertiesData.Int32ContentsProperty);
 		set => this.SetProperty(ParentPropertiesData.Int32ContentsProperty, value);
 	}
@@ -59,7 +59,7 @@ public static class MultiplePropertiesTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentPropertiesData>>();
 		var data = portal.Create();
 
@@ -84,7 +84,7 @@ public static class MultiplePropertiesTests
 	public static void RoundtripWithNullable()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentPropertiesData>>();
 		var data = portal.Create();
 
@@ -98,7 +98,7 @@ public static class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() => 
+		Assert.Multiple(() =>
 		{
 			Assert.That(newData.StringContents, Is.EqualTo(string.Empty));
 			Assert.That(newData.ChildContents, Is.Null);

@@ -8,30 +8,10 @@ public static class BinaryWriterExtensions
 		writer.Write(value.buffer);
 	}
 
-	public static void Write(this BinaryWriter writer, byte[][] value)
-	{
-		writer.Write(value.Length);
-
-		foreach(var innerValue in value)
-		{
-			writer.Write((innerValue.Length, innerValue));
-		}
-	}
-
 	public static void Write(this BinaryWriter writer, (int length, char[] buffer) value)
 	{
 		writer.Write(value.length);
 		writer.Write(value.buffer);
-	}
-
-	public static void Write(this BinaryWriter writer, List<int> value)
-	{
-		writer.Write(value.Count);
-
-		foreach(var data in value)
-		{
-			writer.Write(data);
-		}
 	}
 
 	public static void Write(this BinaryWriter writer, DateTime value) => 

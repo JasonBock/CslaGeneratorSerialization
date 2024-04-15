@@ -56,7 +56,7 @@ public static class InterfaceTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ConsumeData>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<InterfaceData>>();
 		var data = portal.Create();

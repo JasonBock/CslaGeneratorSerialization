@@ -37,7 +37,7 @@ public static class CommandBaseTestsTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Operation>>();
 		var data = portal.Create();
 

@@ -10,8 +10,8 @@ public sealed class GeneratorFormatterReaderContext
 	private readonly Dictionary<int, object> references = [];
 	private readonly Dictionary<int, string> typeNames = [];
 
-	internal GeneratorFormatterReaderContext(ApplicationContext context, BinaryReader reader) => 
-		(this.Context, this.Reader) = (context, reader);
+	internal GeneratorFormatterReaderContext(ApplicationContext context, CustomSerializationResolver resolver, BinaryReader reader) => 
+		(this.Context, this.Resolver, this.Reader) = (context, resolver, reader);
 
 	public T CreateInstance<T>() =>
 		this.Context.CreateInstance<T>();
@@ -35,7 +35,7 @@ public sealed class GeneratorFormatterReaderContext
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
 	public T? Read<T>(bool isNotSealed)
-		where T : class
+		where T : class, IGeneratorSerializable
 	{
 		var state = this.Reader.ReadStateValue();
 
@@ -75,6 +75,10 @@ public sealed class GeneratorFormatterReaderContext
 		}
 	}
 
+	public TType ReadCustom<TType>() => 
+		this.Resolver.Resolve<TType>().Read(this.Reader);
+
 	private ApplicationContext Context { get; }
 	public BinaryReader Reader { get; }
+	private CustomSerializationResolver Resolver { get; }
 }

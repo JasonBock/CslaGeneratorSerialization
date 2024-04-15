@@ -49,8 +49,7 @@ internal static class ReadOnlyBaseBuilder
 		{
 			EnumBuilder.BuildReader(indentWriter, item);
 		}
-		else if (propertyType.Array is not null &&
-			(propertyType.Array!.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
+		else if (propertyType.Array is not null)
 		{
 			ArrayBuilder.BuildReader(indentWriter, item);
 		}
@@ -61,10 +60,6 @@ internal static class ReadOnlyBaseBuilder
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
 			StereotypeBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.FullyQualifiedName == "global::System.Collections.Generic.List<int>")
-		{
-			ListOfIntBuilder.BuildReader(indentWriter, item);
 		}
 		else if (propertyType.IsNullable && propertyType.IsValueType)
 		{
@@ -120,8 +115,7 @@ internal static class ReadOnlyBaseBuilder
 		{
 			EnumBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
 		}
-		else if (propertyType.Array is not null &&
-			(propertyType.Array!.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
+		else if (propertyType.Array is not null)
 		{
 			ArrayBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
@@ -132,10 +126,6 @@ internal static class ReadOnlyBaseBuilder
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
 			StereotypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
-		}
-		else if (propertyType.FullyQualifiedName == "global::System.Collections.Generic.List<int>")
-		{
-			ListOfIntBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
 		else if (propertyType.IsNullable && propertyType.IsValueType)
 		{

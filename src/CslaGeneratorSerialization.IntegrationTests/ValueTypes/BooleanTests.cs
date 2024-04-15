@@ -42,7 +42,7 @@ public static class BooleanTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<BooleanData>>();
 		var data = portal.Create();
 
@@ -60,7 +60,7 @@ public static class BooleanTests
 	public static void RoundtripWithNullable()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<BooleanNullableData>>();
 		var data = portal.Create();
 

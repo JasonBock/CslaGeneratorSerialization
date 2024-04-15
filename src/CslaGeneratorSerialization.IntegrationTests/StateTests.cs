@@ -29,7 +29,7 @@ public static class StateTests
 	public static void Create()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Create();
 
@@ -51,7 +51,7 @@ public static class StateTests
 	public static void Fetch()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Fetch();
 
@@ -73,7 +73,7 @@ public static class StateTests
 	public static void ChangeStateOnCreate()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Create();
 
@@ -97,7 +97,7 @@ public static class StateTests
 	public static void ChangeStateOnFetch()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Fetch();
 
@@ -121,7 +121,7 @@ public static class StateTests
 	public static void DeleteAfterCreate()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Create();
 
@@ -146,7 +146,7 @@ public static class StateTests
 	public static void DeleteAfterFetch()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
 		var data = portal.Fetch();
 

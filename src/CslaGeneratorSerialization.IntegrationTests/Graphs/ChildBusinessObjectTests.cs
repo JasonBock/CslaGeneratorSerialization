@@ -43,7 +43,7 @@ public static class ChildBusinessObjectTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentData>>();
 		var data = portal.Create();
 
@@ -61,7 +61,7 @@ public static class ChildBusinessObjectTests
 	public static void RoundtripWithNullable()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentData>>();
 		var data = portal.Create();
 

@@ -21,7 +21,6 @@ public class BusinessBaseSerialization
 		generatorService.AddCsla(o =>
 			o.Serialization(so => so.SerializationFormatter(typeof(GeneratorFormatter))));
 		var generatorProvider = generatorService.BuildServiceProvider();
-
 		var generatorApplicationContext = generatorProvider.GetService<ApplicationContext>()!;
 		var generatorPortal = generatorProvider.GetRequiredService<IDataPortal<Person>>();
 		var generatorPerson = generatorPortal.Create();
@@ -29,7 +28,7 @@ public class BusinessBaseSerialization
 		generatorPerson.Name = "Jason";
 		generatorPerson.Age = 53;
 
-		(this.generatorPerson, this.generatorFormatter) = (generatorPerson, new GeneratorFormatter(generatorApplicationContext));
+		(this.generatorPerson, this.generatorFormatter) = (generatorPerson, new GeneratorFormatter(generatorApplicationContext, new(generatorProvider)));
 
 		var mobileService = new ServiceCollection();
 		mobileService.AddCsla(o =>

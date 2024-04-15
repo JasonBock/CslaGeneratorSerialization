@@ -43,7 +43,7 @@ public class BusinessListBaseSerializationWithDuplicates
 			}
 		}
 
-		(this.generatorPeople, this.generatorFormatter) = (generatorPeople, new GeneratorFormatter(generatorApplicationContext));
+		(this.generatorPeople, this.generatorFormatter) = (generatorPeople, new GeneratorFormatter(generatorApplicationContext, new(generatorProvider)));
 
 		var mobileService = new ServiceCollection();
 		mobileService.AddCsla(o =>

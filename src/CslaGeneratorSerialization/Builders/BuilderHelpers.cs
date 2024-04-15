@@ -44,7 +44,7 @@ internal static class BuilderHelpers
 			SpecialType.System_Single => "context.Reader.ReadSingle()",
 			SpecialType.System_Double => "context.Reader.ReadDouble()",
 			SpecialType.System_DateTime => "new DateTime(context.Reader.ReadInt64())",
-			_ => throw new NotImplementedException($"The given type, {valueType.Name}, cannot be deserialized.")
+			_ => $"context.ReadCustom<{valueType.FullyQualifiedNameNoNullableAnnotation}>()"
 		};
 	}
 }

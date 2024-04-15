@@ -7,9 +7,10 @@ public sealed class GeneratorFormatter
 	: ISerializationFormatter
 {
 	private readonly ApplicationContext applicationContext;
+	private readonly CustomSerializationResolver resolver;
 
-	public GeneratorFormatter(ApplicationContext applicationContext) =>
-		this.applicationContext = applicationContext;
+	public GeneratorFormatter(ApplicationContext applicationContext, CustomSerializationResolver resolver) =>
+		(this.applicationContext, this.resolver) = (applicationContext, resolver);
 
 	public object Deserialize(Stream serializationStream)
    {
@@ -23,7 +24,7 @@ public sealed class GeneratorFormatter
 			throw new NotSupportedException("The given object must implement IGeneratorSerializable.");
 		}
 
-		generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, reader));
+		generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
 		return generatorGraph;
 	}
 
@@ -53,7 +54,7 @@ public sealed class GeneratorFormatter
 
 		var writer = new BinaryWriter(serializationStream);
 		writer.Write(graph.GetType().AssemblyQualifiedName);
-		generatorGraph.SetState(new GeneratorFormatterWriterContext(writer));
+		generatorGraph.SetState(new GeneratorFormatterWriterContext(this.resolver, writer));
 	}
 
 	/// <summary>

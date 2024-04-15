@@ -58,7 +58,7 @@ public static class SealedTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ConsumingData>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<DerivedData>>();
 		var data = portal.Create();

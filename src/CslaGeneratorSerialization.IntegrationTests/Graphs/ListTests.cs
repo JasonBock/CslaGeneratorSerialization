@@ -51,7 +51,7 @@ public static class ListTests
 	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Experiments>>();
 		var dataPortal = provider.GetRequiredService<IChildDataPortal<Data>>();
 		var experiments = portal.Create();

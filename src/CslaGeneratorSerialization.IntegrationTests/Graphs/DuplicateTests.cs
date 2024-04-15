@@ -42,7 +42,7 @@ public static class DuplicateTests
 	public static void RoundtripWhenDifferent()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
 		var data = portal.Create();
@@ -68,7 +68,7 @@ public static class DuplicateTests
 	public static void RoundtripWhenRightIsSameAsLeft()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
 		var data = portal.Create();
@@ -94,7 +94,7 @@ public static class DuplicateTests
 	public static void RoundtripWhenLeftIsSameAsRight()
 	{
 		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>());
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
 		var data = portal.Create();
