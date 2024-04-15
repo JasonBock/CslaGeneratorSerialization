@@ -12,6 +12,10 @@ public sealed partial class Person
 	private void Create() =>
 		this.Id = Guid.NewGuid();
 
+	[CreateChild]
+	private void CreateChild() =>
+		this.Id = Guid.NewGuid();
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -62,13 +66,8 @@ public sealed partial class Person
 public partial class People
 	: BusinessListBase<People, Person>
 {
-	public void Foo()
-	{
-		foreach(var person in this)
-		{
-			foreach(var deletedPerson in this.DeletedList)
-			{
-			}
-		}
-	}
+	[Create]
+#pragma warning disable CA1822 // Mark members as static
+   private void Create() { }
+#pragma warning restore CA1822 // Mark members as static
 }

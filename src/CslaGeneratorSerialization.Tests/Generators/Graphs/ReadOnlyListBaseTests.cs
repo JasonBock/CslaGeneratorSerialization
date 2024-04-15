@@ -81,8 +81,7 @@ public static class ReadOnlyListBaseTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
-					context.Read<global::Domains.Datum>(
-						_ => this.LoadProperty(global::Domains.Experiments.ValuesProperty, _), true);
+					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(true)!);
 				}
 			}
 			
@@ -121,8 +120,7 @@ public static class ReadOnlyListBaseTests
 					{
 						for (var i = 0; i < count; i++)
 						{
-							context.Read<global::Domains.Data>(
-								_ => this.Add(_), true);
+							this.Add(context.Read<global::Domains.Data>(true)!);
 						}
 					}
 				

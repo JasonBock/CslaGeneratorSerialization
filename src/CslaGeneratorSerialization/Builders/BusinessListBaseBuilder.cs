@@ -1,5 +1,4 @@
-﻿using Csla;
-using CslaGeneratorSerialization.Extensions;
+﻿using CslaGeneratorSerialization.Extensions;
 using CslaGeneratorSerialization.Models;
 using System.CodeDom.Compiler;
 
@@ -25,15 +24,14 @@ internal static class BusinessListBaseBuilder
 
 				for (var i = 0; i < count; i++)
 				{
-					context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>(
-						_ => this.Add(_), {{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}});
+					this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}})!);
 				}
 
 				var deletedCount = context.Reader.ReadInt32();
 
 				for (var d = 0; d < deletedCount; d++)
 				{
-					this.DeletedList.Add(({{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedName}})context.GetReference(context.Reader.ReadInt32()));
+					this.DeletedList.Add(({{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}})context.GetReference(context.Reader.ReadInt32()));
 				}
 
 				var type = this.GetType();

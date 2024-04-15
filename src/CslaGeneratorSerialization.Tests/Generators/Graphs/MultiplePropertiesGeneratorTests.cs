@@ -103,8 +103,7 @@ public static class MultiplePropertiesGeneratorTests
 					this.LoadProperty(global::Domains.Data.StringContentsProperty, context.Reader.ReadString());
 					
 					// global::Domains.Data.ChildContentsProperty
-					context.Read<global::Domains.ChildData>(
-						_ => this.LoadProperty(global::Domains.Data.ChildContentsProperty, _), false);
+					this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.Read<global::Domains.ChildData>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

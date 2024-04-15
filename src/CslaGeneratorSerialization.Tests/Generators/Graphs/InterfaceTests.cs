@@ -131,42 +131,7 @@ public static class InterfaceTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.ConsumeData.ContentsProperty
-					var value0 = this.ReadProperty<global::Domains.IData>(global::Domains.ConsumeData.ContentsProperty);
-					
-					if (value0 is not null)
-					{
-						(var isReferenceDuplicate, var referenceId) = context.GetReference(value0);
-					
-						if (isReferenceDuplicate)
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(referenceId);
-						}
-						else
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
-					
-							var value0TypeName = value0.GetType().AssemblyQualifiedName!;
-							(var isTypeNameDuplicate, var typeNameId) = context.GetTypeName(value0TypeName);
-					
-							if (isTypeNameDuplicate)
-							{
-								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-								context.Writer.Write(typeNameId);
-							}
-							else
-							{
-								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-								context.Writer.Write(value0TypeName);
-							}
-					
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)value0).SetState(context);
-						}
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Write(this.ReadProperty<global::Domains.IData>(global::Domains.ConsumeData.ContentsProperty), true);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -183,31 +148,7 @@ public static class InterfaceTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.ConsumeData.ContentsProperty
-					switch (context.Reader.ReadStateValue())
-					{
-						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.GetReference(context.Reader.ReadInt32()));
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Value:
-							global::Domains.IData newValue;
-									
-							if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Duplicate)
-							{
-								newValue = context.CreateInstance<global::Domains.IData>(context.GetTypeName(context.Reader.ReadInt32()));
-							}
-							else
-							{
-								var newValueTypeName = context.Reader.ReadString();
-								context.AddTypeName(newValueTypeName);
-								newValue = context.CreateInstance<global::Domains.IData>(newValueTypeName);
-							}
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
-							this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, newValue);
-							context.AddReference(newValue);
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Null:
-							break;
-					}
+					this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.Read<global::Domains.IData>(true)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

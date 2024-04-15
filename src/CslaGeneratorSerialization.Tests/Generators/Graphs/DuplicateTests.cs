@@ -69,50 +69,10 @@ public static class DuplicateTests
 					context.Writer.Write(this.ReadProperty<string>(global::Domains.Node.NameProperty));
 					
 					// global::Domains.Node.LeftProperty
-					var value1 = this.ReadProperty<global::Domains.Node?>(global::Domains.Node.LeftProperty);
-					
-					if (value1 is not null)
-					{
-						(var isReferenceDuplicate, var referenceId) = context.GetReference(value1);
-					
-						if (isReferenceDuplicate)
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(referenceId);
-						}
-						else
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)value1).SetState(context);
-						}
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.LeftProperty), false);
 					
 					// global::Domains.Node.RightProperty
-					var value2 = this.ReadProperty<global::Domains.Node?>(global::Domains.Node.RightProperty);
-					
-					if (value2 is not null)
-					{
-						(var isReferenceDuplicate, var referenceId) = context.GetReference(value2);
-					
-						if (isReferenceDuplicate)
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(referenceId);
-						}
-						else
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)value2).SetState(context);
-						}
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.RightProperty), false);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -132,36 +92,10 @@ public static class DuplicateTests
 					this.LoadProperty(global::Domains.Node.NameProperty, context.Reader.ReadString());
 					
 					// global::Domains.Node.LeftProperty
-					switch (context.Reader.ReadStateValue())
-					{
-						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.Node.LeftProperty, context.GetReference(context.Reader.ReadInt32()));
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Value:
-							var newValue = context.CreateInstance<global::Domains.Node>();
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
-							this.LoadProperty(global::Domains.Node.LeftProperty, newValue);
-							context.AddReference(newValue);
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Null:
-							break;
-					}
+					this.LoadProperty(global::Domains.Node.LeftProperty, context.Read<global::Domains.Node>(false)!);
 					
 					// global::Domains.Node.RightProperty
-					switch (context.Reader.ReadStateValue())
-					{
-						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.Node.RightProperty, context.GetReference(context.Reader.ReadInt32()));
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Value:
-							var newValue = context.CreateInstance<global::Domains.Node>();
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
-							this.LoadProperty(global::Domains.Node.RightProperty, newValue);
-							context.AddReference(newValue);
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Null:
-							break;
-					}
+					this.LoadProperty(global::Domains.Node.RightProperty, context.Read<global::Domains.Node>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

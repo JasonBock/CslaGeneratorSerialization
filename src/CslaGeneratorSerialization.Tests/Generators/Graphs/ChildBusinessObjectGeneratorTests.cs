@@ -58,27 +58,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.Data.ContentsProperty
-					var value0 = this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty);
-					
-					if (value0 is not null)
-					{
-						(var isReferenceDuplicate, var referenceId) = context.GetReference(value0);
-					
-						if (isReferenceDuplicate)
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-							context.Writer.Write(referenceId);
-						}
-						else
-						{
-							context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);				
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)value0).SetState(context);
-						}
-					}
-					else
-					{
-						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-					}
+					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty), false);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -95,20 +75,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Data.ContentsProperty
-					switch (context.Reader.ReadStateValue())
-					{
-						case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-							this.LoadProperty(global::Domains.Data.ContentsProperty, context.GetReference(context.Reader.ReadInt32()));
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Value:
-							var newValue = context.CreateInstance<global::Domains.ChildData>();
-							((global::CslaGeneratorSerialization.IGeneratorSerializable)newValue).GetState(context);
-							this.LoadProperty(global::Domains.Data.ContentsProperty, newValue);
-							context.AddReference(newValue);
-							break;
-						case global::CslaGeneratorSerialization.SerializationState.Null:
-							break;
-					}
+					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Read<global::Domains.ChildData>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

@@ -26,8 +26,7 @@ internal static class ReadOnlyListBaseBuilder
 				{
 					for (var i = 0; i < count; i++)
 					{
-						context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>(
-							_ => this.Add(_), {{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}});
+						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}})!);
 					}
 				}
 

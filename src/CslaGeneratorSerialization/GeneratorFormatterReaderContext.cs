@@ -34,40 +34,44 @@ public sealed class GeneratorFormatterReaderContext
 	public object GetReference(int referenceId) => this.references[referenceId];
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
-	public void Read<T>(Action<T> propertyLoader, bool isNotSealed)
+	public T? Read<T>(bool isNotSealed)
+		where T : class
 	{
-		switch (this.Reader.ReadStateValue())
-		{
-			case SerializationState.Duplicate:
-				propertyLoader((T)this.GetReference(this.Reader.ReadInt32()));
-				break;
-			case SerializationState.Value:
-				T newValue;
+		var state = this.Reader.ReadStateValue();
 
-				if (isNotSealed)
+		if (state == SerializationState.Duplicate) 
+		{
+			return (T)this.GetReference(this.Reader.ReadInt32());
+		}
+		else if (state == SerializationState.Value)
+		{
+			T newValue;
+
+			if (isNotSealed)
+			{
+				if (this.Reader.ReadStateValue() == SerializationState.Duplicate)
 				{
-					if (this.Reader.ReadStateValue() == SerializationState.Duplicate)
-					{
-						newValue = this.CreateInstance<T>(this.GetTypeName(this.Reader.ReadInt32()))!;
-					}
-					else
-					{
-						var newValueTypeName = this.Reader.ReadString();
-						this.AddTypeName(newValueTypeName);
-						newValue = this.CreateInstance<T>(newValueTypeName)!;
-					}
+					newValue = this.CreateInstance<T>(this.GetTypeName(this.Reader.ReadInt32()))!;
 				}
 				else
 				{
-					newValue = this.CreateInstance<T>()!;
+					var newValueTypeName = this.Reader.ReadString();
+					this.AddTypeName(newValueTypeName);
+					newValue = this.CreateInstance<T>(newValueTypeName)!;
 				}
+			}
+			else
+			{
+				newValue = this.CreateInstance<T>()!;
+			}
 
-				((IGeneratorSerializable)newValue).GetState(this);
-				propertyLoader(newValue);
-				this.AddReference(newValue);
-				break;
-			case SerializationState.Null:
-				break;
+			((IGeneratorSerializable)newValue).GetState(this);
+			this.AddReference(newValue);
+			return newValue;
+		}
+		else
+		{
+			return null;
 		}
 	}
 
