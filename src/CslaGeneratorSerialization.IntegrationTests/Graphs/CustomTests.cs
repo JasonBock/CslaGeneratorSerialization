@@ -96,4 +96,22 @@ public static class CustomTests
 			Assert.That(newData.CustomStruct.Id, Is.EqualTo(2));
 		});
 	}
+
+	[Test]
+	public static void RoundtripWhenCustomizationIsNotConfigured()
+	{
+		var provider = Shared.ServiceProvider;
+
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var portal = provider.GetRequiredService<IDataPortal<Data>>();
+		var data = portal.Create();
+
+		data.CustomClass.Name = "Custom Class";
+		data.CustomClass.Id = 1;
+		data.CustomStruct = new CustomStructData { Id = 2, Name = "Custom Struct" };
+
+		using var stream = new MemoryStream();
+
+		Assert.That(() => formatter.Serialize(stream, data), Throws.TypeOf<NotSupportedException>());
+	}
 }
