@@ -17,9 +17,12 @@ One of the difficulties is that `MobileFormatter` is, for lack of a better term,
 
 # Usage
 
-To enable custom serialization, simply make your BO `partial`:
+To enable custom serialization, make your BO `partial` and mark it with `[GeneratorSerializable]`:
 
 ```c#
+using CslaGeneratorSerialization;
+
+[GeneratorSerializable]
 [Serializable]
 public sealed partial class Person
 	: BusinessBase<Person>
@@ -70,7 +73,37 @@ var provider = services.BuildServiceProvider();
 
 That should do it to get your application to start using this custom serialization formatter.
 
-You can also support for types that the generator doesn't know how to serialize. There are examples on how to do this in the test projects - look for "Custom" tests for details.
+You can also support for types that the generator doesn't know how to serialize. You need to call `AddCslaGeneratorSerialiation()` on your `IServiceCollection` instance, and then register instances of `CustomSerialization` for each type you want to support. For example, if you wanted to add support for `int[]`, you could do this:
+
+```c#
+services.AddCslaGeneratorSerialization();
+services.AddSingleton(
+  new CustomSerialization<int[]>(
+    (data, writer) =>
+    {
+      writer.Write(data.Length);
+
+      foreach (var item in data)
+      {
+        writer.Write(item);
+      }
+    },
+    (reader) =>
+    {
+      var data = new int[reader.ReadInt32()];
+
+      for (var i = 0; i < data.Length; i++)
+      {
+        data[i] = reader.ReadInt32();
+      }
+
+      return data;
+    }));
+```
+
+Now, if your managed backing field uses `int[]`, it'll serialize without any issues.
+
+There are more examples on how to do this in the test projects - look for "Custom" tests for details.
 
 # Performance
 
