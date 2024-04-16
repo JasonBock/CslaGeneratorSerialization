@@ -70,6 +70,8 @@ var provider = services.BuildServiceProvider();
 
 That should do it to get your application to start using this custom serialization formatter.
 
+You can also support for types that the generator doesn't know how to serialize. There are examples on how to do this in the test projects - look for "Custom" tests for details.
+
 # Performance
 
 Performance results can be found [here](https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/docs/Overview.md).
