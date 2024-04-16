@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.StringTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class StringData
 	: BusinessBase<StringData>
 {

@@ -11,11 +11,12 @@ public static class ReadOnlyTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: ReadOnlyBase<Data>
 			{
@@ -32,7 +33,7 @@ public static class ReadOnlyTests
 			   public int Int32Contents => this.GetProperty(Data.Int32ContentsProperty);
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class ChildData
 				: ReadOnlyBase<ChildData>
 			{

@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Data
 	: BusinessBase<Data>
 {

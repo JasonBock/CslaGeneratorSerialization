@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.CommandBaseTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Operation
 	: CommandBase<Operation>
 {

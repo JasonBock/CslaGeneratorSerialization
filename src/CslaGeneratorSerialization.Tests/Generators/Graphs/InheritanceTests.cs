@@ -11,11 +11,12 @@ public static class InheritanceTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class BaseData
 				: BusinessBase<BaseData>
 			{
@@ -28,7 +29,7 @@ public static class InheritanceTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class DerivedData
 				: BaseData
 			{
@@ -162,11 +163,12 @@ public static class InheritanceTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public abstract partial class BaseData
 				: BusinessBase<BaseData>
 			{
@@ -179,7 +181,7 @@ public static class InheritanceTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class DerivedData
 				: BaseData
 			{

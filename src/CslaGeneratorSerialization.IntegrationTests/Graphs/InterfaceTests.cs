@@ -4,13 +4,14 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InterfaceTestsDomain;
 
+[GeneratorSerializable]
 public partial interface IInterfaceData
 	: IBusinessBase
 {
 	string Contents { get; set; }
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class InterfaceData
 	: BusinessBase<InterfaceData>, IInterfaceData
 {
@@ -34,7 +35,7 @@ public sealed partial class InterfaceData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ConsumeData
 	: BusinessBase<ConsumeData>
 {

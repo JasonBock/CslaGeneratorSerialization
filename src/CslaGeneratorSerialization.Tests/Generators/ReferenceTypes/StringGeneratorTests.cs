@@ -11,11 +11,12 @@ public static class StringGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{

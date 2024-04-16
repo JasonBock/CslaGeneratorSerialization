@@ -11,17 +11,19 @@ public static class InterfaceTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
+			[GeneratorSerializable]
 			public partial interface IData
 				: IBusinessBase
 			{
 				string Contents { get; set; }
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>, IData
 			{
@@ -34,7 +36,7 @@ public static class InterfaceTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class ConsumeData
 				: BusinessBase<ConsumeData>
 			{

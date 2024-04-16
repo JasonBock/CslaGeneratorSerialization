@@ -11,11 +11,12 @@ public static class SealedTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class BaseData
 				: BusinessBase<BaseData>
 			{
@@ -28,7 +29,7 @@ public static class SealedTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class DerivedData
 				: BaseData
 			{
@@ -41,7 +42,7 @@ public static class SealedTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class ConsumingData
 				: BusinessBase<ConsumingData>
 			{

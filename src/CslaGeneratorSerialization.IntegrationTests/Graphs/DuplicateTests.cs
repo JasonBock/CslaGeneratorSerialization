@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.DuplicateTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Node
 	: BusinessBase<Node>
 {

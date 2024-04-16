@@ -11,6 +11,7 @@ public static class CustomGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
@@ -21,7 +22,7 @@ public static class CustomGeneratorTests
 				public string Name { get; set; }
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
@@ -97,6 +98,7 @@ public static class CustomGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
@@ -107,7 +109,7 @@ public static class CustomGeneratorTests
 				public string Name { get; set; }
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{

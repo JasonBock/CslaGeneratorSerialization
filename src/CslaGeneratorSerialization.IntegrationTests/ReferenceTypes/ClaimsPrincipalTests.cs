@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.ClaimsPrincipalTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ClaimsPrincipalData
 	: BusinessBase<ClaimsPrincipalData>
 {

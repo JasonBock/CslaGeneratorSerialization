@@ -11,12 +11,13 @@ public static class ClaimsPrincipalGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 			using System.Security.Claims;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{

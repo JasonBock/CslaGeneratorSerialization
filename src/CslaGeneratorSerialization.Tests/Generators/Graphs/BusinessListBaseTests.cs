@@ -11,13 +11,14 @@ public static class BusinessListBaseTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			#nullable enable
 			
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Experiments
 				: BusinessBase<Experiments>
 			{
@@ -34,7 +35,7 @@ public static class BusinessListBaseTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Datum
 				: BusinessListBase<Datum, Data>
 			{
@@ -42,7 +43,7 @@ public static class BusinessListBaseTests
 				private void CreateChild() { }
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Data
 				: BusinessBase<Data>
 			{

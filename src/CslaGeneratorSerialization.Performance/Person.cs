@@ -1,10 +1,9 @@
 ﻿using Csla;
-using Csla.Serialization;
 using System.ComponentModel.DataAnnotations;
 
 namespace CslaGeneratorSerialization.Performance;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Person
 	: BusinessBase<Person>
 {
@@ -62,7 +61,7 @@ public sealed partial class Person
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public partial class People
 	: BusinessListBase<People, Person>
 {

@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.BooleanTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class BooleanData
 	: BusinessBase<BooleanData>
 {
@@ -20,7 +20,7 @@ public sealed partial class BooleanData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class BooleanNullableData
 	: BusinessBase<BooleanNullableData>
 {

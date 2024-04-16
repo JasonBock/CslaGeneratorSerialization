@@ -11,11 +11,12 @@ public static class MultiplePropertiesGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
@@ -44,7 +45,7 @@ public static class MultiplePropertiesGeneratorTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class ChildData
 				: BusinessBase<ChildData>
 			{

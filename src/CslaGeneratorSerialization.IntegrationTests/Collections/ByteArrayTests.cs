@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ByteArrayData
 	: BusinessBase<ByteArrayData>
 {

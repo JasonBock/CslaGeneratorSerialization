@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InheritanceTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public abstract partial class AbstractData
 	: BusinessBase<AbstractData>
 {
@@ -20,7 +20,7 @@ public abstract partial class AbstractData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public partial class BaseData
 	: BusinessBase<BaseData>
 {
@@ -36,7 +36,7 @@ public partial class BaseData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class DerivedFromAbstractData
 	: AbstractData
 {
@@ -52,7 +52,7 @@ public sealed partial class DerivedFromAbstractData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class DerivedFromBaseData
 	: BaseData
 {

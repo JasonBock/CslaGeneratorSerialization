@@ -13,11 +13,12 @@ public static class ErrorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				BusinessBase<Data>
 			{
@@ -27,11 +28,11 @@ public static class ErrorTests
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[],
 			[
-				new DiagnosticResult("CS1513", DiagnosticSeverity.Error).WithSpan(7, 33, 7, 33),
-				new DiagnosticResult("CS1514", DiagnosticSeverity.Error).WithSpan(7, 33, 7, 33),
-				new DiagnosticResult("CS0116", DiagnosticSeverity.Error).WithSpan(8, 19, 8, 20),
-				new DiagnosticResult("CS1022", DiagnosticSeverity.Error).WithSpan(9, 1, 9, 2),
+				new DiagnosticResult("CS1513", DiagnosticSeverity.Error).WithSpan(8, 33, 8, 33),
+				new DiagnosticResult("CS1514", DiagnosticSeverity.Error).WithSpan(8, 33, 8, 33),
+				new DiagnosticResult("CS0116", DiagnosticSeverity.Error).WithSpan(9, 19, 9, 20),
 				new DiagnosticResult("CS1022", DiagnosticSeverity.Error).WithSpan(10, 1, 10, 2),
+				new DiagnosticResult("CS1022", DiagnosticSeverity.Error).WithSpan(11, 1, 11, 2),
 			]);
 	}
 }

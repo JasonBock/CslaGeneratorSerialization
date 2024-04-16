@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ListTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public partial class Experiments
 	: BusinessBase<Experiments>
 {
@@ -21,7 +21,7 @@ public partial class Experiments
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public partial class Datum
 	: BusinessListBase<Datum, Data>
 {
@@ -29,7 +29,7 @@ public partial class Datum
 	private void CreateChild() { }
 }
 
-[Serializable]
+[GeneratorSerializable]
 public partial class Data
 	: BusinessBase<Data>
 {

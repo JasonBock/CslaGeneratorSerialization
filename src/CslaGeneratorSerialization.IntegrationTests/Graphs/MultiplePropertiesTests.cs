@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.MultiplePropertiesTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ParentPropertiesData
 	: BusinessBase<ParentPropertiesData>
 {
@@ -37,7 +37,7 @@ public sealed partial class ParentPropertiesData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ChildPropertiesData
 	: BusinessBase<ChildPropertiesData>
 {

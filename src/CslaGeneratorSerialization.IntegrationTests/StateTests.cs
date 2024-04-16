@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.StateTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class StateData
 	: BusinessBase<StateData>
 {

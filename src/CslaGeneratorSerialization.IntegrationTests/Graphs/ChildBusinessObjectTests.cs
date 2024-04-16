@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ChildBusinessObjectTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ParentData
 	: BusinessBase<ParentData>
 {
@@ -21,7 +21,7 @@ public sealed partial class ParentData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ChildData
 	: BusinessBase<ChildData>
 {

@@ -11,13 +11,14 @@ public static class DuplicateTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			#nullable enable
 			
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Node
 				: BusinessBase<Node>
 			{

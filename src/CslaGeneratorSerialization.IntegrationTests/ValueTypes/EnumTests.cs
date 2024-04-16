@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.EnumTestsDomain
 
 public enum States { First, Second, Third }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class EnumData
 	: BusinessBase<EnumData>
 {
@@ -22,7 +22,7 @@ public sealed partial class EnumData
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class EnumNullableData
 	: BusinessBase<EnumNullableData>
 {

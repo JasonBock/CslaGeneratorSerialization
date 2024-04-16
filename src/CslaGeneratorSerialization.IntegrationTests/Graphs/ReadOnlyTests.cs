@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ReadOnlyTestsDomain;
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Data
 	: ReadOnlyBase<Data>
 {
@@ -41,7 +41,7 @@ public sealed partial class Data
 	}
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class ChildData
 	: ReadOnlyBase<ChildData>
 {

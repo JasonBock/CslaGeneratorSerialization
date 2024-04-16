@@ -1,7 +1,5 @@
-﻿using CslaGeneratorSerialization.Extensions;
-using CslaGeneratorSerialization.Models;
+﻿using CslaGeneratorSerialization.Models;
 using Microsoft.CodeAnalysis;
-using System;
 using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Builders;

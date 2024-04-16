@@ -22,7 +22,7 @@ public struct CustomStructData
 	public string Name { get; set; }
 }
 
-[Serializable]
+[GeneratorSerializable]
 public sealed partial class Data
 	: BusinessBase<Data>
 {

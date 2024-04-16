@@ -11,13 +11,14 @@ public static class EnumGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
 			public enum States { First, Second, Third }
 
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{
@@ -92,13 +93,14 @@ public static class EnumGeneratorTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			namespace Domains;
 
 			public enum States { First, Second, Third }
 			
-			[Serializable]
+			[GeneratorSerializable]
 			public sealed partial class Data
 				: BusinessBase<Data>
 			{

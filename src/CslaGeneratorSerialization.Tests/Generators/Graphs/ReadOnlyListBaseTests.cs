@@ -11,13 +11,14 @@ public static class ReadOnlyListBaseTests
 		var code =
 			"""
 			using Csla;
+			using CslaGeneratorSerialization;
 			using System;
 
 			#nullable enable
 			
 			namespace Domains;
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Experiments
 				: ReadOnlyBase<Experiments>
 			{
@@ -34,7 +35,7 @@ public static class ReadOnlyListBaseTests
 				}
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Datum
 				: ReadOnlyListBase<Datum, Data>
 			{
@@ -42,7 +43,7 @@ public static class ReadOnlyListBaseTests
 				private void CreateChild() { }
 			}
 
-			[Serializable]
+			[GeneratorSerializable]
 			public partial class Data
 				: ReadOnlyBase<Data>
 			{
