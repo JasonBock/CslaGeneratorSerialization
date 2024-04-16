@@ -72,21 +72,7 @@ That should do it to get your application to start using this custom serializati
 
 # Performance
 
-Right now, there aren't a lot of performance tests created. That said, the one in the performance project is encouraging:
-
-```
-MobileFormatter:
-| Method    | Mean     | Error     | StdDev    | Gen0   | Gen1   | Allocated |
-|---------- |---------:|----------:|----------:|-------:|-------:|----------:|
-| Roundtrip | 7.884 us | 0.0546 us | 0.0456 us | 1.4038 | 0.0305 |  24.14 KB |
-
-GeneratorFormatter:
-| Method    | Mean     | Error     | StdDev    | Gen0   | Allocated |
-|---------- |---------:|----------:|----------:|-------:|----------:|
-| Roundtrip | 2.778 us | 0.0192 us | 0.0180 us | 0.2518 |   4.26 KB |
-```
-
-Again, more work needs to be done to ensure this approach is consistent with all stereotypes.
+Performance results can be found [here](https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/docs/Overview.md).
 
 # Conclusion
 
