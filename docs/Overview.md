@@ -25,38 +25,38 @@ using CslaGeneratorSerialization;
 [GeneratorSerializable]
 [Serializable]
 public sealed partial class Person
-	: BusinessBase<Person>
+  : BusinessBase<Person>
 {
-	[Create]
-	private void Create() =>
-		this.Id = Guid.NewGuid();
+  [Create]
+  private void Create() =>
+    this.Id = Guid.NewGuid();
 
-	public static readonly PropertyInfo<uint> AgeProperty =
-		RegisterProperty<uint>(_ => _.Age);
-	[Required]
-	public uint Age
-	{
-		get => this.GetProperty(Person.AgeProperty);
-		set => this.SetProperty(Person.AgeProperty, value);
-	}
+  public static readonly PropertyInfo<uint> AgeProperty =
+    RegisterProperty<uint>(_ => _.Age);
+  [Required]
+  public uint Age
+  {
+    get => this.GetProperty(Person.AgeProperty);
+    set => this.SetProperty(Person.AgeProperty, value);
+  }
 
-	public static readonly PropertyInfo<Guid> IdProperty =
-		RegisterProperty<Guid>(_ => _.Id);
-	[Required]
-	public Guid Id
-	{
-		get => this.GetProperty(Person.IdProperty);
-		set => this.SetProperty(Person.IdProperty, value);
-	}
+  public static readonly PropertyInfo<Guid> IdProperty =
+    RegisterProperty<Guid>(_ => _.Id);
+  [Required]
+  public Guid Id
+  {
+    get => this.GetProperty(Person.IdProperty);
+    set => this.SetProperty(Person.IdProperty, value);
+  }
 
-	public static readonly PropertyInfo<string> NameProperty =
-		RegisterProperty<string>(_ => _.Name);
-	[Required]
-	public string Name
-	{
-		get => this.GetProperty(Person.NameProperty);
-		set => this.SetProperty(Person.NameProperty, value);
-	}
+  public static readonly PropertyInfo<string> NameProperty =
+    RegisterProperty<string>(_ => _.Name);
+  [Required]
+  public string Name
+  {
+    get => this.GetProperty(Person.NameProperty);
+    set => this.SetProperty(Person.NameProperty, value);
+  }
 }
 ```
 
@@ -103,7 +103,40 @@ services.AddSingleton(
 
 Now, if your managed backing field uses `int[]`, it'll serialize without any issues.
 
-There are more examples on how to do this in the test projects - look for "Custom" tests for details.
+With 0.3.0, you can also perform custom serialization within your business object by implementing `IGeneratorSerializableCustomization`:
+
+```c#
+[GeneratorSerializable]
+public sealed partial class Data
+  : BusinessBase<Data>, IGeneratorSerializableCustomization
+{
+  public void GetCustomState(BinaryReader reader)
+  {
+    ArgumentNullException.ThrowIfNull(reader);
+    this.Custom = reader.ReadInt32();
+  }
+
+  public void SetCustomState(BinaryWriter writer)
+  {
+    ArgumentNullException.ThrowIfNull(writer);
+    writer.Write(this.Custom);
+  }
+
+  public static readonly PropertyInfo<string> ContentsProperty =
+    RegisterProperty<string>(_ => _.Contents);
+  public string Contents
+  {
+    get => this.GetProperty(Data.ContentsProperty);
+    set => this.SetProperty(Data.ContentsProperty, value);
+  }
+
+  public int Custom { get; set; }
+}
+```
+
+You can read and write whatever you want to the underlying stream. The generator will automatically add the calls to `GetCustomState()` and `SetCustomState()` when it detects that your business object derives from `IGeneratorSerializableCustomization`.
+
+There are more examples in the test projects - feel free to check out what's there.
 
 # Performance
 
