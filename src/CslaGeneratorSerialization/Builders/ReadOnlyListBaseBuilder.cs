@@ -15,7 +15,8 @@ internal static class ReadOnlyListBaseBuilder
 		indentWriter.Indent--;
 	}
 
-   private static void BuildReader(IndentedTextWriter indentWriter, SerializationModel model) => 
+   private static void BuildReader(IndentedTextWriter indentWriter, SerializationModel model)
+   {
 		indentWriter.WriteLines(
 			$$"""
 			void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -29,14 +30,29 @@ internal static class ReadOnlyListBaseBuilder
 						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}})!);
 					}
 				}
+			""");
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLines(
+				"""
+				
+					this.GetCustomState(context.Reader);
+				
+				""");
+		}
+
+		indentWriter.WriteLines(
+			$$"""
 				this.IsReadOnly = context.Reader.ReadBoolean();
 			}
 			""");
+   }
 
    // I assume that the items in the deleted list are in the list itself,
    // so they should be references.
-   private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model) => 
+   private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
+   {
 		indentWriter.WriteLines(
 			$$"""
 			void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
@@ -47,8 +63,22 @@ internal static class ReadOnlyListBaseBuilder
 				{
 					context.Write(item, {{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}});
 				}
-			
+			""");
+
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLines(
+				"""
+				
+					this.SetCustomState(context.Writer);
+				
+				""");
+		}
+
+		indentWriter.WriteLines(
+			$$"""
 				context.Writer.Write(this.IsReadOnly);
 			}
 			""");
+   }
 }

@@ -10,7 +10,7 @@ public sealed class GeneratorFormatterReaderContext
 	private readonly Dictionary<int, object> references = [];
 	private readonly Dictionary<int, string> typeNames = [];
 
-	internal GeneratorFormatterReaderContext(ApplicationContext context, CustomSerializationResolver resolver, BinaryReader reader) => 
+	internal GeneratorFormatterReaderContext(ApplicationContext context, CustomSerializationResolver resolver, BinaryReader reader) =>
 		(this.Context, this.Resolver, this.Reader) = (context, resolver, reader);
 
 	public T CreateInstance<T>() =>
@@ -19,7 +19,7 @@ public sealed class GeneratorFormatterReaderContext
 	public T CreateInstance<T>(string typeName) =>
 		(T)this.Context.CreateInstance(Type.GetType(typeName));
 
-   public void AddReference(object reference)
+	public void AddReference(object reference)
 	{
 		this.references.Add(this.referenceIdCounter, reference);
 		this.referenceIdCounter++;
@@ -30,7 +30,7 @@ public sealed class GeneratorFormatterReaderContext
 		this.typeNames.Add(this.typeNameIdCounter, typeName);
 		this.typeNameIdCounter++;
 	}
-	
+
 	public object GetReference(int referenceId) => this.references[referenceId];
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
@@ -39,7 +39,7 @@ public sealed class GeneratorFormatterReaderContext
 	{
 		var state = this.Reader.ReadStateValue();
 
-		if (state == SerializationState.Duplicate) 
+		if (state == SerializationState.Duplicate)
 		{
 			return (T)this.GetReference(this.Reader.ReadInt32());
 		}
@@ -65,7 +65,8 @@ public sealed class GeneratorFormatterReaderContext
 				}
 			}
 
-			((IGeneratorSerializable)newValue).GetState(this);
+			newValue.GetState(this);
+
 			this.AddReference(newValue);
 			return newValue;
 		}
@@ -75,7 +76,7 @@ public sealed class GeneratorFormatterReaderContext
 		}
 	}
 
-	public TType ReadCustom<TType>() => 
+	public TType ReadCustom<TType>() =>
 		this.Resolver.Resolve<TType>().Read(this.Reader);
 
 	private ApplicationContext Context { get; }

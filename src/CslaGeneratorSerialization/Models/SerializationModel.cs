@@ -35,6 +35,9 @@ internal sealed record SerializationModel
 
 	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, Compilation compilation)
 	{
+		this.IsCustomizable = businessObjectType.DerivesFrom(
+			compilation.GetTypeByMetadataName(typeof(IGeneratorSerializableCustomization).FullName)!);
+
 		var stereotypes = new Stereotypes(compilation);
 		this.BusinessObject = new TypeReferenceModel(businessObjectType, compilation, stereotypes);
 		this.Items = propertyInfoFields.Select(_ =>
@@ -48,5 +51,6 @@ internal sealed record SerializationModel
 	}
 
 	internal TypeReferenceModel BusinessObject { get; }
+	internal bool IsCustomizable { get; }
 	internal EquatableArray<SerializationItemModel> Items { get; }
 }

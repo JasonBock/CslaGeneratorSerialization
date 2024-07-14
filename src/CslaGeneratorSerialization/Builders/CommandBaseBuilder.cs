@@ -36,6 +36,11 @@ internal static class CommandBaseBuilder
 			}
 		}
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
+		}
+
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 	}
@@ -135,6 +140,11 @@ internal static class CommandBaseBuilder
 			{
 				indentWriter.WriteLine();
 			}
+		}
+
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
 		}
 
 		indentWriter.Indent--;

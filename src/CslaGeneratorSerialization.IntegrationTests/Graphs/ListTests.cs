@@ -68,6 +68,6 @@ public static class ListTests
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream);
 
-		Assert.That(newData.Values.Count, Is.EqualTo(3));
+		Assert.That(newData.Values, Has.Count.EqualTo(3));
 	}
 }

@@ -31,6 +31,12 @@ internal static class BusinessBaseBuilder
 			indentWriter.WriteLine();
 		}
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
+			indentWriter.WriteLine();
+		}
+
 		indentWriter.WriteLines(
 			"""
 			var type = this.GetType();
@@ -144,6 +150,12 @@ internal static class BusinessBaseBuilder
 		foreach (var item in model.Items)
 		{
 			BusinessBaseBuilder.BuildWriteOperation(indentWriter, item, itemId++);
+			indentWriter.WriteLine();
+		}
+
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
 			indentWriter.WriteLine();
 		}
 

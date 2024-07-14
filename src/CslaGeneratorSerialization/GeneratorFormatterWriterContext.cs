@@ -27,9 +27,9 @@ public sealed class GeneratorFormatterWriterContext
 
 	public (bool, int) GetTypeName(string typeName)
 	{
-	  var typeNameHashCode = typeName.GetHashCode();
+		var typeNameHashCode = typeName.GetHashCode();
 
-	  if (this.typeNames.TryGetValue(typeNameHashCode, out var value))
+		if (this.typeNames.TryGetValue(typeNameHashCode, out var value))
 		{
 			return (true, value);
 		}
@@ -83,20 +83,20 @@ public sealed class GeneratorFormatterWriterContext
 		}
 	}
 
-   public void WriteCustom<TType>(TType value) => 
+	public void WriteCustom<TType>(TType value) =>
 		this.Resolver.Resolve<TType>().Write(value, this.Writer);
 
-   private CustomSerializationResolver Resolver { get; }
+	private CustomSerializationResolver Resolver { get; }
 
 	public BinaryWriter Writer { get; }
 
 	private sealed class IGeneratorSerializableEqualityComparer
 		: EqualityComparer<object>
 	{
-		public override bool Equals(object x, object y) => 
+		public override bool Equals(object x, object y) =>
 			object.ReferenceEquals(x, y);
 
-		public override int GetHashCode(object obj) => 
+		public override int GetHashCode(object obj) =>
 			obj.GetHashCode();
 	}
 }

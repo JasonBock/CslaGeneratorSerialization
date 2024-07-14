@@ -11,7 +11,7 @@ public static class Shared
 #pragma warning restore CA1716 // Identifiers should not match keywords
 {
 	private static readonly Lazy<ServiceProvider> lazyProvider =
-		new Lazy<ServiceProvider>(() =>
+		new(() =>
 		{
 			var services = new ServiceCollection();
 			services.AddCsla(o =>

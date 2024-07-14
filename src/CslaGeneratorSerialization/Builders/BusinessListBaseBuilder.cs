@@ -15,7 +15,8 @@ internal static class BusinessListBaseBuilder
 		indentWriter.Indent--;
 	}
 
-   private static void BuildReader(IndentedTextWriter indentWriter, SerializationModel model) => 
+	private static void BuildReader(IndentedTextWriter indentWriter, SerializationModel model)
+	{
 		indentWriter.WriteLines(
 			$$"""
 			void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -33,7 +34,20 @@ internal static class BusinessListBaseBuilder
 				{
 					this.DeletedList.Add(({{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}})context.GetReference(context.Reader.ReadInt32()));
 				}
+			""");
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLines(
+				"""
+				
+					this.GetCustomState(context.Reader);
+				
+				""");
+		}
+
+		indentWriter.WriteLines(
+			$$"""
 				var type = this.GetType();
 				type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 				type.GetFieldInHierarchy("_editLevel")!.SetValue(this, context.Reader.ReadInt32());
@@ -46,10 +60,12 @@ internal static class BusinessListBaseBuilder
 				type.GetFieldInHierarchy("_supportsChangeNotificationCore")!.SetValue(this, context.Reader.ReadBoolean());
 			}
 			""");
+	}
 
    // I assume that the items in the deleted list are in the list itself,
    // so they should be references.
-   private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model) => 
+   private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
+   {
 		indentWriter.WriteLines(
 			$$"""
 			void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
@@ -68,7 +84,20 @@ internal static class BusinessListBaseBuilder
 					(_, var deletedReferenceId) = context.GetReference(deletedItem);
 					context.Writer.Write(deletedReferenceId);
 				}
+			""");
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLines(
+				"""
+				
+					this.SetCustomState(context.Writer);
+				
+				""");
+		}
+
+		indentWriter.WriteLines(
+			$$"""
 				var type = this.GetType();
 				context.Writer.Write((bool)type.GetFieldInHierarchy("_isChild")!.GetValue(this)!);
 				context.Writer.Write((int)type.GetFieldInHierarchy("_editLevel")!.GetValue(this)!);
@@ -81,4 +110,5 @@ internal static class BusinessListBaseBuilder
 				context.Writer.Write((bool)type.GetFieldInHierarchy("_supportsChangeNotificationCore")!.GetValue(this)!);
 			}
 			""");
+   }
 }

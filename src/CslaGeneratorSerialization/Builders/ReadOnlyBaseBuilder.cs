@@ -36,6 +36,11 @@ internal static class ReadOnlyBaseBuilder
 			}
 		}
 
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
+		}
+
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 	}
@@ -95,6 +100,11 @@ internal static class ReadOnlyBaseBuilder
 			{
 				indentWriter.WriteLine();
 			}
+		}
+
+		if (model.IsCustomizable)
+		{
+			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
 		}
 
 		indentWriter.Indent--;
