@@ -30,13 +30,13 @@ internal static class ReadOnlyListBaseBuilder
 						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}})!);
 					}
 				}
+
 			""");
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
-				
 					this.GetCustomState(context.Reader);
 				
 				""");
@@ -63,13 +63,13 @@ internal static class ReadOnlyListBaseBuilder
 				{
 					context.Write(item, {{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}});
 				}
+
 			""");
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
-				
 					this.SetCustomState(context.Writer);
 				
 				""");

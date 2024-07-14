@@ -34,13 +34,13 @@ internal static class BusinessListBaseBuilder
 				{
 					this.DeletedList.Add(({{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}})context.GetReference(context.Reader.ReadInt32()));
 				}
+
 			""");
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
-				
 					this.GetCustomState(context.Reader);
 				
 				""");
@@ -84,13 +84,13 @@ internal static class BusinessListBaseBuilder
 					(_, var deletedReferenceId) = context.GetReference(deletedItem);
 					context.Writer.Write(deletedReferenceId);
 				}
+
 			""");
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
-				
 					this.SetCustomState(context.Writer);
 				
 				""");
