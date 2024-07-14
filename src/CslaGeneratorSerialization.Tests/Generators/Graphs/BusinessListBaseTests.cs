@@ -76,7 +76,7 @@ public static class BusinessListBaseTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
-					context.Write(this.ReadProperty<global::Domains.Datum>(global::Domains.Experiments.ValuesProperty), true);
+					context.Write(this.ReadProperty<global::Domains.Datum>(global::Domains.Experiments.ValuesProperty), false);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -93,7 +93,7 @@ public static class BusinessListBaseTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
-					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(true)!);
+					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
@@ -129,7 +129,7 @@ public static class BusinessListBaseTests
 				
 					foreach (var item in this)
 					{
-						context.Write(item, true);
+						context.Write(item, false);
 					}
 				
 					context.Writer.Write(this.DeletedList.Count);
@@ -158,7 +158,7 @@ public static class BusinessListBaseTests
 				
 					for (var i = 0; i < count; i++)
 					{
-						this.Add(context.Read<global::Domains.Data>(true)!);
+						this.Add(context.Read<global::Domains.Data>(false)!);
 					}
 				
 					var deletedCount = context.Reader.ReadInt32();

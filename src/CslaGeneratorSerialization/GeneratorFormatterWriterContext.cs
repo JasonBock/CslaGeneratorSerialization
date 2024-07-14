@@ -42,7 +42,7 @@ public sealed class GeneratorFormatterWriterContext
 		}
 	}
 
-	public void Write(IGeneratorSerializable? value, bool isNotSealed)
+	public void Write(IGeneratorSerializable? value, bool isSealed)
 	{
 		if (value is not null)
 		{
@@ -57,7 +57,7 @@ public sealed class GeneratorFormatterWriterContext
 			{
 				this.Writer.Write((byte)SerializationState.Value);
 
-				if (isNotSealed)
+				if (!isSealed)
 				{
 					var valueTypeName = value.GetType().AssemblyQualifiedName!;
 					(var isTypeNameDuplicate, var typeNameId) = this.GetTypeName(valueTypeName);

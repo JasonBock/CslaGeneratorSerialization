@@ -133,7 +133,7 @@ public static class InterfaceTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.ConsumeData.ContentsProperty
-					context.Write(this.ReadProperty<global::Domains.IData>(global::Domains.ConsumeData.ContentsProperty), true);
+					context.Write(this.ReadProperty<global::Domains.IData>(global::Domains.ConsumeData.ContentsProperty), false);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -150,7 +150,7 @@ public static class InterfaceTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.ConsumeData.ContentsProperty
-					this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.Read<global::Domains.IData>(true)!);
+					this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.Read<global::Domains.IData>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

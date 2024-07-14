@@ -76,13 +76,13 @@ public static class ReadOnlyListBaseTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
-					context.Write(this.ReadProperty<global::Domains.Datum>(global::Domains.Experiments.ValuesProperty), true);
+					context.Write(this.ReadProperty<global::Domains.Datum>(global::Domains.Experiments.ValuesProperty), false);
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
-					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(true)!);
+					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(false)!);
 				}
 			}
 			
@@ -107,7 +107,7 @@ public static class ReadOnlyListBaseTests
 				
 					foreach (var item in this)
 					{
-						context.Write(item, true);
+						context.Write(item, false);
 					}
 				
 					context.Writer.Write(this.IsReadOnly);
@@ -121,7 +121,7 @@ public static class ReadOnlyListBaseTests
 					{
 						for (var i = 0; i < count; i++)
 						{
-							this.Add(context.Read<global::Domains.Data>(true)!);
+							this.Add(context.Read<global::Domains.Data>(false)!);
 						}
 					}
 				

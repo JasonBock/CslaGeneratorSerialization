@@ -59,7 +59,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.Data.ContentsProperty
-					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty), false);
+					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty), true);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -76,7 +76,7 @@ public static class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Data.ContentsProperty
-					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Read<global::Domains.ChildData>(false)!);
+					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Read<global::Domains.ChildData>(true)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

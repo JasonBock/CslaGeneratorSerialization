@@ -81,7 +81,7 @@ public static class MultiplePropertiesGeneratorTests
 					context.Writer.Write(this.ReadProperty<string>(global::Domains.Data.StringContentsProperty));
 					
 					// global::Domains.Data.ChildContentsProperty
-					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ChildContentsProperty), false);
+					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ChildContentsProperty), true);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -104,7 +104,7 @@ public static class MultiplePropertiesGeneratorTests
 					this.LoadProperty(global::Domains.Data.StringContentsProperty, context.Reader.ReadString());
 					
 					// global::Domains.Data.ChildContentsProperty
-					this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.Read<global::Domains.ChildData>(false)!);
+					this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.Read<global::Domains.ChildData>(true)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

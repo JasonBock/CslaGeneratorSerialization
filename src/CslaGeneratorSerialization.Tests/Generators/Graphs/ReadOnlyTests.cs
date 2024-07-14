@@ -65,7 +65,7 @@ public static class ReadOnlyTests
 					context.Writer.Write(this.ReadProperty<string>(global::Domains.Data.StringContentsProperty));
 					
 					// global::Domains.Data.ChildContentsProperty
-					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ChildContentsProperty), false);
+					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ChildContentsProperty), true);
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -77,7 +77,7 @@ public static class ReadOnlyTests
 					this.LoadProperty(global::Domains.Data.StringContentsProperty, context.Reader.ReadString());
 					
 					// global::Domains.Data.ChildContentsProperty
-					this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.Read<global::Domains.ChildData>(false)!);
+					this.LoadProperty(global::Domains.Data.ChildContentsProperty, context.Read<global::Domains.ChildData>(true)!);
 				}
 			}
 			

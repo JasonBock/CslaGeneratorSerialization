@@ -70,10 +70,10 @@ public static class DuplicateTests
 					context.Writer.Write(this.ReadProperty<string>(global::Domains.Node.NameProperty));
 					
 					// global::Domains.Node.LeftProperty
-					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.LeftProperty), false);
+					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.LeftProperty), true);
 					
 					// global::Domains.Node.RightProperty
-					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.RightProperty), false);
+					context.Write(this.ReadProperty<global::Domains.Node?>(global::Domains.Node.RightProperty), true);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -93,10 +93,10 @@ public static class DuplicateTests
 					this.LoadProperty(global::Domains.Node.NameProperty, context.Reader.ReadString());
 					
 					// global::Domains.Node.LeftProperty
-					this.LoadProperty(global::Domains.Node.LeftProperty, context.Read<global::Domains.Node>(false)!);
+					this.LoadProperty(global::Domains.Node.LeftProperty, context.Read<global::Domains.Node>(true)!);
 					
 					// global::Domains.Node.RightProperty
-					this.LoadProperty(global::Domains.Node.RightProperty, context.Read<global::Domains.Node>(false)!);
+					this.LoadProperty(global::Domains.Node.RightProperty, context.Read<global::Domains.Node>(true)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());

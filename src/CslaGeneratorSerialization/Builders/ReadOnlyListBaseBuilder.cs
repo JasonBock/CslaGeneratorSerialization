@@ -26,7 +26,7 @@ internal static class ReadOnlyListBaseBuilder
 				{
 					for (var i = 0; i < count; i++)
 					{
-						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}})!);
+						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}})!);
 					}
 				}
 
@@ -45,7 +45,7 @@ internal static class ReadOnlyListBaseBuilder
 			
 				foreach (var item in this)
 				{
-					context.Write(item, {{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}});
+					context.Write(item, {{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}});
 				}
 			
 				context.Writer.Write(this.IsReadOnly);

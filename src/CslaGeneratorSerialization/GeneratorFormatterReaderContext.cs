@@ -34,7 +34,7 @@ public sealed class GeneratorFormatterReaderContext
 	public object GetReference(int referenceId) => this.references[referenceId];
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
-	public T? Read<T>(bool isNotSealed)
+	public T? Read<T>(bool isSealed)
 		where T : class, IGeneratorSerializable
 	{
 		var state = this.Reader.ReadStateValue();
@@ -47,7 +47,11 @@ public sealed class GeneratorFormatterReaderContext
 		{
 			T newValue;
 
-			if (isNotSealed)
+			if (isSealed)
+			{
+				newValue = this.CreateInstance<T>()!;
+			}
+			else
 			{
 				if (this.Reader.ReadStateValue() == SerializationState.Duplicate)
 				{
@@ -59,10 +63,6 @@ public sealed class GeneratorFormatterReaderContext
 					this.AddTypeName(newValueTypeName);
 					newValue = this.CreateInstance<T>(newValueTypeName)!;
 				}
-			}
-			else
-			{
-				newValue = this.CreateInstance<T>()!;
 			}
 
 			((IGeneratorSerializable)newValue).GetState(this);

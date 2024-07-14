@@ -24,7 +24,7 @@ internal static class BusinessListBaseBuilder
 
 				for (var i = 0; i < count; i++)
 				{
-					this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}})!);
+					this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}})!);
 				}
 
 				var deletedCount = context.Reader.ReadInt32();
@@ -58,7 +58,7 @@ internal static class BusinessListBaseBuilder
 			
 				foreach (var item in this)
 				{
-					context.Write(item, {{(!model.BusinessObject.BusinessObjectTarget!.IsSealed).ToString().ToLower()}});
+					context.Write(item, {{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}});
 				}
 
 				context.Writer.Write(this.DeletedList.Count);

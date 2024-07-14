@@ -178,7 +178,7 @@ public static class SealedTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.ConsumingData.ContentsProperty
-					context.Write(this.ReadProperty<global::Domains.BaseData>(global::Domains.ConsumingData.ContentsProperty), true);
+					context.Write(this.ReadProperty<global::Domains.BaseData>(global::Domains.ConsumingData.ContentsProperty), false);
 					
 					context.Writer.Write(this.IsNew);
 					context.Writer.Write(this.IsDeleted);
@@ -195,7 +195,7 @@ public static class SealedTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.ConsumingData.ContentsProperty
-					this.LoadProperty(global::Domains.ConsumingData.ContentsProperty, context.Read<global::Domains.BaseData>(true)!);
+					this.LoadProperty(global::Domains.ConsumingData.ContentsProperty, context.Read<global::Domains.BaseData>(false)!);
 					
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
