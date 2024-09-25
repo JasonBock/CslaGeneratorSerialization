@@ -82,7 +82,7 @@ internal static class TestAssistants
 		if (!NuGetFramework.Parse("net8.0").IsPackageBased)
 		{
 			// The NuGet version provided at runtime does not recognize the 'net7.0' target framework
-			throw new NotSupportedException("The 'net7.0' target framework is not supported by this version of NuGet.");
+			throw new NotSupportedException("The 'net8.0' target framework is not supported by this version of NuGet.");
 		}
 
 		return new ReferenceAssemblies(

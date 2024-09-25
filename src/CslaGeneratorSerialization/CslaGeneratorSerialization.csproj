@@ -9,7 +9,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeSymbols>true</IncludeSymbols>
-		<NoWarn>CS1591</NoWarn>
+		<NoWarn>CS1591,RS1036</NoWarn>
 		<PackageId>CslaGeneratorSerialization</PackageId>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<PackageProjectUrl>https://github.com/JasonBock/CslaGeneratorSerialization</PackageProjectUrl>

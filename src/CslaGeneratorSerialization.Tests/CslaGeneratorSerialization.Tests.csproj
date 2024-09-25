@@ -10,8 +10,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Csla" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.NUnit" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.NUnit">
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing">
 			<NoWarn>NU1608</NoWarn>
 		</PackageReference>
 		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
