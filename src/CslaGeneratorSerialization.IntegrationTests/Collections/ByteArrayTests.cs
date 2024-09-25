@@ -39,7 +39,7 @@ public static class ByteArrayTests
 		stream.Position = 0;
 		var newData = (ByteArrayData)formatter.Deserialize(stream);
 
-		CollectionAssert.AreEqual(newData.Contents, new byte[] { 22, 33, 44 });
+		Assert.That(newData.Contents, Is.EquivalentTo(new byte[] { 22, 33, 44 }));
 	}
 
 	[Test]

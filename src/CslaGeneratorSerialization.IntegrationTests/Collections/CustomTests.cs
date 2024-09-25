@@ -69,7 +69,7 @@ public static class CustomTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream);
 
-		CollectionAssert.AreEqual(new[] { 3, 7, 4, 2 }, newData.Value);
+		Assert.That(newData.Value, Is.EquivalentTo(new[] { 3, 7, 4, 2 }));
 	}
 
 	[Test]

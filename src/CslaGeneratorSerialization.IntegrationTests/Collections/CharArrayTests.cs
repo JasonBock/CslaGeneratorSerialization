@@ -39,7 +39,7 @@ public static class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream);
 
-		CollectionAssert.AreEqual(newData.Contents, new char[] { 'a', 'b', 'c' });
+		Assert.That(newData.Contents, Is.EquivalentTo(new[] { 'a', 'b', 'c' }));
 	}
 
 	[Test]
