@@ -1,5 +1,4 @@
-﻿using GeneratorSerialization.Tests;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Generators.Graphs;
 

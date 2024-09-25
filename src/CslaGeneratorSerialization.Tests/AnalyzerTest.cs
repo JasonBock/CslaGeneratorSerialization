@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-namespace GeneratorSerialization.Tests;
+namespace CslaGeneratorSerialization.Tests;
 
 internal sealed class AnalyzerTest<TAnalyzer>
 	: CSharpAnalyzerTest<TAnalyzer, NUnitVerifier>

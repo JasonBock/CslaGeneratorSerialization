@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
-namespace GeneratorSerialization.Tests;
+namespace CslaGeneratorSerialization.Tests;
 
 internal sealed class IncrementalGeneratorTest<TIncrementalGenerator>
 	: CSharpSourceGeneratorTest<EmptySourceGeneratorProvider, NUnitVerifier>

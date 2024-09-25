@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
 using NuGet.Frameworks;
 
-namespace GeneratorSerialization.Tests;
+namespace CslaGeneratorSerialization.Tests;
 
 internal static class TestAssistants
 {

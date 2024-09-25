@@ -1,5 +1,4 @@
-﻿using GeneratorSerialization.Tests;
-using Microsoft.CodeAnalysis.Testing;
+﻿using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis;
 using NUnit.Framework;
 
