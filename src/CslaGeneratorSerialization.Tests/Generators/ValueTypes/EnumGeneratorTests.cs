@@ -67,8 +67,8 @@ public static class EnumGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, (global::Domains.States)context.Reader.ReadInt32());
 					
 					var type = this.GetType();
-					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 					this.DisableIEditableObject = context.Reader.ReadBoolean();
@@ -162,8 +162,8 @@ public static class EnumGeneratorTests
 					}
 					
 					var type = this.GetType();
-					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 					this.DisableIEditableObject = context.Reader.ReadBoolean();

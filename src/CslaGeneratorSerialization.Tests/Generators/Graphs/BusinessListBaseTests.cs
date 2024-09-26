@@ -95,8 +95,8 @@ public static class BusinessListBaseTests
 					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(false)!);
 					
 					var type = this.GetType();
-					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 					this.DisableIEditableObject = context.Reader.ReadBoolean();
@@ -141,14 +141,13 @@ public static class BusinessListBaseTests
 				
 					var type = this.GetType();
 					context.Writer.Write((bool)type.GetFieldInHierarchy("_isChild")!.GetValue(this)!);
-					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevel")!.GetValue(this)!);
+					context.Writer.Write((int)type.GetPropertyInHierarchy("EditLevel")!.GetValue(this)!);
 					context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
 				
 					context.Writer.Write(this.AllowEdit);
 					context.Writer.Write(this.AllowNew);
 					context.Writer.Write(this.AllowRemove);
 					context.Writer.Write(this.RaiseListChangedEvents);
-					context.Writer.Write((bool)type.GetFieldInHierarchy("_supportsChangeNotificationCore")!.GetValue(this)!);
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -169,14 +168,13 @@ public static class BusinessListBaseTests
 				
 					var type = this.GetType();
 					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_editLevel")!.SetValue(this, context.Reader.ReadInt32());
+					type.GetPropertyInHierarchy("EditLevel")!.SetValue(this, context.Reader.ReadInt32());
 					type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
 				
 					this.AllowEdit = context.Reader.ReadBoolean();
 					this.AllowNew = context.Reader.ReadBoolean();
 					this.AllowRemove = context.Reader.ReadBoolean();
 					this.RaiseListChangedEvents = context.Reader.ReadBoolean();
-					type.GetFieldInHierarchy("_supportsChangeNotificationCore")!.SetValue(this, context.Reader.ReadBoolean());
 				}
 			}
 			
@@ -218,8 +216,8 @@ public static class BusinessListBaseTests
 					this.LoadProperty(global::Domains.Data.ValueProperty, context.Reader.ReadString());
 					
 					var type = this.GetType();
-					type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
+					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
 					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 					this.DisableIEditableObject = context.Reader.ReadBoolean();
