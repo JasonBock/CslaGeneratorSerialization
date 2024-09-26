@@ -1,4 +1,5 @@
 ﻿using Csla.Core;
+using CslaGeneratorSerialization.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;
@@ -59,6 +60,11 @@ internal static class TestAssistants
 		if (disabledDiagnostics is not null)
 		{
 			test.DisabledDiagnostics.AddRange(disabledDiagnostics);
+		}
+
+		foreach (var (outputFileName, outputCode) in IncrementalGeneratorInitializationContextExtensions.GetOutputCode())
+		{
+			test.TestState.GeneratedSources.Add((typeof(GeneratorSerializationGenerator), outputFileName, outputCode));
 		}
 
 		foreach (var (generatedFileName, generatedCode) in generatedSources)

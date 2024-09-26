@@ -46,13 +46,16 @@ internal static class BusinessListBaseBuilder
 				""");
 		}
 
+		// TODO: Once this is fixed, I should uncomment the EditLevel call.
+		// https://github.com/dotnet/runtime/issues/107132
+		var accessorType = $"global::CslaGeneratorSerialization.BusinessListBaseAccessors<{model.BusinessObject.FullyQualifiedNameNoNullableAnnotation}, {model.BusinessObject.BusinessObjectTarget.FullyQualifiedNameNoNullableAnnotation}>";
+
 		indentWriter.WriteLines(
 			$$"""
-				var type = this.GetType();
-				type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
-				type.GetPropertyInHierarchy("EditLevel")!.SetValue(this, context.Reader.ReadInt32());
-				type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
-
+				{{accessorType}}.GetSetIsChildField(this) = context.Reader.ReadBoolean();
+				//{{accessorType}}.SetEditLevelProperty(this, context.Reader.ReadInt32());
+				{{accessorType}}.GetSetIdentityField(this) = context.Reader.ReadInt32();
+						
 				this.AllowEdit = context.Reader.ReadBoolean();
 				this.AllowNew = context.Reader.ReadBoolean();
 				this.AllowRemove = context.Reader.ReadBoolean();
@@ -95,13 +98,16 @@ internal static class BusinessListBaseBuilder
 				""");
 		}
 
+		var accessorType = $"global::CslaGeneratorSerialization.BusinessListBaseAccessors<{model.BusinessObject.FullyQualifiedNameNoNullableAnnotation}, {model.BusinessObject.BusinessObjectTarget.FullyQualifiedNameNoNullableAnnotation}>";
+
+		// TODO: Once this is fixed, I should uncomment the EditLevel call.
+		// https://github.com/dotnet/runtime/issues/107132
 		indentWriter.WriteLines(
 			$$"""
-				var type = this.GetType();
-				context.Writer.Write((bool)type.GetFieldInHierarchy("_isChild")!.GetValue(this)!);
-				context.Writer.Write((int)type.GetPropertyInHierarchy("EditLevel")!.GetValue(this)!);
-				context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
-
+				context.Writer.Write({{accessorType}}.GetSetIsChildField(this));
+				//context.Writer.Write(this.EditLevel);
+				context.Writer.Write({{accessorType}}.GetSetIdentityField(this));
+			
 				context.Writer.Write(this.AllowEdit);
 				context.Writer.Write(this.AllowNew);
 				context.Writer.Write(this.AllowRemove);
