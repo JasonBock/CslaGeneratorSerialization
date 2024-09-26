@@ -40,8 +40,8 @@ internal static class BusinessBaseBuilder
 		indentWriter.WriteLines(
 			"""
 			var type = this.GetType();
-			type.GetFieldInHierarchy("_isNew")!.SetValue(this, context.Reader.ReadBoolean());
-			type.GetFieldInHierarchy("_isDeleted")!.SetValue(this, context.Reader.ReadBoolean());
+			type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
+			type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
 			type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
 			type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
 			this.DisableIEditableObject = context.Reader.ReadBoolean();
@@ -110,7 +110,7 @@ internal static class BusinessBaseBuilder
 		{
 			ArrayBuilder.BuildReader(indentWriter, item);
 		}
-		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildReader(indentWriter, item);
 		}
@@ -195,7 +195,7 @@ internal static class BusinessBaseBuilder
 		{
 			ArrayBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
-		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}

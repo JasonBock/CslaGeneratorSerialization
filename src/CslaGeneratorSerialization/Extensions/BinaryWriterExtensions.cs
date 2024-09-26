@@ -2,6 +2,11 @@
 
 public static class BinaryWriterExtensions
 {
+	// Before I forget...
+	// the reason I have these two extensions is that
+	// there are already methods to handle a byte[] or char[],
+	// but I need to put the length in first.
+	// So I need a different method signature.
 	public static void Write(this BinaryWriter writer, (int length, byte[] buffer) value)
 	{
 		writer.Write(value.length);

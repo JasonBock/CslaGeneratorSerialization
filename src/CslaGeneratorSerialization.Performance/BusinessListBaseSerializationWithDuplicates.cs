@@ -19,7 +19,7 @@ public class BusinessListBaseSerializationWithDuplicates
 	{
 		var generatorService = new ServiceCollection();
 		generatorService.AddCsla(o =>
-			o.Serialization(so => so.SerializationFormatter(typeof(GeneratorFormatter))));
+			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
 		var generatorProvider = generatorService.BuildServiceProvider();
 
 		var generatorApplicationContext = generatorProvider.GetService<ApplicationContext>()!;
@@ -47,7 +47,7 @@ public class BusinessListBaseSerializationWithDuplicates
 
 		var mobileService = new ServiceCollection();
 		mobileService.AddCsla(o =>
-			o.Serialization(so => so.SerializationFormatter(typeof(MobileFormatter))));
+			o.Serialization(so => so.UseSerializationFormatter<MobileFormatter>()));
 		var mobileProvider = mobileService.BuildServiceProvider();
 
 		var mobileApplicationContext = mobileProvider.GetService<ApplicationContext>()!;

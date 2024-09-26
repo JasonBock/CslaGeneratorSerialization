@@ -58,7 +58,7 @@ internal static class ReadOnlyBaseBuilder
 		{
 			ArrayBuilder.BuildReader(indentWriter, item);
 		}
-		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildReader(indentWriter, item);
 		}
@@ -129,7 +129,7 @@ internal static class ReadOnlyBaseBuilder
 		{
 			ArrayBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
-		else if (propertyType.FullyQualifiedName == "global::System.Security.Claims.ClaimsPrincipal")
+		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}

@@ -50,8 +50,7 @@ public static class ClaimsPrincipalGeneratorTests
 						
 					if (value0 is not null)
 					{
-						var value0Principal = new global::Csla.Security.CslaClaimsPrincipal(value0);
-						(var isReferenceDuplicate, var referenceId) = context.GetReference(value0Principal);
+						(var isReferenceDuplicate, var referenceId) = context.GetReference(value0);
 						
 						if (isReferenceDuplicate)
 						{
@@ -66,7 +65,7 @@ public static class ClaimsPrincipalGeneratorTests
 							{
 								using (var value0writer = new global::System.IO.BinaryWriter(value0stream))
 								{
-									value0Principal.WriteTo(value0writer);
+									value0.WriteTo(value0writer);
 									var value0buffer = value0stream.ToArray();
 									context.Writer.Write((value0buffer.Length, value0buffer));
 								}
@@ -105,7 +104,7 @@ public static class ClaimsPrincipalGeneratorTests
 							{
 								using (var reader = new global::System.IO.BinaryReader(stream))
 								{
-									var principal = new global::Csla.Security.CslaClaimsPrincipal(reader);
+									var principal = new global::System.Security.Claims.ClaimsPrincipal(reader);
 									this.LoadProperty(global::Domains.Data.ContentsProperty, principal);
 									context.AddReference(principal);
 								}

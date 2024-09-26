@@ -21,7 +21,7 @@ internal static class ClaimsPrincipalBuilder
 					{
 						using (var reader = new global::System.IO.BinaryReader(stream))
 						{
-							var principal = new global::Csla.Security.CslaClaimsPrincipal(reader);
+							var principal = new global::System.Security.Claims.ClaimsPrincipal(reader);
 							{{BuilderHelpers.GetLoadProperty(item, "principal")}}
 							context.AddReference(principal);
 						}
@@ -39,8 +39,7 @@ internal static class ClaimsPrincipalBuilder
 				
 			if ({{valueVariable}} is not null)
 			{
-				var {{valueVariable}}Principal = new global::Csla.Security.CslaClaimsPrincipal({{valueVariable}});
-				(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}}Principal);
+				(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}});
 				
 				if (isReferenceDuplicate)
 				{
@@ -55,7 +54,7 @@ internal static class ClaimsPrincipalBuilder
 					{
 						using (var {{valueVariable}}writer = new global::System.IO.BinaryWriter({{valueVariable}}stream))
 						{
-							{{valueVariable}}Principal.WriteTo({{valueVariable}}writer);
+							{{valueVariable}}.WriteTo({{valueVariable}}writer);
 							var {{valueVariable}}buffer = {{valueVariable}}stream.ToArray();
 							context.Writer.Write(({{valueVariable}}buffer.Length, {{valueVariable}}buffer));
 						}
