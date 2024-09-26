@@ -32,6 +32,8 @@ internal sealed class GeneratorSerializationGenerator
 				})
 			.SelectMany((models, _) => models);
 
+		context.RegisterTypes();
+
 		context.RegisterSourceOutput(provider.Collect(),
 			(context, source) => GeneratorSerializationGenerator.CreateOutput(source, context));
 	}
