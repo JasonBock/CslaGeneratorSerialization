@@ -113,9 +113,7 @@ public static class DuplicateTests
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[
-				(typeof(GeneratorSerializationGenerator), "Domains.Node_GeneratorSerialization.g.cs", generatedCode),
-			],
+			[("Domains.Node_GeneratorSerialization.g.cs", generatedCode)],
 			[]);
 	}
 }

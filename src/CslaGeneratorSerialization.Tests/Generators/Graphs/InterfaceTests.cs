@@ -168,9 +168,9 @@ public static class InterfaceTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.IData_GeneratorSerialization.g.cs", iDataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.ConsumeData_GeneratorSerialization.g.cs", consumeGeneratedCode)
+				("Domains.IData_GeneratorSerialization.g.cs", iDataGeneratedCode),
+				("Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
+				("Domains.ConsumeData_GeneratorSerialization.g.cs", consumeGeneratedCode)
 			],
 			[]);
 	}

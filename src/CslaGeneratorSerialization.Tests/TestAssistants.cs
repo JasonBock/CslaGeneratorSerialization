@@ -16,7 +16,8 @@ internal static class TestAssistants
 	{
 		var test = new AnalyzerTest<TAnalyzer>()
 		{
-			ReferenceAssemblies = TestAssistants.GetNet80(),
+			//ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+			ReferenceAssemblies = TestAssistants.GetNet90(),
 			TestState =
 			{
 				Sources = { code },
@@ -36,7 +37,7 @@ internal static class TestAssistants
 	}
 
 	internal static async Task RunGeneratorAsync<TGenerator>(string code,
-		IEnumerable<(Type, string, string)> generatedSources,
+		IEnumerable<(string, string)> generatedSources,
 		IEnumerable<DiagnosticResult> expectedDiagnostics,
 		OutputKind outputKind = OutputKind.DynamicallyLinkedLibrary,
 		IEnumerable<MetadataReference>? additionalReferences = null,
@@ -46,7 +47,8 @@ internal static class TestAssistants
 	{
 		var test = new IncrementalGeneratorTest<TGenerator>(generalDiagnosticOption)
 		{
-			ReferenceAssemblies = TestAssistants.GetNet80(),
+			//ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
+			ReferenceAssemblies = TestAssistants.GetNet90(),
 			TestState =
 			{
 				Sources = { code },
@@ -59,9 +61,9 @@ internal static class TestAssistants
 			test.DisabledDiagnostics.AddRange(disabledDiagnostics);
 		}
 
-		foreach (var generatedSource in generatedSources)
+		foreach (var (generatedFileName, generatedCode) in generatedSources)
 		{
-			test.TestState.GeneratedSources.Add(generatedSource);
+			test.TestState.GeneratedSources.Add((typeof(GeneratorSerializationGenerator), generatedFileName, generatedCode));
 		}
 
 		test.TestState.AdditionalReferences.Add(typeof(TGenerator).Assembly);
@@ -76,20 +78,21 @@ internal static class TestAssistants
 		await test.RunAsync();
 	}
 
-	private static ReferenceAssemblies GetNet80()
+	private static ReferenceAssemblies GetNet90()
 	{
-		// ReferenceAssemblies.Net.Net60, // TestAssistants.GetNet60(), /* ReferenceAssemblies.Net.Net50, */
-		if (!NuGetFramework.Parse("net8.0").IsPackageBased)
+		// Always look here for the latest version of a particular runtime:
+		// https://www.nuget.org/packages/Microsoft.NETCore.App.Ref
+		if (!NuGetFramework.Parse("net9.0").IsPackageBased)
 		{
-			// The NuGet version provided at runtime does not recognize the 'net7.0' target framework
-			throw new NotSupportedException("The 'net8.0' target framework is not supported by this version of NuGet.");
+			// The NuGet version provided at runtime does not recognize the 'net9.0' target framework
+			throw new NotSupportedException("The 'net9.0' target framework is not supported by this version of NuGet.");
 		}
 
 		return new ReferenceAssemblies(
-			 "net8.0",
+			 "net9.0",
 			 new PackageIdentity(
 				  "Microsoft.NETCore.App.Ref",
-				  "8.0.0"),
-			 Path.Combine("ref", "net8.0"));
+				  "9.0.0-rc.1.24431.7"),
+			 Path.Combine("ref", "net9.0"));
 	}
 }

@@ -131,7 +131,7 @@ public static class ClaimsPrincipalGeneratorTests
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", generatedCode)],
+			[("Domains.Data_GeneratorSerialization.g.cs", generatedCode)],
 			[]);
 	}
 }

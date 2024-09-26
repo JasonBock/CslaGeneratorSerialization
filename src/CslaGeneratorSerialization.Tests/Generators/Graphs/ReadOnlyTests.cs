@@ -112,8 +112,8 @@ public static class ReadOnlyTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.ChildData_GeneratorSerialization.g.cs", childGeneratedCode)],
+				("Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
+				("Domains.ChildData_GeneratorSerialization.g.cs", childGeneratedCode)],
 			[]);
 	}
 }

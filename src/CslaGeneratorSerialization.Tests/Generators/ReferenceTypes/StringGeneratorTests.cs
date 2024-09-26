@@ -80,7 +80,7 @@ public static class StringGeneratorTests
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", generatedCode)],
+			[("Domains.Data_GeneratorSerialization.g.cs", generatedCode)],
 			[]);
 	}
 }

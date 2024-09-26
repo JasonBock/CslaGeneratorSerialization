@@ -160,9 +160,9 @@ public static class ReadOnlyListBaseTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.Experiments_GeneratorSerialization.g.cs", experimentsGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.Datum_GeneratorSerialization.g.cs", datumGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
+				("Domains.Experiments_GeneratorSerialization.g.cs", experimentsGeneratedCode),
+				("Domains.Datum_GeneratorSerialization.g.cs", datumGeneratedCode),
+				("Domains.Data_GeneratorSerialization.g.cs", dataGeneratedCode),
 			],
 			[]);
 	}

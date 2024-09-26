@@ -213,9 +213,9 @@ public static class SealedTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.BaseData_GeneratorSerialization.g.cs", baseDataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.DerivedData_GeneratorSerialization.g.cs", derivedDataGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.ConsumingData_GeneratorSerialization.g.cs", consumingDataGeneratedCode)
+				("Domains.BaseData_GeneratorSerialization.g.cs", baseDataGeneratedCode),
+				("Domains.DerivedData_GeneratorSerialization.g.cs", derivedDataGeneratedCode),
+				("Domains.ConsumingData_GeneratorSerialization.g.cs", consumingDataGeneratedCode)
 			],
 			[]);
 	}

@@ -72,9 +72,7 @@ public static class CommandBaseTests
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[
-				(typeof(GeneratorSerializationGenerator), "Domains.Operation_GeneratorSerialization.g.cs", generatedCode),
-			],
+			[("Domains.Operation_GeneratorSerialization.g.cs", generatedCode)],
 			[]);
 	}
 }

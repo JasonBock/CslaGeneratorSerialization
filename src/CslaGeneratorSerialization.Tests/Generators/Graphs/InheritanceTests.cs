@@ -150,8 +150,8 @@ public static class InheritanceTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.BaseData_GeneratorSerialization.g.cs", baseGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.DerivedData_GeneratorSerialization.g.cs", derivedGeneratedCode)
+				("Domains.BaseData_GeneratorSerialization.g.cs", baseGeneratedCode),
+				("Domains.DerivedData_GeneratorSerialization.g.cs", derivedGeneratedCode)
 			],
 			[]);
 	}
@@ -302,8 +302,8 @@ public static class InheritanceTests
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
 			[
-				(typeof(GeneratorSerializationGenerator), "Domains.BaseData_GeneratorSerialization.g.cs", baseGeneratedCode),
-				(typeof(GeneratorSerializationGenerator), "Domains.DerivedData_GeneratorSerialization.g.cs", derivedGeneratedCode)
+				("Domains.BaseData_GeneratorSerialization.g.cs", baseGeneratedCode),
+				("Domains.DerivedData_GeneratorSerialization.g.cs", derivedGeneratedCode)
 			],
 			[]);
 	}
