@@ -54,7 +54,7 @@ public sealed class GeneratorFormatter
 
 		var writer = new BinaryWriter(serializationStream);
 		writer.Write(graph.GetType().AssemblyQualifiedName);
-		generatorGraph.SetState(new GeneratorFormatterWriterContext(this.resolver, writer));
+		generatorGraph.SetState(new GeneratorFormatterWriterContext(this.applicationContext, this.resolver, writer));
 	}
 
 	/// <summary>

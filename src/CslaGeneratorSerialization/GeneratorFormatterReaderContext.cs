@@ -1,4 +1,6 @@
 ﻿using Csla;
+using Csla.Serialization;
+using Csla.Serialization.Mobile;
 using CslaGeneratorSerialization.Extensions;
 
 namespace CslaGeneratorSerialization;
@@ -66,6 +68,30 @@ public sealed class GeneratorFormatterReaderContext
 			}
 
 			newValue.GetState(this);
+
+			this.AddReference(newValue);
+			return newValue;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	public T? ReadMobileObject<T>()
+		where T : class, IMobileObject
+	{
+		var state = this.Reader.ReadStateValue();
+
+		if (state == SerializationState.Duplicate)
+		{
+			return (T)this.GetReference(this.Reader.ReadInt32());
+		}
+		else if (state == SerializationState.Value)
+		{
+			var mobileObjectData = this.Reader.ReadBytes(this.Reader.ReadInt32());
+			var mobileFormatter = new MobileFormatter(this.Context);
+			var newValue = (T)((ISerializationFormatter)mobileFormatter).Deserialize(mobileObjectData);
 
 			this.AddReference(newValue);
 			return newValue;

@@ -20,6 +20,10 @@ internal sealed record TypeReferenceModel
 		this.IsSealed = type.IsSealed;
 		this.IsAbstract = type.IsAbstract;
 
+		var generatorSerializableTypeSymbol = compilation.GetTypeByMetadataName(typeof(GeneratorSerializableAttribute).FullName);
+		this.ParticipatesInGeneratorSerialization = type.GetAttributes().Any(
+			_ => _.AttributeClass!.Equals(generatorSerializableTypeSymbol, SymbolEqualityComparer.Default));
+
 		(var kind, var targetType) = stereotypes.GetStereotype(type);
 
 		(this.BusinessObjectKind, this.BusinessObjectTarget) = kind switch
@@ -66,6 +70,7 @@ internal sealed record TypeReferenceModel
 	internal bool IsValueType { get; }
 	internal string Name { get; }
 	internal string? Namespace { get; }
+	internal bool ParticipatesInGeneratorSerialization { get; }
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
 	internal TypeKind TypeKind { get; }

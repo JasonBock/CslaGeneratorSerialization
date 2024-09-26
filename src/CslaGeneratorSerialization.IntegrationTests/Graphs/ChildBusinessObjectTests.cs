@@ -37,6 +37,38 @@ public sealed partial class ChildData
 	}
 }
 
+[GeneratorSerializable]
+public sealed partial class NonParticipatingParentData
+	: BusinessBase<NonParticipatingParentData>
+{
+	[Create]
+	private void Create() =>
+		this.Contents = this.ApplicationContext.GetRequiredService<IChildDataPortal<NonParticipatingChildData>>().CreateChild();
+
+	public static readonly PropertyInfo<NonParticipatingChildData> ContentsProperty =
+		RegisterProperty<NonParticipatingChildData>(_ => _.Contents);
+	public NonParticipatingChildData Contents
+	{
+		get => this.GetProperty(NonParticipatingParentData.ContentsProperty);
+		set => this.SetProperty(NonParticipatingParentData.ContentsProperty, value);
+	}
+}
+
+public sealed class NonParticipatingChildData
+	: BusinessBase<NonParticipatingChildData>
+{
+	[Create]
+	private void Create() { }
+
+	public static readonly PropertyInfo<string> ChildContentsProperty =
+		RegisterProperty<string>(_ => _.ChildContents);
+	public string ChildContents
+	{
+		get => this.GetProperty(NonParticipatingChildData.ChildContentsProperty);
+		set => this.SetProperty(NonParticipatingChildData.ChildContentsProperty, value);
+	}
+}
+
 public static class ChildBusinessObjectTests
 {
 	[Test]
@@ -53,6 +85,24 @@ public static class ChildBusinessObjectTests
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream);
+
+		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
+	}
+
+	[Test]
+	public static void RoundtripWithNonParticipatingChild()
+	{
+		var provider = Shared.ServiceProvider;
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var portal = provider.GetRequiredService<IDataPortal<NonParticipatingParentData>>();
+		var data = portal.Create();
+
+		data.Contents.ChildContents = "ABC";
+
+		using var stream = new MemoryStream();
+		formatter.Serialize(stream, data);
+		stream.Position = 0;
+		var newData = (NonParticipatingParentData)formatter.Deserialize(stream);
 
 		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}

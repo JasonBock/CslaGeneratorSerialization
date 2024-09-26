@@ -16,6 +16,7 @@ public static class Shared
 			var services = new ServiceCollection();
 			services.AddCsla(o =>
 				o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
+			services.AddSingleton<MobileFormatterOptions>();
 			return services.BuildServiceProvider();
 		}, true);
 

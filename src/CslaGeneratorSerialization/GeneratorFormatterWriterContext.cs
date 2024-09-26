@@ -1,4 +1,9 @@
-﻿namespace CslaGeneratorSerialization;
+﻿using Csla;
+using Csla.Serialization;
+using Csla.Serialization.Mobile;
+using CslaGeneratorSerialization.Extensions;
+
+namespace CslaGeneratorSerialization;
 
 public sealed class GeneratorFormatterWriterContext
 {
@@ -7,8 +12,8 @@ public sealed class GeneratorFormatterWriterContext
 	private readonly Dictionary<object, int> references = new(new IGeneratorSerializableEqualityComparer());
 	private readonly Dictionary<int, int> typeNames = [];
 
-	internal GeneratorFormatterWriterContext(CustomSerializationResolver resolver, BinaryWriter writer) =>
-		(this.Resolver, this.Writer) = (resolver, writer);
+	internal GeneratorFormatterWriterContext(ApplicationContext context, CustomSerializationResolver resolver, BinaryWriter writer) =>
+		(this.Context, this.Resolver, this.Writer) = (context, resolver, writer);
 
 	public (bool, int) GetReference(object mobileObject)
 	{
@@ -83,9 +88,35 @@ public sealed class GeneratorFormatterWriterContext
 		}
 	}
 
+	public void WriteMobileObject(IMobileObject? value)
+	{
+		if (value is not null)
+		{
+			(var isReferenceDuplicate, var referenceId) = this.GetReference(value);
+
+			if (isReferenceDuplicate)
+			{
+				this.Writer.Write((byte)SerializationState.Duplicate);
+				this.Writer.Write(referenceId);
+			}
+			else
+			{
+				this.Writer.Write((byte)SerializationState.Value);
+				var mobileFormatter = new MobileFormatter(this.Context);
+				var mobileObjectData = ((ISerializationFormatter)mobileFormatter).Serialize(value);
+				this.Writer.Write((mobileObjectData.Length, mobileObjectData));
+			}
+		}
+		else
+		{
+			this.Writer.Write((byte)SerializationState.Null);
+		}
+	}
+
 	public void WriteCustom<TType>(TType value) =>
 		this.Resolver.Resolve<TType>().Write(value, this.Writer);
 
+	private ApplicationContext Context { get; }
 	private CustomSerializationResolver Resolver { get; }
 
 	public BinaryWriter Writer { get; }
