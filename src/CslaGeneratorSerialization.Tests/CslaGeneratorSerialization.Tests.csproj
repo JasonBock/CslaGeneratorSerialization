@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization.Tests</AssemblyName>
-		<NoWarn>CA2007,CA1861</NoWarn>
+		<NoWarn>CA2007,CA1861,NU1903</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.Tests</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
