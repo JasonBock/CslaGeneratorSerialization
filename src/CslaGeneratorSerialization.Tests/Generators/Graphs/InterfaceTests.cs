@@ -89,11 +89,10 @@ public static class InterfaceTests
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
-					
-					var type = this.GetType();
-					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
-					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
-					context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
+								
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -101,16 +100,15 @@ public static class InterfaceTests
 					// global::Domains.Data.ContentsProperty
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadString());
 					
-					var type = this.GetType();
-					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
 					this.DisableIEditableObject = context.Reader.ReadBoolean();
 					
-					type.GetFieldInHierarchy("_neverCommitted")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_editLevelAdded")!.SetValue(this, context.Reader.ReadInt32());
-					type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
 				}
 			}
 			
@@ -139,11 +137,10 @@ public static class InterfaceTests
 					context.Writer.Write(this.IsDirty);
 					context.Writer.Write(this.IsChild);
 					context.Writer.Write(this.DisableIEditableObject);
-					
-					var type = this.GetType();
-					context.Writer.Write((bool)type.GetFieldInHierarchy("_neverCommitted")!.GetValue(this)!);
-					context.Writer.Write((int)type.GetFieldInHierarchy("_editLevelAdded")!.GetValue(this)!);
-					context.Writer.Write((int)type.GetFieldInHierarchy("_identity")!.GetValue(this)!);
+								
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
+					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -151,16 +148,15 @@ public static class InterfaceTests
 					// global::Domains.ConsumeData.ContentsProperty
 					this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.Read<global::Domains.IData>(false)!);
 					
-					var type = this.GetType();
-					type.GetPropertyInHierarchy("IsNew")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetPropertyInHierarchy("IsDeleted")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isDirty")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_isChild")!.SetValue(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
 					this.DisableIEditableObject = context.Reader.ReadBoolean();
 					
-					type.GetFieldInHierarchy("_neverCommitted")!.SetValue(this, context.Reader.ReadBoolean());
-					type.GetFieldInHierarchy("_editLevelAdded")!.SetValue(this, context.Reader.ReadInt32());
-					type.GetFieldInHierarchy("_identity")!.SetValue(this, context.Reader.ReadInt32());
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
+					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
 				}
 			}
 			

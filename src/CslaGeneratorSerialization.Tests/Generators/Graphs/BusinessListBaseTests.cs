@@ -138,7 +138,7 @@ public static class BusinessListBaseTests
 					}
 				
 					context.Writer.Write(global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.GetSetIsChildField(this));
-					context.Writer.Write(this.EditLevel);
+					//context.Writer.Write(this.EditLevel);
 					context.Writer.Write(global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.GetSetIdentityField(this));
 				
 					context.Writer.Write(this.AllowEdit);
@@ -164,7 +164,7 @@ public static class BusinessListBaseTests
 					}
 				
 					global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.GetSetIsChildField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.SetEditLevelProperty(this, context.Reader.ReadInt32());
+					//global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.SetEditLevelProperty(this, context.Reader.ReadInt32());
 					global::CslaGeneratorSerialization.BusinessListBaseAccessors<global::Domains.Datum, global::Domains.Data>.GetSetIdentityField(this) = context.Reader.ReadInt32();
 							
 					this.AllowEdit = context.Reader.ReadBoolean();
