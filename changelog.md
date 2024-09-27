@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Changed `isNotSealed` to `isSealed` (issue [#7](https://github.com/JasonBock/CslaGeneratorSerialization/issues/7))
 * Added support for custom serialization (issue [#1](https://github.com/JasonBock/CslaGeneratorSerialization/issues/1))
 * Added support to serialize `IMobileObject`-based objects that do not participate in generator serialization (issue [#11](https://github.com/JasonBock/CslaGeneratorSerialization/issues/11))
+* Improved serialization performance of Reflection-based members using `[UnsafeAccessor]` (issue [#12](https://github.com/JasonBock/CslaGeneratorSerialization/issues/12))
 
 ## [0.2.0] - 2024-04-15
 
