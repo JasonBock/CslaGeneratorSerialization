@@ -27,7 +27,7 @@ public sealed partial class Customization
 	}
 
 	public static readonly PropertyInfo<string> ContentsProperty =
-		RegisterProperty<string>(_ => _.Contents);
+		RegisterProperty<string>(nameof(Customization.Contents));
 	public string Contents
 	{
 		get => this.GetProperty(Customization.ContentsProperty);

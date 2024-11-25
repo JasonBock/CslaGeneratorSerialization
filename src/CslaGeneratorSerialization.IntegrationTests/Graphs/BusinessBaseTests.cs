@@ -12,7 +12,7 @@ public partial class Customer
 	private void Create() { }
 
 	public static readonly PropertyInfo<uint> AgeProperty =
-		Customer.RegisterProperty<uint>(_ => _.Age);
+		Customer.RegisterProperty<uint>(nameof(Customer.Age));
 	public uint Age
 	{
 		get => this.GetProperty(Customer.AgeProperty);
@@ -20,7 +20,7 @@ public partial class Customer
 	}
 
 	public static readonly PropertyInfo<string> NameProperty =
-		Customer.RegisterProperty<string>(_ => _.Name);
+		Customer.RegisterProperty<string>(nameof(Customer.Name));
 	public string Name
 	{
 		get => this.GetProperty(Customer.NameProperty);

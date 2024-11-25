@@ -12,7 +12,7 @@ public sealed partial class ByteArrayData
 	private void Create() { }
 
 	public static readonly PropertyInfo<byte[]> ContentsProperty =
-		RegisterProperty<byte[]>(_ => _.Contents);
+		RegisterProperty<byte[]>(nameof(ByteArrayData.Contents));
 #pragma warning disable CA1819 // Properties should not return arrays
 	public byte[] Contents
 #pragma warning restore CA1819 // Properties should not return arrays

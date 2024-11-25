@@ -14,7 +14,7 @@ public sealed partial class EnumData
 	private void Create() { }
 
 	public static readonly PropertyInfo<States> ContentsProperty =
-		RegisterProperty<States>(_ => _.Contents);
+		RegisterProperty<States>(nameof(EnumData.Contents));
 	public States Contents
 	{
 		get => this.GetProperty(EnumData.ContentsProperty);
@@ -30,7 +30,7 @@ public sealed partial class EnumNullableData
 	private void Create() { }
 
 	public static readonly PropertyInfo<States?> ContentsProperty =
-		RegisterProperty<States?>(_ => _.Contents);
+		RegisterProperty<States?>(nameof(EnumNullableData.Contents));
 	public States? Contents
 	{
 		get => this.GetProperty(EnumNullableData.ContentsProperty);

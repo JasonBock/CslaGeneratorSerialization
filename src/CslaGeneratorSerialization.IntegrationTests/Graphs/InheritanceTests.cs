@@ -12,7 +12,7 @@ public abstract partial class AbstractData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> CoreProperty =
-		AbstractData.RegisterProperty<string>(_ => _.Core);
+		AbstractData.RegisterProperty<string>(nameof(AbstractData.Core));
 	public string Core
 	{
 		get => this.GetProperty(AbstractData.CoreProperty);
@@ -28,7 +28,7 @@ public partial class BaseData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> CoreProperty =
-		BaseData.RegisterProperty<string>(_ => _.Core);
+		BaseData.RegisterProperty<string>(nameof(BaseData.Core));
 	public string Core
 	{
 		get => this.GetProperty(BaseData.CoreProperty);

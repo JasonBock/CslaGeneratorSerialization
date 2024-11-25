@@ -17,7 +17,7 @@ public sealed partial class Data
 	}
 
 	public static readonly PropertyInfo<string> StringContentsProperty =
-		RegisterProperty<string>(_ => _.StringContents);
+		RegisterProperty<string>(nameof(Data.StringContents));
 	public string StringContents
 	{
 		get => this.ReadProperty(Data.StringContentsProperty);
@@ -25,7 +25,7 @@ public sealed partial class Data
 	}
 
 	public static readonly PropertyInfo<ChildData> ChildContentsProperty =
-		RegisterProperty<ChildData>(_ => _.ChildContents);
+		RegisterProperty<ChildData>(nameof(Data.ChildContents));
 	public ChildData ChildContents
 	{
 		get => this.ReadProperty(Data.ChildContentsProperty);
@@ -33,7 +33,7 @@ public sealed partial class Data
 	}
 
 	public static readonly PropertyInfo<int> Int32ContentsProperty =
-		RegisterProperty<int>(_ => _.Int32Contents);
+		RegisterProperty<int>(nameof(Data.Int32Contents));
 	public int Int32Contents
 	{
 		get => this.ReadProperty(Data.Int32ContentsProperty);
@@ -50,7 +50,7 @@ public sealed partial class ChildData
 		this.Value = "Child 123";
 
 	public static readonly PropertyInfo<string> ValueProperty =
-		RegisterProperty<string>(_ => _.Value);
+		RegisterProperty<string>(nameof(ChildData.Value));
 	public string Value
 	{
 		get => this.ReadProperty(ChildData.ValueProperty);

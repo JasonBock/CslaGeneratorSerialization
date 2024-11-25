@@ -13,7 +13,7 @@ public partial class Experiments
 		this.Values = this.ApplicationContext.GetRequiredService<IChildDataPortal<Datum>>().CreateChild();
 
 	public static readonly PropertyInfo<Datum> ValuesProperty =
-		Experiments.RegisterProperty<Datum>(_ => _.Values);
+		Experiments.RegisterProperty<Datum>(nameof(Experiments.Values));
 	public Datum Values
 	{
 		get => this.GetProperty(Experiments.ValuesProperty);
@@ -37,7 +37,7 @@ public partial class Data
 	private void CreateChild() { }
 
 	public static readonly PropertyInfo<string> ValueProperty =
-		Data.RegisterProperty<string>(_ => _.Value);
+		Data.RegisterProperty<string>(nameof(Data.Value));
 	public string Value
 	{
 		get => this.GetProperty(Data.ValueProperty);

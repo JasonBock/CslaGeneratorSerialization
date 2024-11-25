@@ -14,7 +14,7 @@ public sealed partial class Data
 	private void Create() { }
 
 	public static readonly PropertyInfo<int[]> ValueProperty =
-		RegisterProperty<int[]>(_ => _.Value);
+		RegisterProperty<int[]>(nameof(Data.Value));
 #pragma warning disable CA1819 // Properties should not return arrays
 	public int[] Value
 #pragma warning restore CA1819 // Properties should not return arrays

@@ -13,7 +13,7 @@ public sealed partial class ClaimsPrincipalData
 	private void Create() { }
 
 	public static readonly PropertyInfo<ClaimsPrincipal> ContentsProperty =
-		RegisterProperty<ClaimsPrincipal>(_ => _.Contents);
+		RegisterProperty<ClaimsPrincipal>(nameof(ClaimsPrincipalData.Contents));
 	public ClaimsPrincipal Contents
 	{
 		get => this.GetProperty(ClaimsPrincipalData.ContentsProperty);

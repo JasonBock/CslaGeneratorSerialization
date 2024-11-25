@@ -15,7 +15,7 @@ public sealed partial class StateData
 	private void Fetch() { }
 
 	public static readonly PropertyInfo<string> ContentsProperty =
-		RegisterProperty<string>(_ => _.Contents);
+		RegisterProperty<string>(nameof(StateData.Contents));
 	public string Contents
 	{
 		get => this.GetProperty(StateData.ContentsProperty);

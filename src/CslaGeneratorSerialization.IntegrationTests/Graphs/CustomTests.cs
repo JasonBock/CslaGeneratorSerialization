@@ -31,7 +31,7 @@ public sealed partial class Data
 		this.CustomClass = new();
 
 	public static readonly PropertyInfo<CustomClassData> CustomClassProperty =
-		RegisterProperty<CustomClassData>(_ => _.CustomClass);
+		RegisterProperty<CustomClassData>(nameof(Data.CustomClass));
 	public CustomClassData CustomClass
 	{
 		get => this.GetProperty(Data.CustomClassProperty);
@@ -39,7 +39,7 @@ public sealed partial class Data
 	}
 
 	public static readonly PropertyInfo<CustomStructData> CustomStructProperty =
-		RegisterProperty<CustomStructData>(_ => _.CustomStruct);
+		RegisterProperty<CustomStructData>(nameof(Data.CustomStruct));
 	public CustomStructData CustomStruct
 	{
 		get => this.GetProperty(Data.CustomStructProperty);

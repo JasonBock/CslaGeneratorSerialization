@@ -19,7 +19,7 @@ public sealed partial class InterfaceData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> ContentsProperty =
-		RegisterProperty<string>(_ => _.Contents);
+		RegisterProperty<string>(nameof(InterfaceData.Contents));
 	public string Contents
 	{
 		get => this.GetProperty(InterfaceData.ContentsProperty);
@@ -27,7 +27,7 @@ public sealed partial class InterfaceData
 	}
 
 	public static readonly PropertyInfo<int> ExtraProperty =
-		RegisterProperty<int>(_ => _.Extra);
+		RegisterProperty<int>(nameof(InterfaceData.Extra));
 	public int Extra
 	{
 		get => this.GetProperty(InterfaceData.ExtraProperty);
@@ -43,7 +43,7 @@ public sealed partial class ConsumeData
 	private void Create() { }
 
 	public static readonly PropertyInfo<IInterfaceData> ContentsProperty =
-		RegisterProperty<IInterfaceData>(_ => _.Contents);
+		RegisterProperty<IInterfaceData>(nameof(ConsumeData.Contents));
 	public IInterfaceData Contents
 	{
 		get => this.GetProperty(ConsumeData.ContentsProperty);

@@ -12,7 +12,7 @@ public partial class BaseData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> CoreProperty =
-		BaseData.RegisterProperty<string>(_ => _.Core);
+		BaseData.RegisterProperty<string>(nameof(BaseData.Core));
 	public string Core
 	{
 		get => this.GetProperty(BaseData.CoreProperty);
@@ -44,7 +44,7 @@ public sealed partial class ConsumingData
 	private void Create() { }
 
 	public static readonly PropertyInfo<BaseData> ContentsProperty =
-		RegisterProperty<BaseData>(_ => _.Contents);
+		RegisterProperty<BaseData>(nameof(ConsumingData.Contents));
 	public BaseData Contents
 	{
 		get => this.GetProperty(ConsumingData.ContentsProperty);

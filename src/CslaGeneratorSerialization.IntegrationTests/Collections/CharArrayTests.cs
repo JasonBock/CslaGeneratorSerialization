@@ -12,7 +12,7 @@ public sealed partial class CharArrayData
 	private void Create() { }
 
 	public static readonly PropertyInfo<char[]> ContentsProperty =
-		RegisterProperty<char[]>(_ => _.Contents);
+		RegisterProperty<char[]>(nameof(CharArrayData.Contents));
 #pragma warning disable CA1819 // Properties should not return arrays
 	public char[] Contents
 #pragma warning restore CA1819 // Properties should not return arrays

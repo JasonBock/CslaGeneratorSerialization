@@ -13,7 +13,7 @@ public sealed partial class ParentData
 		this.Contents = this.ApplicationContext.GetRequiredService<IChildDataPortal<ChildData>>().CreateChild();
 
    public static readonly PropertyInfo<ChildData> ContentsProperty =
-		RegisterProperty<ChildData>(_ => _.Contents);
+		RegisterProperty<ChildData>(nameof(ParentData.Contents));
 	public ChildData Contents
 	{
 		get => this.GetProperty(ParentData.ContentsProperty);
@@ -29,7 +29,7 @@ public sealed partial class ChildData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> ChildContentsProperty =
-		RegisterProperty<string>(_ => _.ChildContents);
+		RegisterProperty<string>(nameof(ChildData.ChildContents));
 	public string ChildContents
 	{
 		get => this.GetProperty(ChildData.ChildContentsProperty);
@@ -46,7 +46,7 @@ public sealed partial class NonParticipatingParentData
 		this.Contents = this.ApplicationContext.GetRequiredService<IChildDataPortal<NonParticipatingChildData>>().CreateChild();
 
 	public static readonly PropertyInfo<NonParticipatingChildData> ContentsProperty =
-		RegisterProperty<NonParticipatingChildData>(_ => _.Contents);
+		RegisterProperty<NonParticipatingChildData>(nameof(NonParticipatingParentData.Contents));
 	public NonParticipatingChildData Contents
 	{
 		get => this.GetProperty(NonParticipatingParentData.ContentsProperty);
@@ -61,7 +61,7 @@ public sealed class NonParticipatingChildData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> ChildContentsProperty =
-		RegisterProperty<string>(_ => _.ChildContents);
+		RegisterProperty<string>(nameof(NonParticipatingChildData.ChildContents));
 	public string ChildContents
 	{
 		get => this.GetProperty(NonParticipatingChildData.ChildContentsProperty);

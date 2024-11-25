@@ -12,7 +12,7 @@ public sealed partial class Node
 	private void Create() { }
 
 	public static readonly PropertyInfo<Node?> LeftProperty =
-		RegisterProperty<Node?>(_ => _.Left);
+		RegisterProperty<Node?>(nameof(Node.Left));
 	public Node? Left
 	{
 		get => this.GetProperty(Node.LeftProperty);
@@ -20,7 +20,7 @@ public sealed partial class Node
 	}
 
 	public static readonly PropertyInfo<Node?> RightProperty =
-		RegisterProperty<Node?>(_ => _.Right);
+		RegisterProperty<Node?>(nameof(Node.Right));
 	public Node? Right
 	{
 		get => this.GetProperty(Node.RightProperty);
@@ -28,7 +28,7 @@ public sealed partial class Node
 	}
 
 	public static readonly PropertyInfo<string> NameProperty =
-		RegisterProperty<string>(_ => _.Name);
+		RegisterProperty<string>(nameof(Node.Name));
 	public string Name
 	{
 		get => this.GetProperty(Node.NameProperty);

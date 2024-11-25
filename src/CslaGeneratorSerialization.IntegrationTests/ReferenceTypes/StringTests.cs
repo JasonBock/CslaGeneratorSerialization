@@ -12,7 +12,7 @@ public sealed partial class StringData
 	private void Create() { }
 
 	public static readonly PropertyInfo<string> ContentsProperty =
-		RegisterProperty<string>(_ => _.Contents);
+		RegisterProperty<string>(nameof(StringData.Contents));
 	public string Contents
 	{
 		get => this.GetProperty(StringData.ContentsProperty);

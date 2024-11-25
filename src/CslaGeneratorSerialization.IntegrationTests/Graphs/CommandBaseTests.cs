@@ -15,7 +15,7 @@ public sealed partial class Operation
 	private void Execute() { }
 
 	public static readonly PropertyInfo<string> StringContentsProperty =
-		RegisterProperty<string>(_ => _.StringContents);
+		RegisterProperty<string>(nameof(Operation.StringContents));
 	public string StringContents
 	{
 		get => this.ReadProperty(Operation.StringContentsProperty);
@@ -23,7 +23,7 @@ public sealed partial class Operation
 	}
 
 	public static readonly PropertyInfo<int> Int32ContentsProperty =
-		RegisterProperty<int>(_ => _.Int32Contents);
+		RegisterProperty<int>(nameof(Operation.Int32Contents));
 	public int Int32Contents
 	{
 		get => this.ReadProperty(Operation.Int32ContentsProperty);

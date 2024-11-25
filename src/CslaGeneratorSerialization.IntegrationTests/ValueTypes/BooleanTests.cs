@@ -12,7 +12,7 @@ public sealed partial class BooleanData
 	private void Create() { }
 
 	public static readonly PropertyInfo<bool> ContentsProperty =
-		RegisterProperty<bool>(_ => _.Contents);
+		RegisterProperty<bool>(nameof(BooleanData.Contents));
 	public bool Contents
 	{
 		get => this.GetProperty(BooleanData.ContentsProperty);
@@ -28,7 +28,7 @@ public sealed partial class BooleanNullableData
 	private void Create() { }
 
 	public static readonly PropertyInfo<bool?> ContentsProperty =
-		RegisterProperty<bool?>(_ => _.Contents);
+		RegisterProperty<bool?>(nameof(BooleanNullableData.Contents));
 	public bool? Contents
 	{
 		get => this.GetProperty(BooleanNullableData.ContentsProperty);
