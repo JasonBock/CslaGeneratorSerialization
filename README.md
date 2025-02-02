@@ -21,4 +21,4 @@ Please read the [Overview document](https://github.com/JasonBock/CslaGeneratorSe
 
 ## Feedback
 
-If you run into any issues, please add them [here](https://github.com/JasonBock/Rocks/issues).
+If you run into any issues, please add them [here](https://github.com/JasonBock/CslaGeneratorSerialization/issues).
