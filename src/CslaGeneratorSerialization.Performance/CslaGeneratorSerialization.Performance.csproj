@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<NoWarn>CSLA0001</NoWarn>
+		<NoWarn>$(NoWarn);CSLA0007</NoWarn>
 		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 	<ItemGroup>
