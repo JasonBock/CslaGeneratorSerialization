@@ -68,10 +68,11 @@ You will also need to register the custom serializer during application configur
 var services = new ServiceCollection();
 services.AddCsla(o =>
   o.Serialization(so => so.SerializationFormatter(typeof(GeneratorFormatter))));
+services.AddCslaGeneratorSerialization();
 var provider = services.BuildServiceProvider();
 ```
 
-That should do it to get your application to start using this custom serialization formatter.
+That should do it to get your application to start using this custom serialization formatter. If you find any issues with this serializer, you can always back out by changing the serializer back to `MobileFormatter` in your call to `AddCsla()`.
 
 You can also support for types that the generator doesn't know how to serialize. You need to call `AddCslaGeneratorSerialiation()` on your `IServiceCollection` instance, and then register instances of `CustomSerialization` for each type you want to support. For example, if you wanted to add support for `int[]`, you could do this:
 
@@ -136,11 +137,15 @@ public sealed partial class Data
 
 You can read and write whatever you want to the underlying stream. The generator will automatically add the calls to `GetCustomState()` and `SetCustomState()` when it detects that your business object derives from `IGeneratorSerializableCustomization`.
 
+If this serializer encounters an object within a graph that doesn't implement `IGeneratorSerializable`, it'll try to use `MobileFormatter` to handle serialization. Therefore, you don't have to change **every** business object in your application to use `CslaGeneratorSerialization`, though you should if you can. This feature is only there to handle full graph serialization when you don't own the implementation of a type within a graph.
+
 There are more examples in the test projects - feel free to check out what's there.
+
+If you find any issues with this serializer, you can always back out by changing the serializer back to `MobileFormatter` in your call to `AddCsla()`.
 
 # Performance
 
-Performance results can be found [here](https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/docs/Overview.md).
+Performance results can be found [here](https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/src/CslaGeneratorSerialization.Performance/results.md).
 
 # Conclusion
 
