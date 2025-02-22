@@ -32,8 +32,7 @@ public static class CustomTests
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization();
-		services.AddSingleton(
+		services.AddCslaGeneratorSerialization(
 			new CustomSerialization<int[]>(
 				(data, writer) =>
 				{

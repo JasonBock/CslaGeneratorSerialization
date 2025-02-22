@@ -56,16 +56,14 @@ public static class CustomTests
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization();
-		services.AddSingleton(
+		services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
-		services.AddSingleton(
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
@@ -104,16 +102,14 @@ public static class CustomTests
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization();
-		services.AddSingleton(
+		services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
-		services.AddSingleton(
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
@@ -150,16 +146,14 @@ public static class CustomTests
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization();
-		services.AddSingleton(
+		services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
-		services.AddSingleton(
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{

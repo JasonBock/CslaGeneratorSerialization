@@ -26,7 +26,7 @@ public sealed class GeneratorFormatter
 			generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
 			return generatorGraph;
 		}
-		else if (graph is IMobileObject mobileGraph)
+		else if (graph is IMobileObject)
 		{
 			var mobileFormatter = new MobileFormatter(this.applicationContext);
 			return mobileFormatter.Deserialize(serializationStream);
@@ -64,6 +64,8 @@ public sealed class GeneratorFormatter
 		}
 		else if (graph is IMobileObject mobileGraph)
 		{
+			var writer = new BinaryWriter(serializationStream);
+			writer.Write(graph.GetType().AssemblyQualifiedName);
 			var mobileFormatter = new MobileFormatter(this.applicationContext);
 			mobileFormatter.Serialize(serializationStream, mobileGraph);
 		}
