@@ -72,28 +72,9 @@ internal static class IncrementalGeneratorInitializationContextExtensions
    internal static void RegisterTypes(this IncrementalGeneratorInitializationContext self) => 
 		self.RegisterPostInitializationOutput(static postInitializationContext =>
 		{
-			//var d = new Datum();
-
-			//BusinessListBaseAccessors<Datum, Data>.SetEditLevelProperty(d, 3);
-
 			foreach (var (fileName, code) in IncrementalGeneratorInitializationContextExtensions.GetOutputCode())
 			{
 				postInitializationContext.AddSource(fileName, SourceText.From(code, Encoding.UTF8));
 			}
 		});
-}
-
-public class Datum
-	: BusinessListBase<Datum, Data>
-{ }
-
-public class Data
-	: BusinessBase<Data>
-{ }
-
-public static class BusinessListBaseAccessors<T, C>
-	where T : global::Csla.BusinessListBase<T, C>
-	where C : global::Csla.Core.IEditableBusinessObject
-{
-	public static void SetEditLevelProperty(global::Csla.BusinessListBase<T, C> target, int value) { }
 }

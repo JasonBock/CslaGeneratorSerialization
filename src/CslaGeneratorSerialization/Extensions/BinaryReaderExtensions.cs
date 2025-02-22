@@ -8,14 +8,12 @@ public static class BinaryReaderExtensions
 	public static byte[] ReadByteArray(this BinaryReader reader)
 	{
 		var length = reader.ReadInt32();
-		var buffer = reader.ReadBytes(length);
-		return buffer;
+		return reader.ReadBytes(length);
 	}
 
 	public static char[] ReadCharArray(this BinaryReader reader)
 	{
 		var length = reader.ReadInt32();
-		var buffer = reader.ReadChars(length);
-		return buffer;
+		return reader.ReadChars(length);
 	}
 }

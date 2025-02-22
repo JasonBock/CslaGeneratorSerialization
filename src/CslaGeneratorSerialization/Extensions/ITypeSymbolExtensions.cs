@@ -41,7 +41,8 @@ internal static class ITypeSymbolExtensions
 		return string.Join(".", namespaces.Select(_ => _.Name));
 	}
 
-	internal static string GetFullyQualifiedName(this ITypeSymbol self, Compilation compilation, bool includeNullableAnnotation = true)
+	internal static string GetFullyQualifiedName(this ITypeSymbol self, 
+		Compilation compilation, bool includeNullableAnnotation = true)
 	{
 		const string GlobalPrefix = "global::";
 
@@ -49,11 +50,13 @@ internal static class ITypeSymbolExtensions
 
 		if (includeNullableAnnotation)
 		{
-			symbolFormatter = symbolFormatter.AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+			symbolFormatter = symbolFormatter.AddMiscellaneousOptions(
+				SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 		}
 		else
 		{
-			symbolFormatter = symbolFormatter.RemoveMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+			symbolFormatter = symbolFormatter.RemoveMiscellaneousOptions(
+				SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 		}
 
 		var symbolName = self.ToDisplayString(symbolFormatter);
@@ -85,10 +88,14 @@ internal static class ITypeSymbolExtensions
 			(self is INamedTypeSymbol namedSelf && namedSelf.TypeArguments.Any(_ => _.HasErrors()));
 
 	internal static bool IsMobileObject(this ITypeSymbol self) =>
-		(self.Name == nameof(IMobileObject) && self.GetNamespace() == "Csla.Serialization.Mobile" && self.ContainingAssembly.Name == "Csla") ||
+		(self.Name == nameof(IMobileObject) && 
+			self.GetNamespace() == "Csla.Serialization.Mobile" && 
+			self.ContainingAssembly.Name == "Csla") ||
 			self.AllInterfaces.Any(_ => _.IsMobileObject());
 
 	internal static bool IsGeneratorSerializable(this ITypeSymbol self) =>
-		(self.Name == nameof(IGeneratorSerializable) && self.GetNamespace() == "CslaGeneratorSerialization" && self.ContainingAssembly.Name == "CslaGeneratorSerialization") ||
+		(self.Name == nameof(IGeneratorSerializable) && 
+			self.GetNamespace() == "CslaGeneratorSerialization" && 
+			self.ContainingAssembly.Name == "CslaGeneratorSerialization") ||
 			self.AllInterfaces.Any(_ => _.IsGeneratorSerializable());
 }
