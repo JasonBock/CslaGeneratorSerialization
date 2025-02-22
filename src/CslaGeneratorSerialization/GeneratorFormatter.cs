@@ -1,31 +1,40 @@
 ﻿using Csla;
 using Csla.Serialization;
+using Csla.Serialization.Mobile;
 
 namespace CslaGeneratorSerialization;
 
 public sealed class GeneratorFormatter
 	: ISerializationFormatter
 {
-	private readonly ApplicationContext applicationContext;
+   private const string SerializationExceptionMessage = "The given object must implement IGeneratorSerializable or derive from IMobileObject.";
+   private readonly ApplicationContext applicationContext;
 	private readonly CustomSerializationResolver resolver;
 
 	public GeneratorFormatter(ApplicationContext applicationContext, CustomSerializationResolver resolver) =>
 		(this.applicationContext, this.resolver) = (applicationContext, resolver);
 
 	public object Deserialize(Stream serializationStream)
-   {
+	{
 		var reader = new BinaryReader(serializationStream);
 		var graphTypeName = reader.ReadString();
 
 		var graph = this.applicationContext.CreateInstance(Type.GetType(graphTypeName));
 
-		if (graph is not IGeneratorSerializable generatorGraph)
+		if (graph is IGeneratorSerializable generatorGraph)
 		{
-			throw new NotSupportedException("The given object must implement IGeneratorSerializable.");
+			generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
+			return generatorGraph;
 		}
-
-		generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
-		return generatorGraph;
+		else if (graph is IMobileObject mobileGraph)
+		{
+			var mobileFormatter = new MobileFormatter(this.applicationContext);
+			return mobileFormatter.Deserialize(serializationStream);
+		}
+		else
+		{
+			throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+		}
 	}
 
 	public object Deserialize(byte[] serializationStream)
@@ -47,14 +56,21 @@ public sealed class GeneratorFormatter
 	/// </param>
 	public void Serialize(Stream serializationStream, object graph)
 	{
-		if (graph is not IGeneratorSerializable generatorGraph)
+		if (graph is IGeneratorSerializable generatorGraph)
 		{
-			throw new NotSupportedException("The given object must implement IGeneratorSerializable.");
+			var writer = new BinaryWriter(serializationStream);
+			writer.Write(graph.GetType().AssemblyQualifiedName);
+			generatorGraph.SetState(new GeneratorFormatterWriterContext(this.applicationContext, this.resolver, writer));
 		}
-
-		var writer = new BinaryWriter(serializationStream);
-		writer.Write(graph.GetType().AssemblyQualifiedName);
-		generatorGraph.SetState(new GeneratorFormatterWriterContext(this.applicationContext, this.resolver, writer));
+		else if (graph is IMobileObject mobileGraph)
+		{
+			var mobileFormatter = new MobileFormatter(this.applicationContext);
+			mobileFormatter.Serialize(serializationStream, mobileGraph);
+		}
+		else
+		{
+			throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+		}
 	}
 
 	/// <summary>
