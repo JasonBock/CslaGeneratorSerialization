@@ -28,7 +28,7 @@ internal sealed class GeneratorSerializationBuilder
 
 		var boNamespace = this.Model.BusinessObject.Namespace;
 
-		if (boNamespace is not null)
+		if (!string.IsNullOrWhiteSpace(boNamespace))
 		{
 			indentWriter.WriteLines(
 				$"""
