@@ -1,15 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<AssemblyName>CslaGeneratorSerialization.Tests</AssemblyName>
+		<AssemblyName>CslaGeneratorSerialization.Analysis.Tests</AssemblyName>
 		<NoWarn>$(NoWarn);CA2007;NU1903</NoWarn>
-		<RootNamespace>CslaGeneratorSerialization.Tests</RootNamespace>
+		<RootNamespace>CslaGeneratorSerialization.Analysis.Tests</RootNamespace>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
+		<ProjectReference Include="..\CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Csla" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NuGet.Frameworks" />
 		<PackageReference Include="NUnit" />

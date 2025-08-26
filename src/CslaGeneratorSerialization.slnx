@@ -7,7 +7,10 @@
     <File Path="Directory.Packages.props" />
     <File Path="nuget.config" />
   </Folder>
+  <Project Path="CslaGeneratorSerialization.Analysis.Tests/CslaGeneratorSerialization.Analysis.Tests.csproj" Id="4e1e9de2-cf3f-4a7f-809f-628c78611c9c" />
+  <Project Path="CslaGeneratorSerialization.Analysis/CslaGeneratorSerialization.Analysis.csproj" Id="0074dd6a-690b-4945-92de-2a461acb4a13" />
   <Project Path="CslaGeneratorSerialization.IntegrationTests/CslaGeneratorSerialization.IntegrationTests.csproj" />
+  <Project Path="CslaGeneratorSerialization.Package/CslaGeneratorSerialization.Package.csproj" Id="1d104bb9-7eea-492f-9fe2-db97f0b61c1f" />
   <Project Path="CslaGeneratorSerialization.Performance/CslaGeneratorSerialization.Performance.csproj" />
   <Project Path="CslaGeneratorSerialization.Tests/CslaGeneratorSerialization.Tests.csproj" />
   <Project Path="CslaGeneratorSerialization/CslaGeneratorSerialization.csproj" />

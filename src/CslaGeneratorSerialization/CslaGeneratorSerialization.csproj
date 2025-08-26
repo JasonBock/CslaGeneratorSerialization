@@ -1,43 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization</AssemblyName>
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 		<DebugType>embedded</DebugType>
-		<Description>A custom CSLA serializer using C# source generator</Description>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
-		<EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<NoWarn>$(NoWarn);CS1591;RS1036</NoWarn>
-		<PackageIcon>Icon.png</PackageIcon>
-		<PackageId>CslaGeneratorSerialization</PackageId>
-		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<PackageProjectUrl>https://github.com/JasonBock/CslaGeneratorSerialization</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageReleaseNotes>A changelog is available at https://github.com/JasonBock/CslaGeneratorSerialization/blob/main/changelog.md</PackageReleaseNotes>
-		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageTags>CSLA C# .NET serialization</PackageTags>
-		<PackageVersion>$(Version)</PackageVersion>
-		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/jasonbock/CslaGeneratorSerialization</RepositoryUrl>
 		<RootNamespace>CslaGeneratorSerialization</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Csla" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\..\README.md" Pack="true" PackagePath="" />
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
 		<None Include="..\Images\Icon.png" Pack="true" PackagePath="" Visible="false" />
-		<None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 </Project>
