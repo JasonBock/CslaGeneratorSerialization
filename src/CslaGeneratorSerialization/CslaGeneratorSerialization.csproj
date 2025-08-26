@@ -12,9 +12,4 @@
 	<ItemGroup>
 		<PackageReference Include="Csla" PrivateAssets="all" />
 	</ItemGroup>
-	<ItemGroup>
-		<None Include="..\..\README.md" Pack="true" PackagePath="" />
-		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
-		<None Include="..\Images\Icon.png" Pack="true" PackagePath="" Visible="false" />
-	</ItemGroup>
 </Project>
