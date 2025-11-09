@@ -87,13 +87,13 @@ public static class CustomTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.CustomClass.Name, Is.EqualTo("Custom Class"));
 			Assert.That(newData.CustomClass.Id, Is.EqualTo(1));
 			Assert.That(newData.CustomStruct.Name, Is.EqualTo("Custom Struct"));
 			Assert.That(newData.CustomStruct.Id, Is.EqualTo(2));
-		});
+		}
 	}
 
 	[Test]
@@ -131,13 +131,13 @@ public static class CustomTests
 		var cloner = new ObjectCloner(context);
 		var newData = (Data)cloner.Clone(data);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.CustomClass.Name, Is.EqualTo("Custom Class"));
 			Assert.That(newData.CustomClass.Id, Is.EqualTo(1));
 			Assert.That(newData.CustomStruct.Name, Is.EqualTo("Custom Struct"));
 			Assert.That(newData.CustomStruct.Id, Is.EqualTo(2));
-		});
+		}
 	}
 
 	[Test]
@@ -178,13 +178,13 @@ public static class CustomTests
 		data.CustomStruct = new CustomStructData { Id = 3, Name = "Custom Struct 2" };
 		data.CancelEdit();
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(data.CustomClass.Name, Is.EqualTo("Custom Class"));
 			Assert.That(data.CustomClass.Id, Is.EqualTo(1));
 			Assert.That(data.CustomStruct.Name, Is.EqualTo("Custom Struct"));
 			Assert.That(data.CustomStruct.Id, Is.EqualTo(2));
-		});
+		}
 	}
 
 	[Test]

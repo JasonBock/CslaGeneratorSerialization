@@ -19,7 +19,7 @@ public sealed partial class Person
 	/// 
 	/// </summary>
 	public static readonly PropertyInfo<uint> AgeProperty =
-		RegisterProperty<uint>(_ => _.Age);
+		RegisterProperty<uint>(nameof(Age));
 	/// <summary>
 	/// 
 	/// </summary>
@@ -34,7 +34,7 @@ public sealed partial class Person
 	/// 
 	/// </summary>
 	public static readonly PropertyInfo<Guid> IdProperty =
-		RegisterProperty<Guid>(_ => _.Id);
+		RegisterProperty<Guid>(nameof(Id));
 	/// <summary>
 	/// 
 	/// </summary>
@@ -49,14 +49,14 @@ public sealed partial class Person
 	/// 
 	/// </summary>
 	public static readonly PropertyInfo<string> NameProperty =
-		RegisterProperty<string>(_ => _.Name);
+		RegisterProperty<string>(nameof(Name));
 	/// <summary>
 	/// 
 	/// </summary>
 	[Required]
 	public string Name
 	{
-		get => this.GetProperty(Person.NameProperty);
+		get => this.GetProperty(Person.NameProperty)!;
 		set => this.SetProperty(Person.NameProperty, value);
 	}
 }

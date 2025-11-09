@@ -72,12 +72,12 @@ public static class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Int32Contents, Is.EqualTo(3));
 			Assert.That(newData.StringContents, Is.EqualTo("4"));
 			Assert.That(newData.ChildContents.Value, Is.EqualTo("ABC"));
-		});
+		}
 	}
 
 	[Test]
@@ -98,10 +98,10 @@ public static class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.StringContents, Is.EqualTo(string.Empty));
 			Assert.That(newData.ChildContents, Is.Null);
-		});
+		}
 	}
 }

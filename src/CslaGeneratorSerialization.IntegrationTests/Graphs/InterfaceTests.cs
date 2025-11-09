@@ -72,11 +72,11 @@ public static class InterfaceTests
 		stream.Position = 0;
 		var newData = (ConsumeData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			var dataProperty = (InterfaceData)newData.Contents;
 			Assert.That(dataProperty.Contents, Is.EqualTo("ABC"));
 			Assert.That(dataProperty.Extra, Is.EqualTo(3));
-		});
+		}
 	}
 }

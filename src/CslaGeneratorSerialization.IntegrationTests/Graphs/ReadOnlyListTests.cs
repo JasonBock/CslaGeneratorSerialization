@@ -67,10 +67,10 @@ public static class ListTests
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Values, Has.Count.EqualTo(1));
 			Assert.That(newData.Values[0].Value, Is.EqualTo("123"));
-		});
+		}
 	}
 }

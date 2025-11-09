@@ -73,11 +73,11 @@ public static class SealedTests
 		stream.Position = 0;
 		var newData = (ConsumingData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			var dataProperty = (DerivedData)newData.Contents;
 			Assert.That(dataProperty.Core, Is.EqualTo("ABC"));
 			Assert.That(dataProperty.Custom, Is.EqualTo(3));
-		});
+		}
 	}
 }

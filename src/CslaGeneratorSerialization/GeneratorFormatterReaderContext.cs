@@ -9,7 +9,7 @@ public sealed class GeneratorFormatterReaderContext
 {
 	private int referenceIdCounter;
 	private int typeNameIdCounter;
-	private readonly Dictionary<int, object> references = [];
+	private readonly Dictionary<int, object?> references = [];
 	private readonly Dictionary<int, string> typeNames = [];
 
 	internal GeneratorFormatterReaderContext(ApplicationContext context, CustomSerializationResolver resolver, BinaryReader reader) =>
@@ -21,7 +21,7 @@ public sealed class GeneratorFormatterReaderContext
 	public T CreateInstance<T>(string typeName) =>
 		(T)this.Context.CreateInstance(Type.GetType(typeName));
 
-	public void AddReference(object reference)
+	public void AddReference(object? reference)
 	{
 		this.references.Add(this.referenceIdCounter, reference);
 		this.referenceIdCounter++;
@@ -33,7 +33,7 @@ public sealed class GeneratorFormatterReaderContext
 		this.typeNameIdCounter++;
 	}
 
-	public object GetReference(int referenceId) => this.references[referenceId];
+	public object? GetReference(int referenceId) => this.references[referenceId];
 	public string GetTypeName(int typeNameId) => this.typeNames[typeNameId];
 
 	public T? Read<T>(bool isSealed)
@@ -43,7 +43,7 @@ public sealed class GeneratorFormatterReaderContext
 
 		if (state == SerializationState.Duplicate)
 		{
-			return (T)this.GetReference(this.Reader.ReadInt32());
+			return this.GetReference(this.Reader.ReadInt32()) as T;
 		}
 		else if (state == SerializationState.Value)
 		{
@@ -85,13 +85,13 @@ public sealed class GeneratorFormatterReaderContext
 
 		if (state == SerializationState.Duplicate)
 		{
-			return (T)this.GetReference(this.Reader.ReadInt32());
+			return this.GetReference(this.Reader.ReadInt32()) as T;
 		}
 		else if (state == SerializationState.Value)
 		{
 			var mobileObjectData = this.Reader.ReadBytes(this.Reader.ReadInt32());
 			var mobileFormatter = new MobileFormatter(this.Context);
-			var newValue = (T)((ISerializationFormatter)mobileFormatter).Deserialize(mobileObjectData);
+			var newValue = ((ISerializationFormatter)mobileFormatter).Deserialize(mobileObjectData) as T;
 
 			this.AddReference(newValue);
 			return newValue;

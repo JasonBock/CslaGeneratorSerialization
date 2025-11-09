@@ -42,14 +42,14 @@ public static class ClaimsPrincipalTests
 		stream.Position = 0;
 		var newData = (ClaimsPrincipalData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			var identity = newData.Contents.Identities.Single();
 			Assert.That(identity.AuthenticationType, Is.EqualTo("fake auth"));
 			var claim = identity.Claims.Single();
 			Assert.That(claim.Type, Is.EqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"));
 			Assert.That(claim.Value, Is.EqualTo("admin"));
-		});
+		}
 	}
 
 	[Test]

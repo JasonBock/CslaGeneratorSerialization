@@ -57,11 +57,11 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
 			Assert.That(newData.Right!.Name, Is.EqualTo("Right"));
-		});
+		}
 	}
 
 	[Test]
@@ -82,12 +82,12 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
 			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
 			Assert.That(newData.Left, Is.SameAs(newData.Right));
-		});
+		}
 	}
 
 	[Test]
@@ -108,11 +108,11 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
 			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
 			Assert.That(newData.Left, Is.SameAs(newData.Right));
-		});
+		}
 	}
 }

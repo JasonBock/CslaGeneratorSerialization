@@ -38,13 +38,13 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.True, nameof(newData.IsNew));
 			Assert.That(newData.IsDeleted, Is.False, nameof(newData.IsDeleted));
 			Assert.That(newData.IsDirty, Is.True, nameof(newData.IsDirty));
 			Assert.That(newData.IsChild, Is.False, nameof(newData.IsChild));
-		});
+		}
 	}
 
 	[Test]
@@ -60,13 +60,13 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.False);
 			Assert.That(newData.IsDeleted, Is.False);
 			Assert.That(newData.IsDirty, Is.False);
 			Assert.That(newData.IsChild, Is.False);
-		});
+		}
 	}
 
 	[Test]
@@ -84,13 +84,13 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.True);
 			Assert.That(newData.IsDeleted, Is.False);
 			Assert.That(newData.IsDirty, Is.True);
 			Assert.That(newData.IsChild, Is.False);
-		});
+		}
 	}
 
 	[Test]
@@ -108,13 +108,13 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.False);
 			Assert.That(newData.IsDeleted, Is.False);
 			Assert.That(newData.IsDirty, Is.True);
 			Assert.That(newData.IsChild, Is.False);
-		});
+		}
 	}
 
 	[Test]
@@ -133,13 +133,13 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.True);
 			Assert.That(newData.IsDeleted, Is.True);
 			Assert.That(newData.IsDirty, Is.True);
 			Assert.That(newData.IsChild, Is.False);
-		});
+		}
 	}
 
 	[Test]
@@ -158,12 +158,12 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.IsNew, Is.False);
 			Assert.That(newData.IsDeleted, Is.True);
 			Assert.That(newData.IsDirty, Is.True);
 			Assert.That(newData.IsChild, Is.False);
-		});
+		}
 	}
 }

@@ -17,8 +17,7 @@ internal static class TestAssistants
 	{
 		var test = new AnalyzerTest<TAnalyzer>()
 		{
-			//ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
-			ReferenceAssemblies = TestAssistants.GetNet90(),
+			ReferenceAssemblies = TestAssistants.net10ReferenceAssemblies.Value,
 			TestState =
 			{
 				Sources = { code },
@@ -49,8 +48,7 @@ internal static class TestAssistants
 	{
 		var test = new IncrementalGeneratorTest<TGenerator>(generalDiagnosticOption)
 		{
-			//ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
-			ReferenceAssemblies = TestAssistants.GetNet90(),
+			ReferenceAssemblies = TestAssistants.net10ReferenceAssemblies.Value,
 			TestState =
 			{
 				Sources = { code },
@@ -86,21 +84,21 @@ internal static class TestAssistants
 		await test.RunAsync();
 	}
 
-	private static ReferenceAssemblies GetNet90()
+	private static readonly Lazy<ReferenceAssemblies> net10ReferenceAssemblies = new(() =>
 	{
 		// Always look here for the latest version of a particular runtime:
 		// https://www.nuget.org/packages/Microsoft.NETCore.App.Ref
-		if (!NuGetFramework.Parse("net9.0").IsPackageBased)
+		if (!NuGetFramework.Parse("net10.0").IsPackageBased)
 		{
-			// The NuGet version provided at runtime does not recognize the 'net9.0' target framework
-			throw new NotSupportedException("The 'net9.0' target framework is not supported by this version of NuGet.");
+			// The NuGet version provided at runtime does not recognize the 'net10.0' target framework
+			throw new NotSupportedException("The 'net10.0' target framework is not supported by this version of NuGet.");
 		}
 
 		return new ReferenceAssemblies(
-			 "net9.0",
+			 "net10.0",
 			 new PackageIdentity(
 				  "Microsoft.NETCore.App.Ref",
-				  "9.0.0-rc.1.24431.7"),
-			 Path.Combine("ref", "net9.0"));
-	}
+				  "10.0.0-rc.1.25451.107"),
+			 Path.Combine("ref", "net10.0"));
+	}, LazyThreadSafetyMode.ExecutionAndPublication);
 }

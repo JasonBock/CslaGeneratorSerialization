@@ -13,8 +13,8 @@ public static class IServiceCollectionExtensionsTests
 		var services = new ServiceCollection();
 		services.AddCslaGeneratorSerialization();
 
-		Assert.Multiple(() =>
-		{
+	  using (Assert.EnterMultipleScope())
+	  {
 			Assert.That(services, Has.Count.EqualTo(2));
 
 			var customSerializationResolverRegistration =
@@ -24,7 +24,7 @@ public static class IServiceCollectionExtensionsTests
 			var mobileFormatterOptionsRegistration =
 				services.Single(_ => _.ServiceType == typeof(MobileFormatterOptions));
 			Assert.That(mobileFormatterOptionsRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
-		});
+		}
 	}
 
 	[Test]
@@ -36,8 +36,8 @@ public static class IServiceCollectionExtensionsTests
 				(data, writer) => { },
 				(reader) => "a"));
 
-		Assert.Multiple(() =>
-		{
+	  using (Assert.EnterMultipleScope())
+	  {
 			Assert.That(services, Has.Count.EqualTo(3));
 
 			var customSerializationResolverRegistration =
@@ -54,6 +54,6 @@ public static class IServiceCollectionExtensionsTests
 			var customSerializationOfStringRegistration =
 				services.Single(_ => _.ServiceType == typeof(CustomSerialization<string>));
 			Assert.That(customSerializationOfStringRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
-		});
+		}
 	}
 }

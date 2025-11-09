@@ -14,7 +14,7 @@ public sealed class GeneratorFormatter
 	public GeneratorFormatter(ApplicationContext applicationContext, CustomSerializationResolver resolver) =>
 		(this.applicationContext, this.resolver) = (applicationContext, resolver);
 
-	public object Deserialize(Stream serializationStream)
+	public object? Deserialize(Stream serializationStream)
 	{
 		var reader = new BinaryReader(serializationStream);
 		var graphTypeName = reader.ReadString();
@@ -37,7 +37,7 @@ public sealed class GeneratorFormatter
 		}
 	}
 
-	public object Deserialize(byte[] serializationStream)
+	public object? Deserialize(byte[] serializationStream)
 	{
 		using var stream = new MemoryStream(serializationStream);
 		return this.Deserialize(stream);
@@ -54,7 +54,7 @@ public sealed class GeneratorFormatter
 	/// Root object of the object graph
 	/// to serialize.
 	/// </param>
-	public void Serialize(Stream serializationStream, object graph)
+	public void Serialize(Stream serializationStream, object? graph)
 	{
 		if (graph is IGeneratorSerializable generatorGraph)
 		{
@@ -79,7 +79,7 @@ public sealed class GeneratorFormatter
 	/// Converts an object graph into a byte stream.
 	/// </summary>
 	/// <param name="graph">Object graph to be serialized.</param>
-	public byte[] Serialize(object graph)
+	public byte[] Serialize(object? graph)
 	{
 		using var buffer = new MemoryStream();
 		this.Serialize(buffer, graph);

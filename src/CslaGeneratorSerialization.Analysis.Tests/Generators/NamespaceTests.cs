@@ -5,7 +5,7 @@ namespace CslaGeneratorSerialization.Analysis.Tests.Generators;
 public static class NamespaceTests
 {
 	[Test]
-	public static async Task CreateWhenBusinessObjectHasNoNamespace()
+	public static async Task CreateWhenBusinessObjectHasNoNamespaceAsync()
 	{
 		var code =
 			"""

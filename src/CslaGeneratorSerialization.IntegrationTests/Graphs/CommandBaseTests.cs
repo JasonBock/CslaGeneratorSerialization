@@ -49,10 +49,10 @@ public static class CommandBaseTestsTests
 		stream.Position = 0;
 		var newData = (Operation)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Int32Contents, Is.EqualTo(3));
 			Assert.That(newData.StringContents, Is.EqualTo("4"));
-		});
+		}
 	}
 }

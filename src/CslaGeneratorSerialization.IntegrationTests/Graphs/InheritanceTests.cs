@@ -86,11 +86,11 @@ public static class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromAbstractData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Core, Is.EqualTo("ABC"));
 			Assert.That(newData.Custom, Is.EqualTo(3));
-		});
+		}
 	}
 
 	[Test]
@@ -109,10 +109,10 @@ public static class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromBaseData)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Core, Is.EqualTo("ABC"));
 			Assert.That(newData.Custom, Is.EqualTo(3));
-		});
+		}
 	}
 }

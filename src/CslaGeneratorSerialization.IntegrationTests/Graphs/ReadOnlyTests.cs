@@ -73,11 +73,11 @@ public static class ReadOnlyTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.StringContents, Is.EqualTo("123"));
 			Assert.That(newData.Int32Contents, Is.EqualTo(123));
 			Assert.That(newData.ChildContents.Value, Is.EqualTo("Child 123"));
-		});
+		}
 	}
 }

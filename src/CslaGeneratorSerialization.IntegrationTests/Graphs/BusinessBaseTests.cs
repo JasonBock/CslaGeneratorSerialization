@@ -23,7 +23,7 @@ public partial class Customer
 		Customer.RegisterProperty<string>(nameof(Customer.Name));
 	public string Name
 	{
-		get => this.GetProperty(Customer.NameProperty);
+		get => this.GetProperty(Customer.NameProperty)!;
 		set => this.SetProperty(Customer.NameProperty, value);
 	}
 }
@@ -46,10 +46,10 @@ public static class BusinessBaseTests
 		stream.Position = 0;
 		var newData = (Customer)formatter.Deserialize(stream);
 
-		Assert.Multiple(() =>
+		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(newData.Name, Is.EqualTo(data.Name));
 			Assert.That(newData.Age, Is.EqualTo(data.Age));
-		});
+		}
 	}
 }
