@@ -18,7 +18,7 @@ public sealed partial class StateData
 		RegisterProperty<string>(nameof(StateData.Contents));
 	public string Contents
 	{
-		get => this.GetProperty(StateData.ContentsProperty);
+		get => this.GetProperty(StateData.ContentsProperty)!;
 		set => this.SetProperty(StateData.ContentsProperty, value);
 	}
 }
@@ -36,7 +36,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -58,7 +58,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -82,7 +82,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -106,7 +106,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -131,7 +131,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -156,7 +156,7 @@ public static class StateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream);
+		var newData = (StateData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

@@ -37,7 +37,7 @@ public static class CharArrayTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (CharArrayData)formatter.Deserialize(stream);
+		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.EquivalentTo(new[] { 'a', 'b', 'c' }));
 	}
@@ -56,7 +56,7 @@ public static class CharArrayTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (CharArrayData)formatter.Deserialize(stream);
+		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.Null);
 	}

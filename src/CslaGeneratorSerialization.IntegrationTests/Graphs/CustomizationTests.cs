@@ -53,7 +53,7 @@ public static class CustomizationTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Customization)formatter.Deserialize(stream);
+		var newData = (Customization)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Custom, Is.EqualTo(33));
 	}

@@ -37,7 +37,7 @@ public static class ByteArrayTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ByteArrayData)formatter.Deserialize(stream);
+		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.EquivalentTo(new byte[] { 22, 33, 44 }));
 	}
@@ -56,7 +56,7 @@ public static class ByteArrayTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ByteArrayData)formatter.Deserialize(stream);
+		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.Null);
 	}

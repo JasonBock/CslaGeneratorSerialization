@@ -47,7 +47,7 @@ public static class CommandBaseTestsTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Operation)formatter.Deserialize(stream);
+		var newData = (Operation)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

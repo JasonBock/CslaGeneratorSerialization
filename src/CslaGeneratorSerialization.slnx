@@ -5,6 +5,7 @@
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
     <File Path="nuget.config" />
   </Folder>
   <Project Path="CslaGeneratorSerialization.Analysis.Tests/CslaGeneratorSerialization.Analysis.Tests.csproj" Id="4e1e9de2-cf3f-4a7f-809f-628c78611c9c" />

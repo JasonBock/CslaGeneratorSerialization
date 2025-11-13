@@ -35,7 +35,7 @@ public static class StringTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StringData)formatter.Deserialize(stream);
+		var newData = (StringData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.EqualTo("ABC"));
 	}
@@ -54,7 +54,7 @@ public static class StringTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (StringData)formatter.Deserialize(stream);
+		var newData = (StringData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.EqualTo(string.Empty));
 	}

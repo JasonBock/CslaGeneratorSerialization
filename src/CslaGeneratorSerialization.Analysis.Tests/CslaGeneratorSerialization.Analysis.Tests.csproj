@@ -5,7 +5,6 @@
 		<EnableNUnitRunner>true</EnableNUnitRunner>
 		<NoWarn>$(NoWarn);CA2007;NU1903</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.Analysis.Tests</RootNamespace>
-		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />

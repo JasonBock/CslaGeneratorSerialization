@@ -84,7 +84,7 @@ public static class InheritanceTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (DerivedFromAbstractData)formatter.Deserialize(stream);
+		var newData = (DerivedFromAbstractData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -107,7 +107,7 @@ public static class InheritanceTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (DerivedFromBaseData)formatter.Deserialize(stream);
+		var newData = (DerivedFromBaseData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

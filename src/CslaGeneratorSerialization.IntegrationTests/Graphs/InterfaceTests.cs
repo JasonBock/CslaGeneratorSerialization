@@ -70,7 +70,7 @@ public static class InterfaceTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ConsumeData)formatter.Deserialize(stream);
+		var newData = (ConsumeData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

@@ -19,7 +19,7 @@ public static class MobileCustomSerializerTests
 			new MobileCustomSerializer<CustomData>(customSerialization);
 
 		var data = new CustomData { Id = 3 };
-		var info = new SerializationInfo();
+		var info = new SerializationInfo(1, typeof(CustomData).AssemblyQualifiedName!);
 		mobileCustomSerialization.Serialize(data, info);
 		var newData = (CustomData)mobileCustomSerialization.Deserialize(info);
 

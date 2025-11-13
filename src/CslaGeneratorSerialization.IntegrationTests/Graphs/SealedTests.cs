@@ -71,7 +71,7 @@ public static class SealedTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ConsumingData)formatter.Deserialize(stream);
+		var newData = (ConsumingData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

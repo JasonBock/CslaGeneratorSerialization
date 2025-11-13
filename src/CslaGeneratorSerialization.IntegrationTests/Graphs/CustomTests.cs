@@ -85,7 +85,7 @@ public static class CustomTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Data)formatter.Deserialize(stream);
+		var newData = (Data)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

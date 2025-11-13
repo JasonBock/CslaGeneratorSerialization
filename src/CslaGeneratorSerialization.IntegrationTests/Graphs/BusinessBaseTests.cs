@@ -44,7 +44,7 @@ public static class BusinessBaseTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Customer)formatter.Deserialize(stream);
+		var newData = (Customer)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

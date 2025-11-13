@@ -16,7 +16,7 @@ public sealed partial class ParentData
 		RegisterProperty<ChildData>(nameof(ParentData.Contents));
 	public ChildData Contents
 	{
-		get => this.GetProperty(ParentData.ContentsProperty);
+		get => this.GetProperty(ParentData.ContentsProperty)!;
 		set => this.SetProperty(ParentData.ContentsProperty, value);
 	}
 }
@@ -32,7 +32,7 @@ public sealed partial class ChildData
 		RegisterProperty<string>(nameof(ChildData.ChildContents));
 	public string ChildContents
 	{
-		get => this.GetProperty(ChildData.ChildContentsProperty);
+		get => this.GetProperty(ChildData.ChildContentsProperty)!;
 		set => this.SetProperty(ChildData.ChildContentsProperty, value);
 	}
 }
@@ -49,7 +49,7 @@ public sealed partial class NonParticipatingParentData
 		RegisterProperty<NonParticipatingChildData>(nameof(NonParticipatingParentData.Contents));
 	public NonParticipatingChildData Contents
 	{
-		get => this.GetProperty(NonParticipatingParentData.ContentsProperty);
+		get => this.GetProperty(NonParticipatingParentData.ContentsProperty)!;
 		set => this.SetProperty(NonParticipatingParentData.ContentsProperty, value);
 	}
 }
@@ -64,7 +64,7 @@ public sealed class NonParticipatingChildData
 		RegisterProperty<string>(nameof(NonParticipatingChildData.ChildContents));
 	public string ChildContents
 	{
-		get => this.GetProperty(NonParticipatingChildData.ChildContentsProperty);
+		get => this.GetProperty(NonParticipatingChildData.ChildContentsProperty)!;
 		set => this.SetProperty(NonParticipatingChildData.ChildContentsProperty, value);
 	}
 }
@@ -84,7 +84,7 @@ public static class ChildBusinessObjectTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ParentData)formatter.Deserialize(stream);
+		var newData = (ParentData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}
@@ -102,7 +102,7 @@ public static class ChildBusinessObjectTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (NonParticipatingParentData)formatter.Deserialize(stream);
+		var newData = (NonParticipatingParentData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}
@@ -121,7 +121,7 @@ public static class ChildBusinessObjectTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ParentData)formatter.Deserialize(stream);
+		var newData = (ParentData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.Null);
 	}

@@ -65,7 +65,7 @@ public static class ListTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, experiments);
 		stream.Position = 0;
-		var newData = (Experiments)formatter.Deserialize(stream);
+		var newData = (Experiments)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

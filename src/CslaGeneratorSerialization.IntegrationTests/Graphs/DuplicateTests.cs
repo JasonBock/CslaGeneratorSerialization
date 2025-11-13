@@ -55,7 +55,7 @@ public static class DuplicateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Node)formatter.Deserialize(stream);
+		var newData = (Node)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -80,7 +80,7 @@ public static class DuplicateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Node)formatter.Deserialize(stream);
+		var newData = (Node)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -106,7 +106,7 @@ public static class DuplicateTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (Node)formatter.Deserialize(stream);
+		var newData = (Node)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

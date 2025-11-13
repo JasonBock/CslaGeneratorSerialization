@@ -53,7 +53,7 @@ public static class EnumTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (EnumData)formatter.Deserialize(stream);
+		var newData = (EnumData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.EqualTo(States.Second));
 	}
@@ -72,7 +72,7 @@ public static class EnumTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (EnumNullableData)formatter.Deserialize(stream);
+		var newData = (EnumNullableData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.Null);
 	}

@@ -70,7 +70,7 @@ public static class MultiplePropertiesTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ParentPropertiesData)formatter.Deserialize(stream);
+		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -96,7 +96,7 @@ public static class MultiplePropertiesTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (ParentPropertiesData)formatter.Deserialize(stream);
+		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
 		using (Assert.EnterMultipleScope())
 		{

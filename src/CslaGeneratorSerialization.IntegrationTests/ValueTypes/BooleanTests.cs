@@ -51,7 +51,7 @@ public static class BooleanTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (BooleanData)formatter.Deserialize(stream);
+		var newData = (BooleanData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.True);
 	}
@@ -70,7 +70,7 @@ public static class BooleanTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
-		var newData = (BooleanNullableData)formatter.Deserialize(stream);
+		var newData = (BooleanNullableData)formatter.Deserialize(stream)!;
 
 		Assert.That(newData.Contents, Is.Null);
 	}
