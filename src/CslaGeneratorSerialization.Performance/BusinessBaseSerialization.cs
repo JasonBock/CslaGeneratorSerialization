@@ -51,7 +51,7 @@ public class BusinessBaseSerialization
 		using var stream = new MemoryStream();
 		this.generatorFormatter.Serialize(stream, this.generatorPerson);
 		stream.Position = 0;
-		return (Person)this.generatorFormatter.Deserialize(stream);
+		return (Person)this.generatorFormatter.Deserialize(stream)!;
 	}
 
 	[Benchmark(Baseline = true)]
@@ -60,6 +60,6 @@ public class BusinessBaseSerialization
 		using var stream = new MemoryStream();
 		this.mobileFormatter.Serialize(stream, this.mobilePerson);
 		stream.Position = 0;
-		return (Person)this.mobileFormatter.Deserialize(stream);
+		return (Person)this.mobileFormatter.Deserialize(stream)!;
 	}
 }

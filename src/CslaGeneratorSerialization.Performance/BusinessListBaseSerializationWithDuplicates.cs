@@ -80,7 +80,7 @@ public class BusinessListBaseSerializationWithDuplicates
 		using var stream = new MemoryStream();
 		this.generatorFormatter.Serialize(stream, this.generatorPeople);
 		stream.Position = 0;
-		return (People)this.generatorFormatter.Deserialize(stream);
+		return (People)this.generatorFormatter.Deserialize(stream)!;
 	}
 
 	[Benchmark(Baseline = true)]
@@ -89,6 +89,6 @@ public class BusinessListBaseSerializationWithDuplicates
 		using var stream = new MemoryStream();
 		this.mobileFormatter.Serialize(stream, this.mobilePeople);
 		stream.Position = 0;
-		return (People)this.mobileFormatter.Deserialize(stream);
+		return (People)this.mobileFormatter.Deserialize(stream)!;
 	}
 }
