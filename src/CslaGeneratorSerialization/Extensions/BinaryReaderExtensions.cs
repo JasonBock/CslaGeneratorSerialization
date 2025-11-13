@@ -2,18 +2,36 @@
 
 public static class BinaryReaderExtensions
 {
-	public static SerializationState ReadStateValue(this BinaryReader reader) =>
-		(SerializationState)reader.ReadByte();
-
-	public static byte[] ReadByteArray(this BinaryReader reader)
+	extension(BinaryReader self)
 	{
-		var length = reader.ReadInt32();
-		return reader.ReadBytes(length);
-	}
+		public SerializationState ReadStateValue() =>
+			(SerializationState)self.ReadByte();
 
-	public static char[] ReadCharArray(this BinaryReader reader)
-	{
-		var length = reader.ReadInt32();
-		return reader.ReadChars(length);
+		public byte[] ReadByteArray()
+		{
+			var length = self.ReadInt32();
+			return self.ReadBytes(length);
+		}
+
+		public char[] ReadCharArray()
+		{
+			var length = self.ReadInt32();
+			return self.ReadChars(length);
+		}
+
+		public T? Read<T>(Func<T> reader)
+			where T : class
+		{
+			var state = (SerializationState)self.ReadByte();
+
+			if (state == SerializationState.Value)
+			{
+				return reader();
+			}
+			else
+			{
+				return null;
+			}
+		}
 	}
 }

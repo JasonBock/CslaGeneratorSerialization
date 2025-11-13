@@ -2,45 +2,61 @@
 
 public static class BinaryWriterExtensions
 {
-	// Before I forget...
-	// the reason I have these two extensions is that
-	// there are already methods to handle a byte[] or char[],
-	// but I need to put the length in first.
-	// So I need a different method signature.
-	public static void Write(this BinaryWriter writer, (int length, byte[] buffer) value)
+	extension(BinaryWriter self)
 	{
-		writer.Write(value.length);
-		writer.Write(value.buffer);
-	}
-
-	public static void Write(this BinaryWriter writer, (int length, char[] buffer) value)
-	{
-		writer.Write(value.length);
-		writer.Write(value.buffer);
-	}
-
-	public static void Write(this BinaryWriter writer, DateTime value) => 
-		writer.Write(value.Ticks);
-
-   public static void Write(this BinaryWriter writer, DateTimeOffset value)
-	{
-		writer.Write(value.Ticks);
-		writer.Write(value.Offset.Ticks);
-	}
-
-	public static void Write(this BinaryWriter writer, decimal value)
-	{
-		var bits = decimal.GetBits(value);
-
-		foreach (var bit in bits)
+		// Before I forget...
+		// the reason I have these two extensions is that
+		// there are already methods to handle a byte[] or char[],
+		// but I need to put the length in first.
+		// So I need a different method signature.
+		public void Write((int length, byte[] buffer) value)
 		{
-			writer.Write(bit);
+			self.Write(value.length);
+			self.Write(value.buffer);
+		}
+
+		public void Write((int length, char[] buffer) value)
+		{
+			self.Write(value.length);
+			self.Write(value.buffer);
+		}
+
+		public void Write(DateTime value) =>
+			self.Write(value.Ticks);
+
+		public void Write(DateTimeOffset value)
+		{
+			self.Write(value.Ticks);
+			self.Write(value.Offset.Ticks);
+		}
+
+		public void Write(decimal value)
+		{
+			var bits = decimal.GetBits(value);
+
+			foreach (var bit in bits)
+			{
+				self.Write(bit);
+			}
+		}
+
+		public void Write(Guid value) =>
+			self.Write(value.ToByteArray());
+
+		public void Write(TimeSpan value) =>
+			self.Write(value.Ticks);
+
+		public void Write<T>(T? value) where T : class
+		{
+			if (value is not null)
+			{
+				self.Write((byte)SerializationState.Value);
+				self.Write(value);
+			}
+			else
+			{
+				self.Write((byte)SerializationState.Null);
+			}
 		}
 	}
-
-	public static void Write(this BinaryWriter writer, Guid value) =>
-		writer.Write(value.ToByteArray());
-
-	public static void Write(this BinaryWriter writer, TimeSpan value) =>
-		writer.Write(value.Ticks);
 }

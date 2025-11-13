@@ -33,7 +33,7 @@ public sealed class IServiceCollectionExtensionsTests
 		services.AddCslaGeneratorSerialization(
 			new CustomSerialization<string>(
 				(data, writer) => { },
-				(reader) => "a"));
+				(reader) => "a")!);
 
 		using (Assert.Multiple())
 		{
