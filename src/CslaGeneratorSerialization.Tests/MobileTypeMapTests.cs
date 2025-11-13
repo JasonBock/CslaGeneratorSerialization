@@ -1,19 +1,17 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Tests;
 
-namespace CslaGeneratorSerialization.Tests;
-
-public static class MobileTypeMapTests
+public sealed class MobileTypeMapTests
 {
 	[Test]
-	public static void Create()
+	public async Task CreateAsync()
 	{
 		var typeMap = new MobileTypeMap<string>();
 
-	  using (Assert.EnterMultipleScope())
-	  {
-			Assert.That(typeMap.SerializerType, Is.EqualTo(typeof(MobileCustomSerializer<string>)));
-			Assert.That(typeMap.CanSerialize(typeof(string)), Is.True);
-			Assert.That(typeMap.CanSerialize(typeof(Guid)), Is.False);
+		using (Assert.Multiple())
+		{
+			await Assert.That(typeMap.SerializerType).EqualTo(typeof(MobileCustomSerializer<string>));
+			await Assert.That(typeMap.CanSerialize(typeof(string))).IsTrue();
+			await Assert.That(typeMap.CanSerialize(typeof(Guid))).IsFalse();
 		}
 	}
 }

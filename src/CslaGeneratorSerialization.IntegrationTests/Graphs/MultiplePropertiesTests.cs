@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.MultiplePropertiesTestsDomain;
 
@@ -16,7 +15,7 @@ public sealed partial class ParentPropertiesData
 		RegisterProperty<string>(nameof(ParentPropertiesData.StringContents));
 	public string StringContents
 	{
-		get => this.GetProperty(ParentPropertiesData.StringContentsProperty);
+		get => this.GetProperty(ParentPropertiesData.StringContentsProperty)!;
 		set => this.SetProperty(ParentPropertiesData.StringContentsProperty, value);
 	}
 
@@ -24,7 +23,7 @@ public sealed partial class ParentPropertiesData
 		RegisterProperty<ChildPropertiesData>(nameof(ParentPropertiesData.ChildContents));
 	public ChildPropertiesData ChildContents
 	{
-		get => this.GetProperty(ParentPropertiesData.ChildContentsProperty);
+		get => this.GetProperty(ParentPropertiesData.ChildContentsProperty)!;
 		set => this.SetProperty(ParentPropertiesData.ChildContentsProperty, value);
 	}
 
@@ -48,20 +47,20 @@ public sealed partial class ChildPropertiesData
 		RegisterProperty<string>(nameof(ChildPropertiesData.Value));
 	public string Value
 	{
-		get => this.GetProperty(ChildPropertiesData.ValueProperty);
+		get => this.GetProperty(ChildPropertiesData.ValueProperty)!;
 		set => this.SetProperty(ChildPropertiesData.ValueProperty, value);
 	}
 }
 
-public static class MultiplePropertiesTests
+public sealed class MultiplePropertiesTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentPropertiesData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Int32Contents = 3;
 		data.StringContents = "4";
@@ -72,21 +71,21 @@ public static class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Int32Contents, Is.EqualTo(3));
-			Assert.That(newData.StringContents, Is.EqualTo("4"));
-			Assert.That(newData.ChildContents.Value, Is.EqualTo("ABC"));
+			await Assert.That(newData.Int32Contents).IsEqualTo(3);
+			await Assert.That(newData.StringContents).IsEqualTo("4");
+			await Assert.That(newData.ChildContents.Value).IsEqualTo("ABC");
 		}
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentPropertiesData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.StringContents = "4";
 		data.ChildContents.Value = "ABC";
@@ -98,10 +97,10 @@ public static class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.StringContents, Is.EqualTo(string.Empty));
-			Assert.That(newData.ChildContents, Is.Null);
+			await Assert.That(newData.StringContents).IsEqualTo(string.Empty);
+			await Assert.That(newData.ChildContents).IsNull();
 		}
 	}
 }

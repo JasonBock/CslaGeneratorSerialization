@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
-
-public static class SealedTests
+public sealed class SealedTests
 {
 	[Test]
-	public static async Task GenerateAsync()
+	public async Task GenerateAsync()
 	{
 		var code =
 			"""

@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization.Analysis.Tests</AssemblyName>
-		<EnableNUnitRunner>true</EnableNUnitRunner>
+		<OutputType>Exe</OutputType>
 		<NoWarn>$(NoWarn);CA2007;NU1903</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.Analysis.Tests</RootNamespace>
 	</PropertyGroup>
@@ -22,13 +22,7 @@
 		<PackageReference Include="Microsoft.CodeAnalysis.Common">
 			<NoWarn>NU1608</NoWarn>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NuGet.Frameworks" />
-		<PackageReference Include="NUnit" />
-		<PackageReference Include="NUnit.Analyzers">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="NUnit3TestAdapter" />
+		<PackageReference Include="TUnit" />
 	</ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain;
 
@@ -17,20 +16,20 @@ public sealed partial class ByteArrayData
 	public byte[] Contents
 #pragma warning restore CA1819 // Properties should not return arrays
 	{
-		get => this.GetProperty(ByteArrayData.ContentsProperty);
+		get => this.GetProperty(ByteArrayData.ContentsProperty)!;
 		set => this.SetProperty(ByteArrayData.ContentsProperty, value);
 	}
 }
 
-public static class ByteArrayTests
+public sealed class ByteArrayTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ByteArrayData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = [22, 33, 44];
 
@@ -39,16 +38,16 @@ public static class ByteArrayTests
 		stream.Position = 0;
 		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.EquivalentTo(new byte[] { 22, 33, 44 }));
+		await Assert.That(newData.Contents).IsEquivalentTo(new byte[] { 22, 33, 44 });
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ByteArrayData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = [22, 33, 44];
 		data.Contents = null!;
@@ -58,6 +57,6 @@ public static class ByteArrayTests
 		stream.Position = 0;
 		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.Null);
+		await Assert.That(newData.Contents).IsNull();
 	}
 }

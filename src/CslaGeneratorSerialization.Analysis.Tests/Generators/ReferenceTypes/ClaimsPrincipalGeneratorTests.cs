@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
-
-public static class ClaimsPrincipalGeneratorTests
+public sealed class ClaimsPrincipalGeneratorTests
 {
 	[Test]
-	public static async Task GenerateAsync()
+	public async Task GenerateAsync()
 	{
 		var code =
 			"""

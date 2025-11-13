@@ -1,6 +1,5 @@
 using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.BusinessBaseTestsDomain;
 
@@ -28,15 +27,15 @@ public partial class Customer
 	}
 }
 
-public static class BusinessBaseTests
+public sealed class BusinessBaseTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Customer>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Name = "John";
 		data.Age = 44;
@@ -46,10 +45,10 @@ public static class BusinessBaseTests
 		stream.Position = 0;
 		var newData = (Customer)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Name, Is.EqualTo(data.Name));
-			Assert.That(newData.Age, Is.EqualTo(data.Age));
+			await Assert.That(newData.Name).IsEqualTo(data.Name);
+			await Assert.That(newData.Age).IsEqualTo(data.Age);
 		}
 	}
 }

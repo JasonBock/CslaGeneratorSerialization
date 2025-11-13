@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ReadOnlyTestsDomain;
 
@@ -20,7 +19,7 @@ public sealed partial class Data
 		RegisterProperty<string>(nameof(Data.StringContents));
 	public string StringContents
 	{
-		get => this.ReadProperty(Data.StringContentsProperty);
+		get => this.ReadProperty(Data.StringContentsProperty)!;
 		private set => this.LoadProperty(Data.StringContentsProperty, value);
 	}
 
@@ -28,7 +27,7 @@ public sealed partial class Data
 		RegisterProperty<ChildData>(nameof(Data.ChildContents));
 	public ChildData ChildContents
 	{
-		get => this.ReadProperty(Data.ChildContentsProperty);
+		get => this.ReadProperty(Data.ChildContentsProperty)!;
 		private set => this.LoadProperty(Data.ChildContentsProperty, value);
 	}
 
@@ -53,31 +52,31 @@ public sealed partial class ChildData
 		RegisterProperty<string>(nameof(ChildData.Value));
 	public string Value
 	{
-		get => this.ReadProperty(ChildData.ValueProperty);
+		get => this.ReadProperty(ChildData.ValueProperty)!;
 		private set => this.LoadProperty(ChildData.ValueProperty, value);
 	}
 }
 
-public static class ReadOnlyTests
+public sealed class ReadOnlyTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.StringContents, Is.EqualTo("123"));
-			Assert.That(newData.Int32Contents, Is.EqualTo(123));
-			Assert.That(newData.ChildContents.Value, Is.EqualTo("Child 123"));
+			await Assert.That(newData.StringContents).IsEqualTo("123");
+			await Assert.That(newData.Int32Contents).IsEqualTo(123);
+			await Assert.That(newData.ChildContents.Value).IsEqualTo("Child 123");
 		}
 	}
 }

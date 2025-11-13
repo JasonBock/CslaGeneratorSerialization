@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
-
-public static class MultiplePropertiesGeneratorTests
+public sealed class MultiplePropertiesGeneratorTests
 {
 	[Test]
-	public static async Task GenerateAsync()
+	public async Task GenerateAsync()
 	{
 		var code =
 			"""

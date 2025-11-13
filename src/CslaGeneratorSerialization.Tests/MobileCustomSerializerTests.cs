@@ -1,12 +1,11 @@
 ﻿using Csla.Serialization.Mobile;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.MobileCustomSerializerTestsDomain;
 
-public static class MobileCustomSerializerTests
+public sealed class MobileCustomSerializerTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var customSerialization = new CustomSerialization<CustomData>(
 			(data, writer) =>
@@ -23,12 +22,12 @@ public static class MobileCustomSerializerTests
 		mobileCustomSerialization.Serialize(data, info);
 		var newData = (CustomData)mobileCustomSerialization.Deserialize(info);
 
-		Assert.That(newData.Id, Is.EqualTo(data.Id));
+		await Assert.That(newData.Id).EqualTo(data.Id);
 	}
 
 	[Test]
-	public static void CreateWhenCustomSerializationIsNull() =>
-		Assert.That(() => new MobileCustomSerializer<CustomData>(null!), Throws.TypeOf<ArgumentNullException>());
+	public async Task CreateWhenCustomSerializationIsNullAsync() =>
+		await Assert.That(() => new MobileCustomSerializer<CustomData>(null!)).Throws<ArgumentNullException>();
 }
 
 public sealed class CustomData

@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InterfaceTestsDomain;
 
@@ -22,7 +21,7 @@ public sealed partial class InterfaceData
 		RegisterProperty<string>(nameof(InterfaceData.Contents));
 	public string Contents
 	{
-		get => this.GetProperty(InterfaceData.ContentsProperty);
+		get => this.GetProperty(InterfaceData.ContentsProperty)!;
 		set => this.SetProperty(InterfaceData.ContentsProperty, value);
 	}
 
@@ -46,23 +45,23 @@ public sealed partial class ConsumeData
 		RegisterProperty<IInterfaceData>(nameof(ConsumeData.Contents));
 	public IInterfaceData Contents
 	{
-		get => this.GetProperty(ConsumeData.ContentsProperty);
+		get => this.GetProperty(ConsumeData.ContentsProperty)!;
 		set => this.SetProperty(ConsumeData.ContentsProperty, value);
 	}
 }
 
-public static class InterfaceTests
+public sealed class InterfaceTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ConsumeData>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<InterfaceData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
-		var childData = childPortal.CreateChild();
+		var childData = await childPortal.CreateChildAsync();
 		childData.Contents = "ABC";
 		childData.Extra = 3;
 		data.Contents = childData;
@@ -72,11 +71,11 @@ public static class InterfaceTests
 		stream.Position = 0;
 		var newData = (ConsumeData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
 			var dataProperty = (InterfaceData)newData.Contents;
-			Assert.That(dataProperty.Contents, Is.EqualTo("ABC"));
-			Assert.That(dataProperty.Extra, Is.EqualTo(3));
+			await Assert.That(dataProperty.Contents).IsEqualTo("ABC");
+			await Assert.That(dataProperty.Extra).IsEqualTo(3);
 		}
 	}
 }

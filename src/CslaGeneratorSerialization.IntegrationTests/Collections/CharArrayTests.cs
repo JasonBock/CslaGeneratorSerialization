@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.CharArrayTestsDomain;
 
@@ -17,20 +16,20 @@ public sealed partial class CharArrayData
 	public char[] Contents
 #pragma warning restore CA1819 // Properties should not return arrays
 	{
-		get => this.GetProperty(CharArrayData.ContentsProperty);
+		get => this.GetProperty(CharArrayData.ContentsProperty)!;
 		set => this.SetProperty(CharArrayData.ContentsProperty, value);
 	}
 }
 
-public static class CharArrayTests
+public sealed class CharArrayTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<CharArrayData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = ['a', 'b', 'c'];
 
@@ -39,16 +38,16 @@ public static class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.EquivalentTo(new[] { 'a', 'b', 'c' }));
+		await Assert.That(newData.Contents).IsEquivalentTo(new[] { 'a', 'b', 'c' }));
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<CharArrayData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = ['a', 'b', 'c'];
 		data.Contents = null!;
@@ -58,6 +57,6 @@ public static class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.Null);
+		await Assert.That(newData.Contents).IsNull();
 	}
 }

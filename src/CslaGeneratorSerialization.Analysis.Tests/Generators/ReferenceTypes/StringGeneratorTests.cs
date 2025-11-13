@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ReferenceTypes;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ReferenceTypes;
-
-public static class StringGeneratorTests
+public sealed class StringGeneratorTests
 {
 	[Test]
-	public static async Task GenerateAsync()
+	public async Task GenerateAsync()
 	{
 		var code =
 			"""

@@ -3,7 +3,6 @@ using Csla.Configuration;
 using Csla.Core;
 using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.CustomTestsDomain;
 
@@ -35,7 +34,7 @@ public sealed partial class Data
 		RegisterProperty<CustomClassData>(nameof(Data.CustomClass));
 	public CustomClassData CustomClass
 	{
-		get => this.GetProperty(Data.CustomClassProperty);
+		get => this.GetProperty(Data.CustomClassProperty)!;
 		set => this.SetProperty(Data.CustomClassProperty, value);
 	}
 
@@ -48,10 +47,10 @@ public sealed partial class Data
 	}
 }
 
-public static class CustomTests
+public sealed class CustomTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
@@ -76,7 +75,7 @@ public static class CustomTests
 
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.CustomClass.Name = "Custom Class";
 		data.CustomClass.Id = 1;
@@ -87,17 +86,17 @@ public static class CustomTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.CustomClass.Name, Is.EqualTo("Custom Class"));
-			Assert.That(newData.CustomClass.Id, Is.EqualTo(1));
-			Assert.That(newData.CustomStruct.Name, Is.EqualTo("Custom Struct"));
-			Assert.That(newData.CustomStruct.Id, Is.EqualTo(2));
+			await Assert.That(newData.CustomClass.Name).IsEqualTo("Custom Class");
+			await Assert.That(newData.CustomClass.Id).IsEqualTo(1);
+			await Assert.That(newData.CustomStruct.Name).IsEqualTo("Custom Struct");
+			await Assert.That(newData.CustomStruct.Id).IsEqualTo(2);
 		}
 	}
 
 	[Test]
-	public static void Clone()
+	public async Task CloneAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
@@ -122,7 +121,7 @@ public static class CustomTests
 		var context = provider.GetRequiredService<ApplicationContext>();
 		var formatter = new GeneratorFormatter(context, new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.CustomClass.Name = "Custom Class";
 		data.CustomClass.Id = 1;
@@ -131,17 +130,17 @@ public static class CustomTests
 		var cloner = new ObjectCloner(context);
 		var newData = (Data)cloner.Clone(data);
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.CustomClass.Name, Is.EqualTo("Custom Class"));
-			Assert.That(newData.CustomClass.Id, Is.EqualTo(1));
-			Assert.That(newData.CustomStruct.Name, Is.EqualTo("Custom Struct"));
-			Assert.That(newData.CustomStruct.Id, Is.EqualTo(2));
+			await Assert.That(newData.CustomClass.Name).IsEqualTo("Custom Class");
+			await Assert.That(newData.CustomClass.Id).IsEqualTo(1);
+			await Assert.That(newData.CustomStruct.Name).IsEqualTo("Custom Struct");
+			await Assert.That(newData.CustomStruct.Id).IsEqualTo(2);
 		}
 	}
 
 	[Test]
-	public static void NLevelUndo()
+	public async Task NLevelUndoAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
@@ -166,7 +165,7 @@ public static class CustomTests
 
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.CustomClass.Name = "Custom Class";
 		data.CustomClass.Id = 1;
@@ -178,23 +177,23 @@ public static class CustomTests
 		data.CustomStruct = new CustomStructData { Id = 3, Name = "Custom Struct 2" };
 		data.CancelEdit();
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(data.CustomClass.Name, Is.EqualTo("Custom Class"));
-			Assert.That(data.CustomClass.Id, Is.EqualTo(1));
-			Assert.That(data.CustomStruct.Name, Is.EqualTo("Custom Struct"));
-			Assert.That(data.CustomStruct.Id, Is.EqualTo(2));
+			await Assert.That(data.CustomClass.Name).IsEqualTo("Custom Class");
+			await Assert.That(data.CustomClass.Id).IsEqualTo(1);
+			await Assert.That(data.CustomStruct.Name).IsEqualTo("Custom Struct");
+			await Assert.That(data.CustomStruct.Id).IsEqualTo(2);
 		}
 	}
 
 	[Test]
-	public static void RoundtripWhenCustomizationIsNotConfigured()
+	public async Task RoundtripWhenCustomizationIsNotConfiguredAsync()
 	{
 		var provider = Shared.ServiceProvider;
 
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.CustomClass.Name = "Custom Class";
 		data.CustomClass.Id = 1;
@@ -202,6 +201,6 @@ public static class CustomTests
 
 		using var stream = new MemoryStream();
 
-		Assert.That(() => formatter.Serialize(stream, data), Throws.TypeOf<NotSupportedException>());
+		await Assert.That(() => formatter.Serialize(stream, data)).Throws<NotSupportedException>();
 	}
 }

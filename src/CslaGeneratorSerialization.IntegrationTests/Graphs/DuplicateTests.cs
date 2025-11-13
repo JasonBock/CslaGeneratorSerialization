@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.DuplicateTestsDomain;
 
@@ -31,25 +30,25 @@ public sealed partial class Node
 		RegisterProperty<string>(nameof(Node.Name));
 	public string Name
 	{
-		get => this.GetProperty(Node.NameProperty);
+		get => this.GetProperty(Node.NameProperty)!;
 		set => this.SetProperty(Node.NameProperty, value);
 	}
 }
 
-public static class DuplicateTests
+public sealed class DuplicateTests
 {
 	[Test]
-	public static void RoundtripWhenDifferent()
+	public async Task RoundtripWhenDifferentAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
-		data.Left = childPortal.CreateChild();
+		data.Left = await childPortal.CreateChildAsync();
 		data.Left.Name = "Left";
-		data.Right = childPortal.CreateChild();
+		data.Right = await childPortal.CreateChildAsync();
 		data.Right.Name = "Right";
 
 		using var stream = new MemoryStream();
@@ -57,23 +56,23 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
-			Assert.That(newData.Right!.Name, Is.EqualTo("Right"));
+			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
+			await Assert.That(newData.Right!.Name).IsEqualTo("Right");
 		}
 	}
 
 	[Test]
-	public static void RoundtripWhenRightIsSameAsLeft()
+	public async Task RoundtripWhenRightIsSameAsLeftAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
-		data.Left = childPortal.CreateChild();
+		data.Left = await childPortal.CreateChildAsync();
 		data.Left.Name = "Left";
 		data.Right = data.Left;
 
@@ -82,24 +81,24 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
-			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
-			Assert.That(newData.Left, Is.SameAs(newData.Right));
+			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
+			await Assert.That(newData.Right!.Name).IsEqualTo("Left");
+			await Assert.That(newData.Left).IsSameReferenceAs(newData.Right);
 		}
 	}
 
 	[Test]
-	public static void RoundtripWhenLeftIsSameAsRight()
+	public async Task RoundtripWhenLeftIsSameAsRightAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Node>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<Node>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
-		data.Right = childPortal.CreateChild();
+		data.Right = await childPortal.CreateChildAsync();
 		data.Right.Name = "Left";
 		data.Left = data.Right;
 
@@ -108,11 +107,11 @@ public static class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
-			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
-			Assert.That(newData.Left, Is.SameAs(newData.Right));
+			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
+			await Assert.That(newData.Right!.Name).IsEqualTo("Left");
+			await Assert.That(newData.Left).IsSameReferenceAs(newData.Right);
 		}
 	}
 }

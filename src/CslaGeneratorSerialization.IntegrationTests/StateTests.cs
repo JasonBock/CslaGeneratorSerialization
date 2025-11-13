@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.StateTestsDomain;
 
@@ -23,59 +22,59 @@ public sealed partial class StateData
 	}
 }
 
-public static class StateTests
+public sealed class StateTests
 {
 	[Test]
-	public static void Create()
+	public async Task CreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.IsNew, Is.True, nameof(newData.IsNew));
-			Assert.That(newData.IsDeleted, Is.False, nameof(newData.IsDeleted));
-			Assert.That(newData.IsDirty, Is.True, nameof(newData.IsDirty));
-			Assert.That(newData.IsChild, Is.False, nameof(newData.IsChild));
+			await Assert.That(newData.IsNew).IsTrue();
+			await Assert.That(newData.IsDeleted).IsFalse();
+			await Assert.That(newData.IsDirty).IsTrue();
+			await Assert.That(newData.IsChild).IsFalse();
 		}
 	}
 
 	[Test]
-	public static void Fetch()
+	public async Task FetchAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Fetch();
+		var data = await portal.FetchAsync();
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.IsNew, Is.False);
-			Assert.That(newData.IsDeleted, Is.False);
-			Assert.That(newData.IsDirty, Is.False);
-			Assert.That(newData.IsChild, Is.False);
+			await Assert.That(newData.IsNew).IsFalse();
+			await Assert.That(newData.IsDeleted).IsFalse();
+			await Assert.That(newData.IsDirty).IsFalse();
+			await Assert.That(newData.IsChild).IsFalse();
 		}
 	}
 
 	[Test]
-	public static void ChangeStateOnCreate()
+	public async Task ChangeStateOnCreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = "ABC";
 
@@ -84,22 +83,22 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.IsNew, Is.True);
-			Assert.That(newData.IsDeleted, Is.False);
-			Assert.That(newData.IsDirty, Is.True);
-			Assert.That(newData.IsChild, Is.False);
+			await Assert.That(newData.IsNew).IsTrue();
+			await Assert.That(newData.IsDeleted).IsFalse();
+			await Assert.That(newData.IsDirty).IsTrue();
+			await Assert.That(newData.IsChild).IsFalse();
 		}
 	}
 
 	[Test]
-	public static void ChangeStateOnFetch()
+	public async Task ChangeStateOnFetchAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Fetch();
+		var data = await portal.FetchAsync();
 
 		data.Contents = "ABC";
 
@@ -108,47 +107,22 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.IsNew, Is.False);
-			Assert.That(newData.IsDeleted, Is.False);
-			Assert.That(newData.IsDirty, Is.True);
-			Assert.That(newData.IsChild, Is.False);
+			await Assert.That(newData.IsNew).IsFalse();
+			await Assert.That(newData.IsDeleted).IsFalse();
+			await Assert.That(newData.IsDirty).IsTrue();
+			await Assert.That(newData.IsChild).IsFalse();
 		}
 	}
 
 	[Test]
-	public static void DeleteAfterCreate()
+	public async Task DeleteAfterCreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Create();
-
-		data.Contents = "ABC";
-		data.Delete();
-
-		using var stream = new MemoryStream();
-		formatter.Serialize(stream, data);
-		stream.Position = 0;
-		var newData = (StateData)formatter.Deserialize(stream)!;
-
-		using (Assert.EnterMultipleScope())
-		{
-			Assert.That(newData.IsNew, Is.True);
-			Assert.That(newData.IsDeleted, Is.True);
-			Assert.That(newData.IsDirty, Is.True);
-			Assert.That(newData.IsChild, Is.False);
-		}
-	}
-
-	[Test]
-	public static void DeleteAfterFetch()
-	{
-		var provider = Shared.ServiceProvider;
-		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
-		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
-		var data = portal.Fetch();
+		var data = await portal.CreateAsync();
 
 		data.Contents = "ABC";
 		data.Delete();
@@ -158,12 +132,37 @@ public static class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.IsNew, Is.False);
-			Assert.That(newData.IsDeleted, Is.True);
-			Assert.That(newData.IsDirty, Is.True);
-			Assert.That(newData.IsChild, Is.False);
+			await Assert.That(newData.IsNew).IsTrue();
+			await Assert.That(newData.IsDeleted).IsTrue();
+			await Assert.That(newData.IsDirty).IsTrue();
+			await Assert.That(newData.IsChild).IsFalse();
+		}
+	}
+
+	[Test]
+	public async Task DeleteAfterFetchAsync()
+	{
+		var provider = Shared.ServiceProvider;
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var portal = provider.GetRequiredService<IDataPortal<StateData>>();
+		var data = await portal.FetchAsync();
+
+		data.Contents = "ABC";
+		data.Delete();
+
+		using var stream = new MemoryStream();
+		formatter.Serialize(stream, data);
+		stream.Position = 0;
+		var newData = (StateData)formatter.Deserialize(stream)!;
+
+		using (Assert.Multiple())
+		{
+			await Assert.That(newData.IsNew).IsFalse();
+			await Assert.That(newData.IsDeleted).IsTrue();
+			await Assert.That(newData.IsDirty).IsTrue();
+			await Assert.That(newData.IsChild).IsFalse();
 		}
 	}
 }

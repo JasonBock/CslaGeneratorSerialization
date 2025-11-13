@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.StringTestsDomain;
 
@@ -15,20 +14,20 @@ public sealed partial class StringData
 		RegisterProperty<string>(nameof(StringData.Contents));
 	public string Contents
 	{
-		get => this.GetProperty(StringData.ContentsProperty);
+		get => this.GetProperty(StringData.ContentsProperty)!;
 		set => this.SetProperty(StringData.ContentsProperty, value);
 	}
 }
 
-public static class StringTests
+public sealed class StringTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StringData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = "ABC";
 
@@ -37,16 +36,16 @@ public static class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.EqualTo("ABC"));
+		await Assert.That(newData.Contents).IsEqualTo("ABC");
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<StringData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = "ABC";
 		data.Contents = null!;
@@ -56,6 +55,6 @@ public static class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.EqualTo(string.Empty));
+		await Assert.That(newData.Contents).IsEqualTo(string.Empty);
 	}
 }

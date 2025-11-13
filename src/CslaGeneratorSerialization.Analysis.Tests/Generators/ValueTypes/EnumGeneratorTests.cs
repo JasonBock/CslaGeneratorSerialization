@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
-
-public static class EnumGeneratorTests
+public sealed class EnumGeneratorTests
 {
 	[Test]
-	public static async Task GenerateAsync()
+	public async Task GenerateAsync()
 	{
 		var code =
 			"""
@@ -85,7 +83,7 @@ public static class EnumGeneratorTests
 	}
 
 	[Test]
-	public static async Task GenerateWithNullableAsync()
+	public async Task GenerateWithNullableAsync()
 	{
 		var code =
 			"""

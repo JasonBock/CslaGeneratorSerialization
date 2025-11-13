@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 using System.Security.Claims;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.ClaimsPrincipalTestsDomain;
@@ -16,20 +15,20 @@ public sealed partial class ClaimsPrincipalData
 		RegisterProperty<ClaimsPrincipal>(nameof(ClaimsPrincipalData.Contents));
 	public ClaimsPrincipal Contents
 	{
-		get => this.GetProperty(ClaimsPrincipalData.ContentsProperty);
+		get => this.GetProperty(ClaimsPrincipalData.ContentsProperty)!;
 		set => this.SetProperty(ClaimsPrincipalData.ContentsProperty, value);
 	}
 }
 
-public static class ClaimsPrincipalTests
+public sealed class ClaimsPrincipalTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ClaimsPrincipalData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = new ClaimsPrincipal(
 			new ClaimsIdentity(
@@ -42,23 +41,23 @@ public static class ClaimsPrincipalTests
 		stream.Position = 0;
 		var newData = (ClaimsPrincipalData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
 			var identity = newData.Contents.Identities.Single();
-			Assert.That(identity.AuthenticationType, Is.EqualTo("fake auth"));
+			await Assert.That(identity.AuthenticationType).IsEqualTo("fake auth");
 			var claim = identity.Claims.Single();
-			Assert.That(claim.Type, Is.EqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"));
-			Assert.That(claim.Value, Is.EqualTo("admin"));
+			await Assert.That(claim.Type).IsEqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+			await Assert.That(claim.Value).IsEqualTo("admin");
 		}
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ClaimsPrincipalData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = new ClaimsPrincipal(
 			new ClaimsIdentity(
@@ -72,6 +71,6 @@ public static class ClaimsPrincipalTests
 		stream.Position = 0;
 		var newData = (ClaimsPrincipalData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.Null);
+		await Assert.That(newData.Contents).IsNull();
 	}
 }

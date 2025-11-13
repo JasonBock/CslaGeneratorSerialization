@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ChildBusinessObjectTestsDomain;
 
@@ -69,15 +68,15 @@ public sealed class NonParticipatingChildData
 	}
 }
 
-public static class ChildBusinessObjectTests
+public sealed class ChildBusinessObjectTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents.ChildContents = "ABC";
 
@@ -86,16 +85,16 @@ public static class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
+		await Assert.That(newData.Contents.ChildContents).IsEqualTo("ABC");
 	}
 
 	[Test]
-	public static void RoundtripWithNonParticipatingChild()
+	public async Task RoundtripWithNonParticipatingChildAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<NonParticipatingParentData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents.ChildContents = "ABC";
 
@@ -104,16 +103,16 @@ public static class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (NonParticipatingParentData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
+		await Assert.That(newData.Contents.ChildContents).IsEqualTo("ABC");
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ParentData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents.ChildContents = "ABC";
 		data.Contents = null!;
@@ -123,6 +122,6 @@ public static class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.Null);
+		await Assert.That(newData.Contents).IsNull();
 	}
 }

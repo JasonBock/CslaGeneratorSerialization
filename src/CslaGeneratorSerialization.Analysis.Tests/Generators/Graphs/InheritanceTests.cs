@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
-
-public static class InheritanceTests
+public sealed class InheritanceTests
 {
 	[Test]
-	public static async Task GenerateFromBaseTypeAsync()
+	public async Task GenerateFromBaseTypeAsync()
 	{
 		var code =
 			"""
@@ -153,7 +151,7 @@ public static class InheritanceTests
 	}
 
 	[Test]
-	public static async Task GenerateFromAbstractTypeAsync()
+	public async Task GenerateFromAbstractTypeAsync()
 	{
 		var code =
 			"""

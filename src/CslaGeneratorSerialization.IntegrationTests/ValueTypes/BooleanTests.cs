@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.BooleanTestsDomain;
 
@@ -36,15 +35,15 @@ public sealed partial class BooleanNullableData
 	}
 }
 
-public static class BooleanTests
+public sealed class BooleanTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<BooleanData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = true;
 
@@ -53,16 +52,16 @@ public static class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.True);
+		await Assert.That(newData.Contents).IsTrue();
 	}
 
 	[Test]
-	public static void RoundtripWithNullable()
+	public async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<BooleanNullableData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Contents = true;
 		data.Contents = null;
@@ -72,6 +71,6 @@ public static class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanNullableData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.Null);
+		await Assert.That(newData.Contents).IsNull();
 	}
 }

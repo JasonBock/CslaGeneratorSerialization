@@ -1,11 +1,9 @@
-﻿using NUnit.Framework;
+﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators;
-
-public static class NamespaceTests
+public sealed class NamespaceTests
 {
 	[Test]
-	public static async Task CreateWhenBusinessObjectHasNoNamespaceAsync()
+	public async Task CreateWhenBusinessObjectHasNoNamespaceAsync()
 	{
 		var code =
 			"""

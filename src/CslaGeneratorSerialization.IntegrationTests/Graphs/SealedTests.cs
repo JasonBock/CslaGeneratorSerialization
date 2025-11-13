@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.SealedTestsDomain;
 
@@ -15,7 +14,7 @@ public partial class BaseData
 		BaseData.RegisterProperty<string>(nameof(BaseData.Core));
 	public string Core
 	{
-		get => this.GetProperty(BaseData.CoreProperty);
+		get => this.GetProperty(BaseData.CoreProperty)!;
 		set => this.SetProperty(BaseData.CoreProperty, value);
 	}
 }
@@ -47,23 +46,23 @@ public sealed partial class ConsumingData
 		RegisterProperty<BaseData>(nameof(ConsumingData.Contents));
 	public BaseData Contents
 	{
-		get => this.GetProperty(ConsumingData.ContentsProperty);
+		get => this.GetProperty(ConsumingData.ContentsProperty)!;
 		set => this.SetProperty(ConsumingData.ContentsProperty, value);
 	}
 }
 
-public static class SealedTests
+public sealed class SealedTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<ConsumingData>>();
 		var childPortal = provider.GetRequiredService<IChildDataPortal<DerivedData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
-		var childData = childPortal.CreateChild();
+		var childData = await childPortal.CreateChildAsync();
 		childData.Core = "ABC";
 		childData.Custom = 3;
 		data.Contents = childData;
@@ -73,11 +72,11 @@ public static class SealedTests
 		stream.Position = 0;
 		var newData = (ConsumingData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
 			var dataProperty = (DerivedData)newData.Contents;
-			Assert.That(dataProperty.Core, Is.EqualTo("ABC"));
-			Assert.That(dataProperty.Custom, Is.EqualTo(3));
+			await Assert.That(dataProperty.Core).IsEqualTo("ABC");
+			await Assert.That(dataProperty.Custom).IsEqualTo(3);
 		}
 	}
 }

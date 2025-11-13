@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ListTestsDomain;
 
@@ -16,7 +15,7 @@ public partial class Experiments
 		Experiments.RegisterProperty<Datum>(nameof(Experiments.Values));
 	public Datum Values
 	{
-		get => this.GetProperty(Experiments.ValuesProperty);
+		get => this.GetProperty(Experiments.ValuesProperty)!;
 		private set => this.SetProperty(Experiments.ValuesProperty, value);
 	}
 }
@@ -40,25 +39,25 @@ public partial class Data
 		Data.RegisterProperty<string>(nameof(Data.Value));
 	public string Value
 	{
-		get => this.GetProperty(Data.ValueProperty);
+		get => this.GetProperty(Data.ValueProperty)!;
 		set => this.SetProperty(Data.ValueProperty, value);
 	}
 }
 
-public static class ListTests
+public sealed class ListTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Experiments>>();
 		var dataPortal = provider.GetRequiredService<IChildDataPortal<Data>>();
-		var experiments = portal.Create();
+		var experiments = await portal.CreateAsync();
 
 		for (var i = 0; i < 3; i++)
 		{
-			var data = dataPortal.CreateChild();
+			var data = await dataPortal.CreateChildAsync();
 			data.Value = $"ABC_{i}";
 			experiments.Values.Add(data);
 		}
@@ -68,6 +67,6 @@ public static class ListTests
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Values, Has.Count.EqualTo(3));
+		await Assert.That(newData.Values).HasCount(3);
 	}
 }

@@ -2,7 +2,6 @@
 using Csla.Configuration;
 using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain;
 
@@ -19,15 +18,15 @@ public sealed partial class Data
 	public int[] Value
 #pragma warning restore CA1819 // Properties should not return arrays
 	{
-		get => this.GetProperty(Data.ValueProperty);
+		get => this.GetProperty(Data.ValueProperty)!;
 		set => this.SetProperty(Data.ValueProperty, value);
 	}
 }
 
-public static class CustomTests
+public sealed class CustomTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
@@ -59,7 +58,7 @@ public static class CustomTests
 
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Value = [3, 7, 4, 2];
 
@@ -68,22 +67,22 @@ public static class CustomTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Value, Is.EquivalentTo(new[] { 3, 7, 4, 2 }));
+		await Assert.That(newData.Value).IsEquivalentTo([3, 7, 4, 2]);
 	}
 
 	[Test]
-	public static void RoundtripWhenCustomizationIsNotConfigured()
+	public async Task RoundtripWhenCustomizationIsNotConfiguredAsync()
 	{
 		var provider = Shared.ServiceProvider;
 
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Data>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Value = [3, 7, 4, 2];
 
 		using var stream = new MemoryStream();
 
-		Assert.That(() => formatter.Serialize(stream, data), Throws.TypeOf<NotSupportedException>());
+		await Assert.That(() => formatter.Serialize(stream, data)).Throws<NotSupportedException>();
 	}
 }

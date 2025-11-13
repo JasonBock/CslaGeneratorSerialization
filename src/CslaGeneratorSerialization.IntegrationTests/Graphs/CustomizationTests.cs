@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
 
@@ -30,23 +29,22 @@ public sealed partial class Customization
 		RegisterProperty<string>(nameof(Customization.Contents));
 	public string Contents
 	{
-		get => this.GetProperty(Customization.ContentsProperty);
+		get => this.GetProperty(Customization.ContentsProperty)!;
 		set => this.SetProperty(Customization.ContentsProperty, value);
 	}
 
 	public int Custom { get; set; }
 }
 
-
-public static class CustomizationTests
+public sealed class CustomizationTests
 {
 	[Test]
-	public static void ChangeStateOnCreate()
+	public async Task ChangeStateOnCreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Customization>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Custom = 33;
 
@@ -55,6 +53,6 @@ public static class CustomizationTests
 		stream.Position = 0;
 		var newData = (Customization)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Custom, Is.EqualTo(33));
+		await Assert.That(newData.Custom).IsEqualTo(33);
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ReadOnlyListTestsDomain;
 
@@ -16,7 +15,7 @@ public partial class Experiments
 		Experiments.RegisterProperty<Datum>(nameof(Experiments.Values));
 	public Datum Values
 	{
-		get => this.ReadProperty(Experiments.ValuesProperty);
+		get => this.ReadProperty(Experiments.ValuesProperty)!;
 		private set => this.LoadProperty(Experiments.ValuesProperty, value);
 	}
 }
@@ -47,30 +46,30 @@ public partial class Data
 		Data.RegisterProperty<string>(nameof(Data.Value));
 	public string Value
 	{
-		get => this.ReadProperty(Data.ValueProperty);
+		get => this.ReadProperty(Data.ValueProperty)!;
 		private set => this.LoadProperty(Data.ValueProperty, value);
 	}
 }
 
-public static class ListTests
+public sealed class ListTests
 {
 	[Test]
-	public static void Roundtrip()
+	public async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<Experiments>>();
-		var experiments = portal.Create();
+		var experiments = await portal.CreateAsync();
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, experiments);
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Values, Has.Count.EqualTo(1));
-			Assert.That(newData.Values[0].Value, Is.EqualTo("123"));
+			await Assert.That(newData.Values).HasCount(1);
+			await Assert.That(newData.Values[0].Value).IsEqualTo("123");
 		}
 	}
 }

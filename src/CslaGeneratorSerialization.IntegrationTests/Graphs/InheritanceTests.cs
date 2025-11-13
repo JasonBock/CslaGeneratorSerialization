@@ -1,6 +1,5 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InheritanceTestsDomain;
 
@@ -15,7 +14,7 @@ public abstract partial class AbstractData
 		AbstractData.RegisterProperty<string>(nameof(AbstractData.Core));
 	public string Core
 	{
-		get => this.GetProperty(AbstractData.CoreProperty);
+		get => this.GetProperty(AbstractData.CoreProperty)!;
 		set => this.SetProperty(AbstractData.CoreProperty, value);
 	}
 }
@@ -31,7 +30,7 @@ public partial class BaseData
 		BaseData.RegisterProperty<string>(nameof(BaseData.Core));
 	public string Core
 	{
-		get => this.GetProperty(BaseData.CoreProperty);
+		get => this.GetProperty(BaseData.CoreProperty)!;
 		set => this.SetProperty(BaseData.CoreProperty, value);
 	}
 }
@@ -68,15 +67,15 @@ public sealed partial class DerivedFromBaseData
 	}
 }
 
-public static class InheritanceTests
+public sealed class InheritanceTests
 {
 	[Test]
-	public static void RoundtripFromAbstractType()
+	public async Task RoundtripFromAbstractTypeAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<DerivedFromAbstractData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Core = "ABC";
 		data.Custom = 3;
@@ -86,20 +85,20 @@ public static class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromAbstractData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Core, Is.EqualTo("ABC"));
-			Assert.That(newData.Custom, Is.EqualTo(3));
+			await Assert.That(newData.Core).IsEqualTo("ABC");
+			await Assert.That(newData.Custom).IsEqualTo(3);
 		}
 	}
 
 	[Test]
-	public static void RoundtripFromBaseType()
+	public async Task RoundtripFromBaseTypeAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var portal = provider.GetRequiredService<IDataPortal<DerivedFromBaseData>>();
-		var data = portal.Create();
+		var data = await portal.CreateAsync();
 
 		data.Core = "ABC";
 		data.Custom = 3;
@@ -109,10 +108,10 @@ public static class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromBaseData)formatter.Deserialize(stream)!;
 
-		using (Assert.EnterMultipleScope())
+		using (Assert.Multiple())
 		{
-			Assert.That(newData.Core, Is.EqualTo("ABC"));
-			Assert.That(newData.Custom, Is.EqualTo(3));
+			await Assert.That(newData.Core).IsEqualTo("ABC");
+			await Assert.That(newData.Custom).IsEqualTo(3);
 		}
 	}
 }
