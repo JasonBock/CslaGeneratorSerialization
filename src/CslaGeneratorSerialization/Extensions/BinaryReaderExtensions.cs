@@ -19,7 +19,7 @@ public static class BinaryReaderExtensions
 			return self.ReadChars(length);
 		}
 
-		public T? Read<T>(Func<T> reader)
+		public T? ReadNullable<T>(Func<T> reader)
 			where T : class
 		{
 			var state = (SerializationState)self.ReadByte();

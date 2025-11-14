@@ -1,4 +1,5 @@
 ﻿using CslaGeneratorSerialization.Extensions;
+using System.Text;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
@@ -68,14 +69,11 @@ public sealed class BinaryWriterExtensionsTests
 
 		stream.Position = 0;
 
-		using (Assert.Multiple())
-		{
-			var lengthBuffer = new byte[8];
-			await stream.ReadAsync(lengthBuffer.AsMemory(0, 8));
-			var ticks = BitConverter.ToInt64(lengthBuffer);
+		var lengthBuffer = new byte[8];
+		await stream.ReadAsync(lengthBuffer.AsMemory(0, 8));
+		var ticks = BitConverter.ToInt64(lengthBuffer);
 
-			await Assert.That(ticks).IsEqualTo(value.Ticks);
-		}
+		await Assert.That(ticks).IsEqualTo(value.Ticks);
 	}
 
 	[Test]
@@ -127,5 +125,80 @@ public sealed class BinaryWriterExtensionsTests
 				await Assert.That(BitConverter.ToInt32(buffer.AsSpan(i * 4, 4))).IsEqualTo(valueBits[i]);
 			}
 		}
+	}
+
+	[Test]
+	public async Task WriteGuidAsync()
+	{
+		var value = Guid.NewGuid();
+		var valueBuffer = value.ToByteArray();
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write(value);
+
+		stream.Position = 0;
+
+		var buffer = new byte[valueBuffer.Length];
+		await stream.ReadAsync(buffer.AsMemory(0, buffer.Length));
+
+		await Assert.That(buffer).IsEquivalentTo(valueBuffer);
+	}
+
+	[Test]
+	public async Task WriteTimeSpanAsync()
+	{
+		var value = TimeSpan.FromTicks(DateTimeOffset.UtcNow.Ticks);
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write(value);
+
+		stream.Position = 0;
+
+		var ticksBuffer = new byte[8];
+		await stream.ReadAsync(ticksBuffer.AsMemory(0, 8));
+		var ticks = BitConverter.ToInt64(ticksBuffer);
+
+		await Assert.That(ticks).IsEqualTo(value.Ticks);
+	}
+
+	[Test]
+	public async Task WriteNullableWhenNotNullAsync()
+	{
+		var value = "data";
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.WriteNullable(value, writer.Write);
+
+		stream.Position = 0;
+
+		var valueBuffer = new byte[6];
+
+		using (Assert.Multiple())
+		{
+			await stream.ReadAsync(valueBuffer.AsMemory(0, 6));
+			await Assert.That((SerializationState)valueBuffer[0]).IsEqualTo(SerializationState.Value);
+			// We start at 2 because valueBuffer[1] holds the length of the string
+			await Assert.That(Encoding.UTF8.GetString(valueBuffer.AsSpan(2, 4))).IsEqualTo(value);
+		}
+	}
+
+	[Test]
+	public async Task WriteNullableWhenNullAsync()
+	{
+		string? value = null;
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.WriteNullable(value, writer.Write);
+
+		stream.Position = 0;
+
+		var valueBuffer = new byte[1];
+
+		await stream.ReadAsync(valueBuffer.AsMemory(0, 1));
+		await Assert.That((SerializationState)valueBuffer[0]).IsEqualTo(SerializationState.Null);
 	}
 }
