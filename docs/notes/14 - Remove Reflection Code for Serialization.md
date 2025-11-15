@@ -144,3 +144,28 @@ public sealed partial class Data
 	}
 }
 ```
+
+System.InvalidOperationException
+  HResult=0x80131509
+  Message=SerializationInfo.GetValue: _bindingEdit
+  Source=Csla
+  StackTrace:
+   at Csla.Serialization.Mobile.SerializationInfo.GetValue[T](String name)
+   at Csla.Core.UndoableBase.OnSetState(SerializationInfo info, StateMode mode)
+   at Csla.Core.BusinessBase.OnSetState(SerializationInfo info, StateMode mode)
+   at Csla.Core.MobileObject.Csla.Serialization.Mobile.IMobileObject.SetState(SerializationInfo info)
+   at Csla.Serialization.Mobile.MobileObjectMetastateHelper.DeserializeMetastate(IMobileObject mobileObject, Byte[] metastate)
+   at Csla.Core.MobileObject.Csla.Serialization.Mobile.IMobileObjectMetastate.SetMetastate(Byte[] metastate)
+   at CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain.ByteArrayData.global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(GeneratorFormatterReaderContext context) in C:\Users\jason\source\repos\JasonBock\CslaGeneratorSerialization\src\artifacts\obj\CslaGeneratorSerialization.IntegrationTests\debug\CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain.ByteArrayData_GeneratorSerialization.g.cs:line 39
+   at CslaGeneratorSerialization.GeneratorFormatter.Deserialize(Stream serializationStream) in /_/src/CslaGeneratorSerialization/GeneratorFormatter.cs:line 26
+   at CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain.ByteArrayTests.<RoundtripAsync>d__0.MoveNext() in C:\Users\jason\source\repos\JasonBock\CslaGeneratorSerialization\src\CslaGeneratorSerialization.IntegrationTests\Collections\ByteArrayTests.cs:line 39
+   at TUnit.Core.TestMetadata`1.<>c__DisplayClass13_0.<<get_CreateExecutableTestFactory>b__2>d.MoveNext()
+   at TUnit.Core.ExecutableTest.<InvokeTestAsync>d__4.MoveNext()
+   at TUnit.Engine.TestExecutor.<ExecuteTestAsync>d__8.MoveNext()
+   at TUnit.Engine.TestExecutor.<ExecuteAsync>d__7.MoveNext()
+
+  This exception was originally thrown at this call stack:
+    [External Code]
+
+Inner Exception 1:
+InvalidCastException: Object must implement IConvertible.
