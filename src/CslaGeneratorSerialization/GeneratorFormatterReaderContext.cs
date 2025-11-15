@@ -102,8 +102,15 @@ public sealed class GeneratorFormatterReaderContext
 		}
 	}
 
-	public TType ReadCustom<TType>() =>
-		this.Resolver.Resolve<TType>().Read(this.Reader);
+	public TType? ReadCustom<TType>()
+	{
+		if (this.Reader.ReadStateValue() == SerializationState.Value)
+		{
+			return this.Resolver.Resolve<TType>().Read(this.Reader);
+		}
+
+		return default;
+	}
 
 	private ApplicationContext Context { get; }
 	public BinaryReader Reader { get; }

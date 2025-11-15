@@ -94,8 +94,53 @@ So what do we need to remove?
     * DONE - CommandBase
     * DONE - ReadOnlyBase
     * DONE - ReadOnlyListBase
-* Ask Rocky why doesn't `ReadOnlyListBase` implement `IMobileObjectMetastate`, because it has `IsReadOnly`. A serialization author shouldn't be responsible for that.
+* Ask Rocky why doesn't `ReadOnlyListBase` implement `IMobileObjectMetastate`, because it has `IsReadOnly`. A serialization author shouldn't be responsible for that. Currently made an issue for it - https://github.com/MarimerLLC/csla/issues/4765.
 * Any code that is doing these things (which also means Reflection in some cases) should be removed to look for the `Csla.Serialization.Mobile.IMobileObjectMetastate` interface and call it with a cast to ensure we are calling it the "right" way:
     * `BusinessListBaseAccessors`
     * `IsXYZ` (e.g. `IsNew`) or `DisableIEditableObject`
-* Need to figure what the issue is with integration tests and referencing `Csla`.
+* DONE - Need to figure what the issue is with integration tests and referencing `Csla`.
+* This is currently generating `Read/WriteCustom()`, and what it should be doing is handling it as an array:
+```c#
+[GeneratorSerializable]
+public sealed partial class Data
+	: BusinessBase<Data>
+{
+	[Create]
+	private void Create() { }
+
+	public static readonly PropertyInfo<int[]> ValueProperty =
+		RegisterProperty<int[]>(nameof(Data.Value));
+#pragma warning disable CA1819 // Properties should not return arrays
+	public int[] Value
+#pragma warning restore CA1819 // Properties should not return arrays
+	{
+		get => this.GetProperty(Data.ValueProperty)!;
+		set => this.SetProperty(Data.ValueProperty, value);
+	}
+}
+```
+
+This is what the gen'd code looks like:
+
+```c#
+public sealed partial class Data
+	: global::CslaGeneratorSerialization.IGeneratorSerializable
+{
+	void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
+	{
+		// global::CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain.Data.ValueProperty
+		context.WriteCustom<int[]>(this.ReadProperty<int[]>(global::CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain.Data.ValueProperty));
+		
+		var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+		context.Writer.Write((metastate.Length, metastate));
+	}
+	
+	void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
+	{
+		// global::CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain.Data.ValueProperty
+		this.LoadProperty(global::CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain.Data.ValueProperty, context.ReadCustom<int[]>());
+		
+		((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+	}
+}
+```

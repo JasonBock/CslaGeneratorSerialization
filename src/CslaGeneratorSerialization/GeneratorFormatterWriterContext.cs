@@ -113,8 +113,18 @@ public sealed class GeneratorFormatterWriterContext
 		}
 	}
 
-	public void WriteCustom<TType>(TType value) =>
-		this.Resolver.Resolve<TType>().Write(value, this.Writer);
+	public void WriteCustom<TType>(TType? value)
+	{
+		if (value is not null)
+		{
+			this.Writer.Write((byte)SerializationState.Value);
+			this.Resolver.Resolve<TType>().Write(value, this.Writer);
+		}
+		else 
+		{
+			this.Writer.Write((byte)SerializationState.Null);
+		}
+	}
 
 	private ApplicationContext Context { get; }
 	private CustomSerializationResolver Resolver { get; }
