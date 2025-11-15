@@ -18,20 +18,5 @@ public static class BinaryReaderExtensions
 			var length = self.ReadInt32();
 			return self.ReadChars(length);
 		}
-
-		public T? ReadNullable<T>(Func<T> reader)
-			where T : class
-		{
-			var state = (SerializationState)self.ReadByte();
-
-			if (state == SerializationState.Value)
-			{
-				return reader();
-			}
-			else
-			{
-				return null;
-			}
-		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using CslaGeneratorSerialization.Analysis.Extensions;
+﻿using Csla.Serialization.Mobile;
+using CslaGeneratorSerialization.Analysis.Extensions;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 
@@ -37,6 +38,8 @@ internal sealed record SerializationModel
 	{
 		this.IsCustomizable = businessObjectType.DerivesFrom(
 			compilation.GetTypeByMetadataName(typeof(IGeneratorSerializableCustomization).FullName)!);
+		this.ImplementsMetastate = businessObjectType.DerivesFrom(
+			compilation.GetTypeByMetadataName(typeof(IMobileObjectMetastate).FullName)!);
 
 		var stereotypes = new Stereotypes(compilation);
 		this.BusinessObject = new TypeReferenceModel(businessObjectType, compilation, stereotypes);
@@ -52,5 +55,6 @@ internal sealed record SerializationModel
 
 	internal TypeReferenceModel BusinessObject { get; }
 	internal bool IsCustomizable { get; }
-	internal EquatableArray<SerializationItemModel> Items { get; }
+   public bool ImplementsMetastate { get; }
+   internal EquatableArray<SerializationItemModel> Items { get; }
 }

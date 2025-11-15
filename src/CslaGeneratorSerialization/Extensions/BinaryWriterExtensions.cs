@@ -45,19 +45,5 @@ public static class BinaryWriterExtensions
 
 		public void Write(TimeSpan value) =>
 			self.Write(value.Ticks);
-
-		public void WriteNullable<T>(T? value, Action<T> writer)
-			where T : class
-		{
-			if (value is not null)
-			{
-				self.Write((byte)SerializationState.Value);
-				writer(value!);
-			}
-			else
-			{
-				self.Write((byte)SerializationState.Null);
-			}
-		}
 	}
 }

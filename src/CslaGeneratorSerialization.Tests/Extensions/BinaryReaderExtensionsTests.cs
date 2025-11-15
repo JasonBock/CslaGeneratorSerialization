@@ -45,34 +45,4 @@ public sealed class BinaryReaderExtensionsTests
 		using var reader = new BinaryReader(stream);
 		await Assert.That(reader.ReadCharArray()).IsEquivalentTo(value);
 	}
-
-	[Test]
-	public async Task ReadNullableWhenNotNullAsync()
-	{
-		var value = "data";
-
-		var stream = new MemoryStream();
-		using var writer = new BinaryWriter(stream);
-		writer.WriteNullable(value, writer.Write);
-
-		stream.Position = 0;
-
-		using var reader = new BinaryReader(stream);
-		await Assert.That(reader.ReadNullable(reader.ReadString)).IsEqualTo(value);
-	}
-
-	[Test]
-	public async Task ReadNullableWhenNullAsync()
-	{
-		string? value = null;
-
-		var stream = new MemoryStream();
-		using var writer = new BinaryWriter(stream);
-		writer.WriteNullable(value, writer.Write);
-
-		stream.Position = 0;
-
-		using var reader = new BinaryReader(stream);
-		await Assert.That(reader.ReadNullable(reader.ReadString)).IsNull();
-	}
 }

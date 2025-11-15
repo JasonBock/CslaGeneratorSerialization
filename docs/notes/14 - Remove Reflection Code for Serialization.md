@@ -54,3 +54,12 @@ Since I know in the "read" case what I should call if it's not `null`, I can pas
 I'm not sure I have tests around **this** scenario. The test I mention about tests for a `null` child BO, not a `null` property **on** the BO.
 
 I think there's an error with the Reflection code I emit now, but since I'm going to remove it anyway, I'm not going to worry about it.
+
+Another thought...instead of having the `Nullable` extensions on `BinaryReader` and `BinaryWriter`, inline the code to something like, if the managed backing field is a reference type (`string`, `byte[]` or `char[]`), then we inline the check for `null` and do the appropriate actions, rather than passing in delegates. Seems like it'll be quicker that way, and there really are only a handful of types that we can pass into these readers and writers - i.e. there's no `Write(object)` call.
+
+So what do we need to remove?
+
+* Pretty much all of the builders to update their nullable read/write
+* Any code that is doing these things (which also means Reflection in some cases) should be removed to look for the `Csla.Serialization.Mobile.IMobileObjectMetastate` interface and call it with a cast to ensure we are calling it the "right" way:
+    * `BusinessListBaseAccessors`
+    * `IsXYZ` (e.g. `IsNew`) or `DisableIEditableObject`

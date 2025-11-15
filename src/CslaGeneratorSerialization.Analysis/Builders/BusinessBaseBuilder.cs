@@ -31,24 +31,16 @@ internal static class BusinessBaseBuilder
 			indentWriter.WriteLine();
 		}
 
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLine("((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());");
+		}
+
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
 			indentWriter.WriteLine();
 		}
-
-		indentWriter.WriteLines(
-			"""
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
-			this.DisableIEditableObject = context.Reader.ReadBoolean();
-			
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
-			global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
-			""");
 
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
@@ -152,24 +144,20 @@ internal static class BusinessBaseBuilder
 			indentWriter.WriteLine();
 		}
 
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLines(
+				"""
+				var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+				context.Writer.Write((metastate.Length, metastate));
+				""");
+		}
+	
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
 			indentWriter.WriteLine();
 		}
-
-		indentWriter.WriteLines(
-			$$"""
-			context.Writer.Write(this.IsNew);
-			context.Writer.Write(this.IsDeleted);
-			context.Writer.Write(this.IsDirty);
-			context.Writer.Write(this.IsChild);
-			context.Writer.Write(this.DisableIEditableObject);
-						
-			context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
-			context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
-			context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
-			""");
 
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
@@ -207,7 +195,7 @@ internal static class BusinessBaseBuilder
 		}
 		else if (propertyType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
 		else if (propertyType.IsValueType)
 		{

@@ -39,7 +39,7 @@ internal static class ArrayBuilder
 		{
 			indentWriter.WriteLines(
 				$$"""
-				var {{valueVariable}} = this.ReadProperty<{{propertyType.FullyQualifiedName}}>({{managedBackingField}});
+				var {{valueVariable}} = this.ReadProperty<{{propertyType.FullyQualifiedName}}>({{managedBackingField}})!;
 
 				if ({{valueVariable}} is not null)
 				{

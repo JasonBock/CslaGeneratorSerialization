@@ -61,11 +61,6 @@ internal static class TestAssistants
 			test.DisabledDiagnostics.AddRange(disabledDiagnostics);
 		}
 
-		foreach (var (outputFileName, outputCode) in IncrementalGeneratorInitializationContextExtensions.GetOutputCode())
-		{
-			test.TestState.GeneratedSources.Add((typeof(GeneratorSerializationGenerator), outputFileName, outputCode));
-		}
-
 		foreach (var (generatedFileName, generatedCode) in generatedSources)
 		{
 			test.TestState.GeneratedSources.Add((typeof(GeneratorSerializationGenerator), generatedFileName, generatedCode));

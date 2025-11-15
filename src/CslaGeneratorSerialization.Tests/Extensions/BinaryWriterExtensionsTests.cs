@@ -162,43 +162,4 @@ public sealed class BinaryWriterExtensionsTests
 
 		await Assert.That(ticks).IsEqualTo(value.Ticks);
 	}
-
-	[Test]
-	public async Task WriteNullableWhenNotNullAsync()
-	{
-		var value = "data";
-
-		var stream = new MemoryStream();
-		using var writer = new BinaryWriter(stream);
-		writer.WriteNullable(value, writer.Write);
-
-		stream.Position = 0;
-
-		var valueBuffer = new byte[6];
-
-		using (Assert.Multiple())
-		{
-			await stream.ReadAsync(valueBuffer.AsMemory(0, 6));
-			await Assert.That((SerializationState)valueBuffer[0]).IsEqualTo(SerializationState.Value);
-			// We start at 2 because valueBuffer[1] holds the length of the string
-			await Assert.That(Encoding.UTF8.GetString(valueBuffer.AsSpan(2, 4))).IsEqualTo(value);
-		}
-	}
-
-	[Test]
-	public async Task WriteNullableWhenNullAsync()
-	{
-		string? value = null;
-
-		var stream = new MemoryStream();
-		using var writer = new BinaryWriter(stream);
-		writer.WriteNullable(value, writer.Write);
-
-		stream.Position = 0;
-
-		var valueBuffer = new byte[1];
-
-		await stream.ReadAsync(valueBuffer.AsMemory(0, 1));
-		await Assert.That((SerializationState)valueBuffer[0]).IsEqualTo(SerializationState.Null);
-	}
 }

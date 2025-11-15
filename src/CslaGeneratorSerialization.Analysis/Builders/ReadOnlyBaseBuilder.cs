@@ -143,7 +143,7 @@ internal static class ReadOnlyBaseBuilder
 		}
 		else if (propertyType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
 		else if (propertyType.IsValueType)
 		{
