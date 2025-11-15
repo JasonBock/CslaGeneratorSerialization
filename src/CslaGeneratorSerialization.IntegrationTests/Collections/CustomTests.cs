@@ -52,7 +52,7 @@ public sealed class CustomTests
 					}
 
 					return data;
-				}));
+				})!);
 
 		var provider = services.BuildServiceProvider();
 

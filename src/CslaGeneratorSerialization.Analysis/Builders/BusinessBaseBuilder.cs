@@ -25,21 +25,33 @@ internal static class BusinessBaseBuilder
 			""");
 		indentWriter.Indent++;
 
-		foreach (var item in model.Items)
+		for (var i = 0; i < model.Items.Length; i++)
 		{
+			var item = model.Items[i];
 			BusinessBaseBuilder.BuildReadOperation(indentWriter, item);
-			indentWriter.WriteLine();
+
+			if (i < model.Items.Length - 1)
+			{
+				indentWriter.WriteLine();
+			}
 		}
 
 		if (model.ImplementsMetastate)
 		{
-			indentWriter.WriteLine("((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());");
+			indentWriter.WriteLines(
+				"""
+				
+				((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+				""");
 		}
 
 		if (model.IsCustomizable)
 		{
-			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
-			indentWriter.WriteLine();
+			indentWriter.WriteLines(
+				"""
+				
+				this.GetCustomState(context.Reader);
+				""");
 		}
 
 		indentWriter.Indent--;
@@ -138,25 +150,34 @@ internal static class BusinessBaseBuilder
 
 		var itemId = 0;
 
-		foreach (var item in model.Items)
+		for (var i = 0; i < model.Items.Length; i++)
 		{
+			var item = model.Items[i];
 			BusinessBaseBuilder.BuildWriteOperation(indentWriter, item, itemId++);
-			indentWriter.WriteLine();
+
+			if (i < model.Items.Length - 1)
+			{
+				indentWriter.WriteLine();
+			}
 		}
 
 		if (model.ImplementsMetastate)
 		{
 			indentWriter.WriteLines(
 				"""
+
 				var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
 				context.Writer.Write((metastate.Length, metastate));
 				""");
 		}
-	
+
 		if (model.IsCustomizable)
 		{
-			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
-			indentWriter.WriteLine();
+			indentWriter.WriteLines(
+				"""
+				
+				this.SetCustomState(context.Writer);
+				""");
 		}
 
 		indentWriter.Indent--;

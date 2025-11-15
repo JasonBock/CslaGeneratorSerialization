@@ -38,7 +38,7 @@ public sealed class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEquivalentTo(new[] { 'a', 'b', 'c' }));
+		await Assert.That(newData.Contents).IsEquivalentTo(['a', 'b', 'c']);
 	}
 
 	[Test]

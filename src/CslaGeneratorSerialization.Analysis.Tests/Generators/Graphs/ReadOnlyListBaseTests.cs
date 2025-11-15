@@ -27,7 +27,7 @@ public sealed class ReadOnlyListBaseTests
 					Experiments.RegisterProperty<Datum>(_ => _.Values);
 				public Datum Values
 				{
-					get => this.ReadProperty(Experiments.ValuesProperty);
+					get => this.ReadProperty(Experiments.ValuesProperty)!;
 					private set => this.LoadProperty(Experiments.ValuesProperty, value);
 				}
 			}
@@ -51,7 +51,7 @@ public sealed class ReadOnlyListBaseTests
 					Data.RegisterProperty<string>(_ => _.Value);
 				public string Value
 				{
-					get => this.ReadProperty(Data.ValueProperty);
+					get => this.ReadProperty(Data.ValueProperty)!;
 					private set => this.LoadProperty(Data.ValueProperty, value);
 				}
 			}
@@ -74,12 +74,17 @@ public sealed class ReadOnlyListBaseTests
 				{
 					// global::Domains.Experiments.ValuesProperty
 					context.Write(this.ReadProperty<global::Domains.Datum>(global::Domains.Experiments.ValuesProperty), false);
+					
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Experiments.ValuesProperty
 					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(false)!);
+					
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			
@@ -106,8 +111,6 @@ public sealed class ReadOnlyListBaseTests
 					{
 						context.Write(item, false);
 					}
-				
-					context.Writer.Write(this.IsReadOnly);
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -121,8 +124,6 @@ public sealed class ReadOnlyListBaseTests
 							this.Add(context.Read<global::Domains.Data>(false)!);
 						}
 					}
-				
-					this.IsReadOnly = context.Reader.ReadBoolean();
 				}
 			}
 			
@@ -144,13 +145,31 @@ public sealed class ReadOnlyListBaseTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.Data.ValueProperty
-					context.Writer.Write(this.ReadProperty<string>(global::Domains.Data.ValueProperty));
+					var value0 = this.ReadProperty<string>(global::Domains.Data.ValueProperty)!;
+					
+					if (value0 is not null)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						context.Writer.Write(value0);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+					}
+					
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.Data.ValueProperty
-					this.LoadProperty(global::Domains.Data.ValueProperty, context.Reader.ReadString());
+					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+					{
+						this.LoadProperty(global::Domains.Data.ValueProperty, context.Reader.ReadString());
+					}
+					
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			

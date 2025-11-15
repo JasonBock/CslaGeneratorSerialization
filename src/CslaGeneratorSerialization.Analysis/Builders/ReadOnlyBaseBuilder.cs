@@ -36,9 +36,22 @@ internal static class ReadOnlyBaseBuilder
 			}
 		}
 
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLines(
+				"""
+				
+				((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+				""");
+		}
+
 		if (model.IsCustomizable)
 		{
-			indentWriter.WriteLine("this.GetCustomState(context.Reader);");
+			indentWriter.WriteLines(
+				"""
+
+				this.GetCustomState(context.Reader);
+				""");
 		}
 
 		indentWriter.Indent--;
@@ -102,9 +115,23 @@ internal static class ReadOnlyBaseBuilder
 			}
 		}
 
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLines(
+				"""
+
+				var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+				context.Writer.Write((metastate.Length, metastate));
+				""");
+		}
+
 		if (model.IsCustomizable)
 		{
-			indentWriter.WriteLine("this.SetCustomState(context.Writer);");
+			indentWriter.WriteLines(
+				"""
+				
+				this.SetCustomState(context.Writer);
+				""");
 		}
 
 		indentWriter.Indent--;

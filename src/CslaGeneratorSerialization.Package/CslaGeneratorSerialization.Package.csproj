@@ -25,21 +25,21 @@
 		<None Include="..\..\LICENSE" Pack="true" PackagePath="" />
 		<None Include="..\Images\Icon.png" Pack="true" PackagePath="" Visible="false" />
 		<None
-			Include="../CslaGeneratorSerialization/bin/$(Configuration)/netstandard2.0/CslaGeneratorSerialization.dll"
+			Include="../artifacts/bin/CslaGeneratorSerialization/$(Configuration)/CslaGeneratorSerialization.dll"
 			Pack="true"
 			PackagePath="analyzers/dotnet/cs"
 			Visible="false" />
 		<None
-			Include="../CslaGeneratorSerialization.Analysis/bin/$(Configuration)/netstandard2.0/CslaGeneratorSerialization.Analysis.dll"
+			Include="../artifacts/bin/CslaGeneratorSerialization.Analysis/$(Configuration)/CslaGeneratorSerialization.Analysis.dll"
 			Pack="true"
 			PackagePath="analyzers/dotnet/cs"
 			Visible="false" />
 		<TfmSpecificPackageFile
-            Include="../CslaGeneratorSerialization/bin/$(Configuration)/netstandard2.0/CslaGeneratorSerialization.dll"
+            Include="../artifacts/bin/CslaGeneratorSerialization/$(Configuration)/CslaGeneratorSerialization.dll"
             Pack="true"
             PackagePath="lib/$(TargetFramework)" />
 		<TfmSpecificPackageFile
-            Include="../CslaGeneratorSerialization/bin/$(Configuration)/netstandard2.0/CslaGeneratorSerialization.xml"
+            Include="../artifacts/bin/CslaGeneratorSerialization/$(Configuration)/CslaGeneratorSerialization.xml"
             Pack="true"
             PackagePath="lib/$(TargetFramework)" />
 	</ItemGroup>

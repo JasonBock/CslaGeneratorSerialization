@@ -54,7 +54,20 @@ public sealed class CommandBaseTests
 					context.Writer.Write(this.ReadProperty<int>(global::Domains.Operation.Int32ContentsProperty));
 					
 					// global::Domains.Operation.StringContentsProperty
-					context.Writer.Write(this.ReadProperty<string>(global::Domains.Operation.StringContentsProperty));
+					var value1 = this.ReadProperty<string>(global::Domains.Operation.StringContentsProperty)!;
+					
+					if (value1 is not null)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						context.Writer.Write(value1);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+					}
+					
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -63,7 +76,12 @@ public sealed class CommandBaseTests
 					this.LoadProperty(global::Domains.Operation.Int32ContentsProperty, context.Reader.ReadInt32());
 					
 					// global::Domains.Operation.StringContentsProperty
-					this.LoadProperty(global::Domains.Operation.StringContentsProperty, context.Reader.ReadString());
+					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+					{
+						this.LoadProperty(global::Domains.Operation.StringContentsProperty, context.Reader.ReadString());
+					}
+					
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			

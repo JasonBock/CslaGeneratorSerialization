@@ -30,28 +30,32 @@ internal static class ReadOnlyListBaseBuilder
 						this.Add(context.Read<{{model.BusinessObject.BusinessObjectTarget!.FullyQualifiedNameNoNullableAnnotation}}>({{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}})!);
 					}
 				}
-
 			""");
+
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLines(
+				"""
+
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+				""");
+		}
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
+
 					this.GetCustomState(context.Reader);
-				
 				""");
 		}
 
-		indentWriter.WriteLines(
-			$$"""
-				this.IsReadOnly = context.Reader.ReadBoolean();
-			}
-			""");
-   }
+		indentWriter.WriteLine("}");
+	}
 
-   // I assume that the items in the deleted list are in the list itself,
-   // so they should be references.
-   private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
+	// I assume that the items in the deleted list are in the list itself,
+	// so they should be references.
+	private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
    {
 		indentWriter.WriteLines(
 			$$"""
@@ -63,22 +67,27 @@ internal static class ReadOnlyListBaseBuilder
 				{
 					context.Write(item, {{model.BusinessObject.BusinessObjectTarget!.IsSealed.ToString().ToLower()}});
 				}
-
 			""");
+
+		if (model.ImplementsMetastate)
+		{
+			indentWriter.WriteLines(
+				"""
+
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
+				""");
+		}
 
 		if (model.IsCustomizable)
 		{
 			indentWriter.WriteLines(
 				"""
-					this.SetCustomState(context.Writer);
-				
+
+					this.SetCustomState(context.Writer);				
 				""");
 		}
 
-		indentWriter.WriteLines(
-			$$"""
-				context.Writer.Write(this.IsReadOnly);
-			}
-			""");
-   }
+		indentWriter.WriteLine("}");
+	}
 }

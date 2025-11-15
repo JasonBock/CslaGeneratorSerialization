@@ -62,14 +62,14 @@ public sealed class CustomTests
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
 
 		var provider = services.BuildServiceProvider();
 
@@ -108,14 +108,14 @@ public sealed class CustomTests
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
 
 		var provider = services.BuildServiceProvider();
 		var context = provider.GetRequiredService<ApplicationContext>();
@@ -152,14 +152,14 @@ public sealed class CustomTests
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
 
 		var provider = services.BuildServiceProvider();
 

@@ -91,14 +91,11 @@ So what do we need to remove?
 * Pretty much all of the builders to update their nullable read/write. Look at `GeneratorSerializationBuilder` as the start:
     * DONE - BusinessBase
     * DONE - BusinessListBase
-    * CommandBase
-    * ReadOnlyBase
-    * ReadOnlyListBase
+    * DONE - CommandBase
+    * DONE - ReadOnlyBase
+    * DONE - ReadOnlyListBase
+* Ask Rocky why doesn't `ReadOnlyListBase` implement `IMobileObjectMetastate`, because it has `IsReadOnly`. A serialization author shouldn't be responsible for that.
 * Any code that is doing these things (which also means Reflection in some cases) should be removed to look for the `Csla.Serialization.Mobile.IMobileObjectMetastate` interface and call it with a cast to ensure we are calling it the "right" way:
     * `BusinessListBaseAccessors`
     * `IsXYZ` (e.g. `IsNew`) or `DisableIEditableObject`
-
-    // CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs(43,25): error CS8600: Converting null literal or possible null value to non-nullable type.
-    DiagnosticResult.CompilerError("CS8600").WithSpan("CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs", 43, 25, 43, 95),
-    // CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs(43,25): error CS8604: Possible null reference argument for parameter 'item' in 'void List<Data>.Add(Data item)'.
-    DiagnosticResult.CompilerError("CS8604").WithSpan("CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs", 43, 25, 43, 95).WithArguments("item", "void List<Data>.Add(Data item)"),
+* Need to figure what the issue is with integration tests and referencing `Csla`.
