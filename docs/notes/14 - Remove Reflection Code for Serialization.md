@@ -57,9 +57,48 @@ I think there's an error with the Reflection code I emit now, but since I'm goin
 
 Another thought...instead of having the `Nullable` extensions on `BinaryReader` and `BinaryWriter`, inline the code to something like, if the managed backing field is a reference type (`string`, `byte[]` or `char[]`), then we inline the check for `null` and do the appropriate actions, rather than passing in delegates. Seems like it'll be quicker that way, and there really are only a handful of types that we can pass into these readers and writers - i.e. there's no `Write(object)` call.
 
+Read inline:
+
+```c#
+var state = (SerializationState)self.ReadByte();
+
+if (state == SerializationState.Value)
+{
+	return reader();
+}
+else
+{
+	return null;
+}
+```
+
+Write inline:
+
+```c#
+if (value is not null)
+{
+	self.Write((byte)SerializationState.Value);
+	writer(value!);
+}
+else
+{
+	self.Write((byte)SerializationState.Null);
+}
+```
+
 So what do we need to remove?
 
-* Pretty much all of the builders to update their nullable read/write
+* Pretty much all of the builders to update their nullable read/write. Look at `GeneratorSerializationBuilder` as the start:
+    * DONE - BusinessBase
+    * DONE - BusinessListBase
+    * CommandBase
+    * ReadOnlyBase
+    * ReadOnlyListBase
 * Any code that is doing these things (which also means Reflection in some cases) should be removed to look for the `Csla.Serialization.Mobile.IMobileObjectMetastate` interface and call it with a cast to ensure we are calling it the "right" way:
     * `BusinessListBaseAccessors`
     * `IsXYZ` (e.g. `IsNew`) or `DisableIEditableObject`
+
+    // CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs(43,25): error CS8600: Converting null literal or possible null value to non-nullable type.
+    DiagnosticResult.CompilerError("CS8600").WithSpan("CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs", 43, 25, 43, 95),
+    // CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs(43,25): error CS8604: Possible null reference argument for parameter 'item' in 'void List<Data>.Add(Data item)'.
+    DiagnosticResult.CompilerError("CS8604").WithSpan("CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.GeneratorSerializationGenerator\Domains.Datum_GeneratorSerialization.g.cs", 43, 25, 43, 95).WithArguments("item", "void List<Data>.Add(Data item)"),
