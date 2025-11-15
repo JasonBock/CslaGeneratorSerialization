@@ -1,5 +1,4 @@
-﻿using Csla.Serialization.Mobile;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace CslaGeneratorSerialization.Analysis.Extensions;
 
@@ -13,6 +12,24 @@ internal static class ITypeSymbolExtensions
 		{
 			if (SymbolEqualityComparer.Default.Equals(target, other) ||
 				target.AllInterfaces.Any(_ => _.DerivesFrom(other)))
+			{
+				return true;
+			}
+
+			target = target.BaseType?.OriginalDefinition ?? null;
+		}
+
+		return false;
+	}
+
+	internal static bool DerivesFrom(this ITypeSymbol self, string otherName, string otherNamespace)
+	{
+		var target = self.OriginalDefinition;
+
+		while (target is not null)
+		{
+			if ((target.Name == otherName && target.GetNamespace() == otherNamespace) ||
+				target.AllInterfaces.Any(_ => _.DerivesFrom(otherName, otherNamespace)))
 			{
 				return true;
 			}
@@ -88,7 +105,7 @@ internal static class ITypeSymbolExtensions
 			(self is INamedTypeSymbol namedSelf && namedSelf.TypeArguments.Any(_ => _.HasErrors()));
 
 	internal static bool IsMobileObject(this ITypeSymbol self) =>
-		(self.Name == nameof(IMobileObject) && 
+		(self.Name == "IMobileObject" && 
 			self.GetNamespace() == "Csla.Serialization.Mobile" && 
 			self.ContainingAssembly.Name == "Csla") ||
 			self.AllInterfaces.Any(_ => _.IsMobileObject());
