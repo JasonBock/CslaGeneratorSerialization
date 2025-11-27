@@ -111,6 +111,9 @@ public sealed class ReadOnlyListBaseTests
 					{
 						context.Write(item, false);
 					}
+				
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -124,6 +127,8 @@ public sealed class ReadOnlyListBaseTests
 							this.Add(context.Read<global::Domains.Data>(false)!);
 						}
 					}
+				
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			

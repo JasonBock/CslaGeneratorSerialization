@@ -21,7 +21,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					RegisterProperty<ChildData>(_ => _.Contents);
 				public ChildData Contents
 				{
-					get => this.GetProperty(Data.ContentsProperty);
+					get => this.GetProperty(Data.ContentsProperty)!;
 					set => this.SetProperty(Data.ContentsProperty, value);
 				}
 			}
@@ -34,7 +34,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					RegisterProperty<string>(_ => _.ChildContents);
 				public string ChildContents
 				{
-					get => this.GetProperty(ChildData.ChildContentsProperty);
+					get => this.GetProperty(ChildData.ChildContentsProperty)!;
 					set => this.SetProperty(ChildData.ChildContentsProperty, value);
 				}
 			}			
@@ -58,15 +58,8 @@ public sealed class ChildBusinessObjectGeneratorTests
 					// global::Domains.Data.ContentsProperty
 					context.Write(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty), true);
 					
-					context.Writer.Write(this.IsNew);
-					context.Writer.Write(this.IsDeleted);
-					context.Writer.Write(this.IsDirty);
-					context.Writer.Write(this.IsChild);
-					context.Writer.Write(this.DisableIEditableObject);
-								
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -74,15 +67,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					// global::Domains.Data.ContentsProperty
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Read<global::Domains.ChildData>(true)!);
 					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
-					this.DisableIEditableObject = context.Reader.ReadBoolean();
-					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			
@@ -104,33 +89,31 @@ public sealed class ChildBusinessObjectGeneratorTests
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
 					// global::Domains.ChildData.ChildContentsProperty
-					context.Writer.Write(this.ReadProperty<string>(global::Domains.ChildData.ChildContentsProperty));
+					var value0 = this.ReadProperty<string>(global::Domains.ChildData.ChildContentsProperty)!;
 					
-					context.Writer.Write(this.IsNew);
-					context.Writer.Write(this.IsDeleted);
-					context.Writer.Write(this.IsDirty);
-					context.Writer.Write(this.IsChild);
-					context.Writer.Write(this.DisableIEditableObject);
-								
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
+					if (value0 is not null)
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+						context.Writer.Write(value0);
+					}
+					else
+					{
+						context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+					}
+					
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
 					// global::Domains.ChildData.ChildContentsProperty
-					this.LoadProperty(global::Domains.ChildData.ChildContentsProperty, context.Reader.ReadString());
+					if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+					{
+						this.LoadProperty(global::Domains.ChildData.ChildContentsProperty, context.Reader.ReadString());
+					}
 					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
-					this.DisableIEditableObject = context.Reader.ReadBoolean();
-					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			
@@ -163,7 +146,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					RegisterProperty<ChildData>(_ => _.Contents);
 				public ChildData Contents
 				{
-					get => this.GetProperty(Data.ContentsProperty);
+					get => this.GetProperty(Data.ContentsProperty)!;
 					set => this.SetProperty(Data.ContentsProperty, value);
 				}
 			}
@@ -175,7 +158,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					RegisterProperty<string>(_ => _.ChildContents);
 				public string ChildContents
 				{
-					get => this.GetProperty(ChildData.ChildContentsProperty);
+					get => this.GetProperty(ChildData.ChildContentsProperty)!;
 					set => this.SetProperty(ChildData.ChildContentsProperty, value);
 				}
 			}			
@@ -199,15 +182,8 @@ public sealed class ChildBusinessObjectGeneratorTests
 					// global::Domains.Data.ContentsProperty
 					context.WriteMobileObject(this.ReadProperty<global::Domains.ChildData>(global::Domains.Data.ContentsProperty));
 					
-					context.Writer.Write(this.IsNew);
-					context.Writer.Write(this.IsDeleted);
-					context.Writer.Write(this.IsDirty);
-					context.Writer.Write(this.IsChild);
-					context.Writer.Write(this.DisableIEditableObject);
-								
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this));
-					context.Writer.Write(global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this));
+					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
+					context.Writer.Write((metastate.Length, metastate));
 				}
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
@@ -215,15 +191,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 					// global::Domains.Data.ContentsProperty
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadMobileObject<global::Domains.ChildData>()!);
 					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsNewProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.SetIsDeletedProperty(this, context.Reader.ReadBoolean());
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsDirtyField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIsChildField(this) = context.Reader.ReadBoolean();
-					this.DisableIEditableObject = context.Reader.ReadBoolean();
-					
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetNeverCommittedField(this) = context.Reader.ReadBoolean();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetEditLevelAddedField(this) = context.Reader.ReadInt32();
-					global::CslaGeneratorSerialization.BusinessBaseAccessors.GetSetIdentityField(this) = context.Reader.ReadInt32();
+					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 				}
 			}
 			
