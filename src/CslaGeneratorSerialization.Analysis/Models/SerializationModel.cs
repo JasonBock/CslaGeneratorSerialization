@@ -35,8 +35,7 @@ internal sealed record SerializationModel
 
 	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, Compilation compilation)
 	{
-		this.IsCustomizable = businessObjectType.DerivesFrom(
-			compilation.GetTypeByMetadataName(typeof(IGeneratorSerializableCustomization).FullName)!);
+		this.IsCustomizable = businessObjectType.DerivesFrom("IGeneratorSerializableCustomization", "CslaGeneratorSerialization");
 		this.ImplementsMetastate = businessObjectType.DerivesFrom("IMobileObjectMetastate", "Csla.Serialization.Mobile")!;
 
 		var stereotypes = new Stereotypes(compilation);

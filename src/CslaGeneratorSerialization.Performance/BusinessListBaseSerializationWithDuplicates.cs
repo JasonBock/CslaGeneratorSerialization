@@ -3,6 +3,7 @@ using Csla;
 using Csla.Configuration;
 using Csla.Serialization;
 using Csla.Serialization.Mobile;
+using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CslaGeneratorSerialization.Performance;
@@ -20,6 +21,7 @@ public class BusinessListBaseSerializationWithDuplicates
 		var generatorService = new ServiceCollection();
 		generatorService.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
+		generatorService.AddCslaGeneratorSerialization();
 		var generatorProvider = generatorService.BuildServiceProvider();
 
 		var generatorApplicationContext = generatorProvider.GetService<ApplicationContext>()!;

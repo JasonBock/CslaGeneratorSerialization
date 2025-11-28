@@ -3,6 +3,7 @@ using Csla;
 using Csla.Configuration;
 using Csla.Serialization;
 using Csla.Serialization.Mobile;
+using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CslaGeneratorSerialization.Performance;
@@ -17,10 +18,11 @@ public class BusinessBaseSerialization
 
 	public BusinessBaseSerialization()
 	{
-		var generatorService = new ServiceCollection();
-		generatorService.AddCsla(o =>
+		var generatorServices = new ServiceCollection();
+		generatorServices.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		var generatorProvider = generatorService.BuildServiceProvider();
+		generatorServices.AddCslaGeneratorSerialization();
+		var generatorProvider = generatorServices.BuildServiceProvider();
 		var generatorApplicationContext = generatorProvider.GetService<ApplicationContext>()!;
 		var generatorPortal = generatorProvider.GetRequiredService<IDataPortal<Person>>();
 		var generatorPerson = generatorPortal.Create();
@@ -30,10 +32,10 @@ public class BusinessBaseSerialization
 
 		(this.generatorPerson, this.generatorFormatter) = (generatorPerson, new GeneratorFormatter(generatorApplicationContext, new(generatorProvider)));
 
-		var mobileService = new ServiceCollection();
-		mobileService.AddCsla(o =>
+		var mobileServices = new ServiceCollection();
+		mobileServices.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<MobileFormatter>()));
-		var mobileProvider = mobileService.BuildServiceProvider();
+		var mobileProvider = mobileServices.BuildServiceProvider();
 
 		var mobileApplicationContext = mobileProvider.GetService<ApplicationContext>()!;
 		var mobilePortal = mobileProvider.GetRequiredService<IDataPortal<Person>>();

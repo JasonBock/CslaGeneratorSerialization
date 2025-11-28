@@ -6,9 +6,10 @@
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" />
 		<PackageReference Include="Csla" />
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp"/>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
+		<ProjectReference Include="..\CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.csproj" OutputItemType="Analyzer" />
 	</ItemGroup>
 </Project>

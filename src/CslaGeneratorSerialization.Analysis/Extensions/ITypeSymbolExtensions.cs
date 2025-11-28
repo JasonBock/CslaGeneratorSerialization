@@ -111,7 +111,7 @@ internal static class ITypeSymbolExtensions
 			self.AllInterfaces.Any(_ => _.IsMobileObject());
 
 	internal static bool IsGeneratorSerializable(this ITypeSymbol self) =>
-		(self.Name == nameof(IGeneratorSerializable) && 
+		(self.Name == "IGeneratorSerializable" && 
 			self.GetNamespace() == "CslaGeneratorSerialization" && 
 			self.ContainingAssembly.Name == "CslaGeneratorSerialization") ||
 			self.AllInterfaces.Any(_ => _.IsGeneratorSerializable());

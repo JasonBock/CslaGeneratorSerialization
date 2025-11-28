@@ -20,7 +20,7 @@ internal sealed record TypeReferenceModel
 		this.IsSealed = type.IsSealed;
 		this.IsAbstract = type.IsAbstract;
 
-		var generatorSerializableTypeSymbol = compilation.GetTypeByMetadataName(typeof(GeneratorSerializableAttribute).FullName);
+		var generatorSerializableTypeSymbol = compilation.GetTypeByMetadataName("CslaGeneratorSerialization.GeneratorSerializableAttribute");
 		this.ParticipatesInGeneratorSerialization = type.GetAttributes().Any(
 			_ => _.AttributeClass!.Equals(generatorSerializableTypeSymbol, SymbolEqualityComparer.Default));
 
