@@ -34,7 +34,7 @@ public class BusinessBaseSerialization
 
 		var mobileServices = new ServiceCollection();
 		mobileServices.AddCsla(o =>
-			o.Serialization(so => so.UseSerializationFormatter<MobileFormatter>()));
+			o.Serialization(o => o.UseMobileFormatter()));
 		var mobileProvider = mobileServices.BuildServiceProvider();
 
 		var mobileApplicationContext = mobileProvider.GetService<ApplicationContext>()!;
