@@ -48,8 +48,7 @@ public class BusinessListBaseSerializationWithDuplicates
 		(this.generatorPeople, this.generatorFormatter) = (generatorPeople, new GeneratorFormatter(generatorApplicationContext, new(generatorProvider)));
 
 		var mobileServices = new ServiceCollection();
-		mobileServices.AddCsla(o =>
-			o.Serialization(o => o.UseMobileFormatter()));
+		mobileServices.AddCsla();
 		var mobileProvider = mobileServices.BuildServiceProvider();
 
 		var mobileApplicationContext = mobileProvider.GetService<ApplicationContext>()!;

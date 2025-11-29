@@ -1,4 +1,4 @@
 ﻿using BenchmarkDotNet.Running;
 using CslaGeneratorSerialization.Performance;
 
-BenchmarkRunner.Run<BusinessListBaseSerializationWithDuplicates>();
+BenchmarkRunner.Run<BusinessBaseSerialization>();
