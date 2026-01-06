@@ -1,9 +1,11 @@
-﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
+﻿using NUnit.Framework;
 
-public sealed class CharGeneratorTests
+namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
+
+internal static class CharGeneratorTests
 {
 	[Test]
-	public async Task GenerateAsync()
+	public static async Task GenerateAsync()
 	{
 		var code =
 			"""
@@ -66,7 +68,7 @@ public sealed class CharGeneratorTests
 	}
 
 	[Test]
-	public async Task GenerateWithNullableAsync()
+	public static async Task GenerateWithNullableAsync()
 	{
 		var code =
 			"""

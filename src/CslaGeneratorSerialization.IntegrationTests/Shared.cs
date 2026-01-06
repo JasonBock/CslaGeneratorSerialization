@@ -1,6 +1,9 @@
 ﻿using Csla.Configuration;
 using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
+
+[assembly: Parallelizable(ParallelScope.Fixtures)]
 
 namespace CslaGeneratorSerialization.IntegrationTests;
 

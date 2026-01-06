@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.EnumTestsDomain;
 
@@ -37,10 +38,10 @@ public sealed partial class EnumNullableData
 	}
 }
 
-public sealed class EnumTests
+internal static class EnumTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -54,11 +55,11 @@ public sealed class EnumTests
 		stream.Position = 0;
 		var newData = (EnumData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEqualTo(States.Second);
+		Assert.That(newData.Contents, Is.EqualTo(States.Second));
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -73,6 +74,6 @@ public sealed class EnumTests
 		stream.Position = 0;
 		var newData = (EnumNullableData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

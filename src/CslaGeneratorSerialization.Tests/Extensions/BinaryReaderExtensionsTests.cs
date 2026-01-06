@@ -1,11 +1,12 @@
 ﻿using CslaGeneratorSerialization.Extensions;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
-public sealed class BinaryReaderExtensionsTests
+internal static class BinaryReaderExtensionsTests
 {
 	[Test]
-	public async Task ReadStateValueAsync()
+	public static async Task ReadStateValueAsync()
 	{
 		var value = SerializationState.Duplicate;
 		var stream = new MemoryStream();
@@ -15,11 +16,11 @@ public sealed class BinaryReaderExtensionsTests
 		stream.Position = 0;
 
 		using var reader = new BinaryReader(stream);
-		await Assert.That(reader.ReadStateValue()).IsEqualTo(value);
+		Assert.That(reader.ReadStateValue(), Is.EqualTo(value));
 	}
 
 	[Test]
-	public async Task ReadByteArrayAsync()
+	public static async Task ReadByteArrayAsync()
 	{
 		byte[] value = [22, 33, 44];
 		var stream = new MemoryStream();
@@ -29,11 +30,11 @@ public sealed class BinaryReaderExtensionsTests
 		stream.Position = 0;
 
 		using var reader = new BinaryReader(stream);
-		await Assert.That(reader.ReadByteArray()).IsEquivalentTo(value);
+		Assert.That(reader.ReadByteArray(), Is.EquivalentTo(value));
 	}
 
 	[Test]
-	public async Task ReadCharArrayAsync()
+	public static async Task ReadCharArrayAsync()
 	{
 		char[] value = ['a', 'b', 'c'];
 		var stream = new MemoryStream();
@@ -43,6 +44,6 @@ public sealed class BinaryReaderExtensionsTests
 		stream.Position = 0;
 
 		using var reader = new BinaryReader(stream);
-		await Assert.That(reader.ReadCharArray()).IsEquivalentTo(value);
+		Assert.That(reader.ReadCharArray(), Is.EquivalentTo(value));
 	}
 }

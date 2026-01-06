@@ -1,5 +1,4 @@
 ﻿using Csla.Core;
-using CslaGeneratorSerialization.Analysis.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing;

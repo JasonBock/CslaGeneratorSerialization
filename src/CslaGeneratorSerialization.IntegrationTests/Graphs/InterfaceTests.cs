@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InterfaceTestsDomain;
 
@@ -50,10 +51,10 @@ public sealed partial class ConsumeData
 	}
 }
 
-public sealed class InterfaceTests
+internal static class InterfaceTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -71,11 +72,11 @@ public sealed class InterfaceTests
 		stream.Position = 0;
 		var newData = (ConsumeData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var dataProperty = (InterfaceData)newData.Contents;
-			await Assert.That(dataProperty.Contents).IsEqualTo("ABC");
-			await Assert.That(dataProperty.Extra).IsEqualTo(3);
+			Assert.That(dataProperty.Contents, Is.EqualTo("ABC"));
+			Assert.That(dataProperty.Extra, Is.EqualTo(3));
 		}
 	}
 }

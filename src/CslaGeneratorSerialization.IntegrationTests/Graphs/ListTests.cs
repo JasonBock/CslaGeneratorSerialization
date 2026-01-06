@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ListTestsDomain;
 
@@ -44,10 +45,10 @@ public partial class Data
 	}
 }
 
-public sealed class ListTests
+internal static class ListTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -67,6 +68,6 @@ public sealed class ListTests
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Values).HasCount(3);
+		Assert.That(newData.Values, Has.Count.EqualTo(3));
 	}
 }

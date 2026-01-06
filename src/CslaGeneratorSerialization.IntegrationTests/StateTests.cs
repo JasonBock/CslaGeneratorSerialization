@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.StateTestsDomain;
 
@@ -22,10 +23,10 @@ public sealed partial class StateData
 	}
 }
 
-public sealed class StateTests
+internal static class StateTests
 {
 	[Test]
-	public async Task CreateAsync()
+	public static async Task CreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -37,17 +38,17 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsTrue();
-			await Assert.That(newData.IsDeleted).IsFalse();
-			await Assert.That(newData.IsDirty).IsTrue();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.True);
+			Assert.That(newData.IsDeleted, Is.False);
+			Assert.That(newData.IsDirty, Is.True);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 
 	[Test]
-	public async Task FetchAsync()
+	public static async Task FetchAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -59,17 +60,17 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsFalse();
-			await Assert.That(newData.IsDeleted).IsFalse();
-			await Assert.That(newData.IsDirty).IsFalse();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.False);
+			Assert.That(newData.IsDeleted, Is.False);
+			Assert.That(newData.IsDirty, Is.False);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 
 	[Test]
-	public async Task ChangeStateOnCreateAsync()
+	public static async Task ChangeStateOnCreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -83,17 +84,17 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsTrue();
-			await Assert.That(newData.IsDeleted).IsFalse();
-			await Assert.That(newData.IsDirty).IsTrue();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.True);
+			Assert.That(newData.IsDeleted, Is.False);
+			Assert.That(newData.IsDirty, Is.True);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 
 	[Test]
-	public async Task ChangeStateOnFetchAsync()
+	public static async Task ChangeStateOnFetchAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -107,17 +108,17 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsFalse();
-			await Assert.That(newData.IsDeleted).IsFalse();
-			await Assert.That(newData.IsDirty).IsTrue();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.False);
+			Assert.That(newData.IsDeleted, Is.False);
+			Assert.That(newData.IsDirty, Is.True);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 
 	[Test]
-	public async Task DeleteAfterCreateAsync()
+	public static async Task DeleteAfterCreateAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -132,17 +133,17 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsTrue();
-			await Assert.That(newData.IsDeleted).IsTrue();
-			await Assert.That(newData.IsDirty).IsTrue();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.True);
+			Assert.That(newData.IsDeleted, Is.True);
+			Assert.That(newData.IsDirty, Is.True);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 
 	[Test]
-	public async Task DeleteAfterFetchAsync()
+	public static async Task DeleteAfterFetchAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -157,12 +158,12 @@ public sealed class StateTests
 		stream.Position = 0;
 		var newData = (StateData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.IsNew).IsFalse();
-			await Assert.That(newData.IsDeleted).IsTrue();
-			await Assert.That(newData.IsDirty).IsTrue();
-			await Assert.That(newData.IsChild).IsFalse();
+			Assert.That(newData.IsNew, Is.False);
+			Assert.That(newData.IsDeleted, Is.True);
+			Assert.That(newData.IsDirty, Is.True);
+			Assert.That(newData.IsChild, Is.False);
 		}
 	}
 }

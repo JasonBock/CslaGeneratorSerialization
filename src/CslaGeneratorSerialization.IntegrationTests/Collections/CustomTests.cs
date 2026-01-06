@@ -2,6 +2,7 @@
 using Csla.Configuration;
 using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.CustomTestsDomain;
 
@@ -23,10 +24,10 @@ public sealed partial class Data
 	}
 }
 
-public sealed class CustomTests
+internal static class CustomTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCsla(o =>
@@ -67,11 +68,11 @@ public sealed class CustomTests
 		stream.Position = 0;
 		var newData = (Data)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Value).IsEquivalentTo([3, 7, 4, 2]);
+		Assert.That(newData.Value, Is.EquivalentTo([3, 7, 4, 2]));
 	}
 
 	[Test]
-	public async Task RoundtripWhenCustomizationIsNotConfiguredAsync()
+	public static async Task RoundtripWhenCustomizationIsNotConfiguredAsync()
 	{
 		var provider = Shared.ServiceProvider;
 
@@ -83,6 +84,6 @@ public sealed class CustomTests
 
 		using var stream = new MemoryStream();
 
-		await Assert.That(() => formatter.Serialize(stream, data)).Throws<NotSupportedException>();
+		Assert.That(() => formatter.Serialize(stream, data), Throws.TypeOf<NotSupportedException>());
 	}
 }

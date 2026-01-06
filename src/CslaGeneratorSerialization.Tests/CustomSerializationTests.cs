@@ -1,9 +1,11 @@
-﻿namespace CslaGeneratorSerialization.Tests.CustomSerializationTestsDomain;
+﻿using NUnit.Framework;
 
-public sealed class CustomSerializationTests
+namespace CslaGeneratorSerialization.Tests.CustomSerializationTestsDomain;
+
+internal static class CustomSerializationTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var customSerialization = new CustomSerialization<CustomData>(
 			(data, writer) =>
@@ -23,7 +25,7 @@ public sealed class CustomSerializationTests
 		using var reader = new BinaryReader(readerStream);
 		var newData = customSerialization.Read(reader);
 
-		await Assert.That(newData.Id).EqualTo(data.Id);
+		Assert.That(newData.Id, Is.EqualTo(data.Id));
 	}
 }
 

@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.StringTestsDomain;
 
@@ -19,10 +20,10 @@ public sealed partial class StringData
 	}
 }
 
-public sealed class StringTests
+internal static class StringTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -36,11 +37,11 @@ public sealed class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEqualTo("ABC");
+		Assert.That(newData.Contents, Is.EqualTo("ABC"));
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -55,6 +56,6 @@ public sealed class StringTests
 		stream.Position = 0;
 		var newData = (StringData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEqualTo(string.Empty);
+		Assert.That(newData.Contents, Is.EqualTo(string.Empty));
 	}
 }

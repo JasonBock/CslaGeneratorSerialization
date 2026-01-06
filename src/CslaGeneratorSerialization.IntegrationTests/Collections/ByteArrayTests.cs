@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.ByteArrayTestsDomain;
 
@@ -21,10 +22,10 @@ public sealed partial class ByteArrayData
 	}
 }
 
-public sealed class ByteArrayTests
+internal static class ByteArrayTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -38,11 +39,11 @@ public sealed class ByteArrayTests
 		stream.Position = 0;
 		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEquivalentTo(new byte[] { 22, 33, 44 });
+		Assert.That(newData.Contents, Is.EquivalentTo(new byte[] { 22, 33, 44 }));
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -57,6 +58,6 @@ public sealed class ByteArrayTests
 		stream.Position = 0;
 		var newData = (ByteArrayData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

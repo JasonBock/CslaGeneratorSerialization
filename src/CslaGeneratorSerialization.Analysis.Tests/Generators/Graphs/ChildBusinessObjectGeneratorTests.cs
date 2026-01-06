@@ -1,9 +1,11 @@
-﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
+﻿using NUnit.Framework;
 
-public sealed class ChildBusinessObjectGeneratorTests
+namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
+
+internal static class ChildBusinessObjectGeneratorTests
 {
 	[Test]
-	public async Task GenerateAsync()
+	public static async Task GenerateAsync()
 	{
 		var code =
 			"""
@@ -128,7 +130,7 @@ public sealed class ChildBusinessObjectGeneratorTests
 	}
 
 	[Test]
-	public async Task GenerateWhenChildObjectDoesNotParticipateInGeneratorSerializationAsync()
+	public static async Task GenerateWhenChildObjectDoesNotParticipateInGeneratorSerializationAsync()
 	{
 		var code =
 			"""

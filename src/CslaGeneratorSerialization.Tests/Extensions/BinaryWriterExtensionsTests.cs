@@ -1,12 +1,12 @@
 ﻿using CslaGeneratorSerialization.Extensions;
-using System.Text;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
-public sealed class BinaryWriterExtensionsTests
+internal static class BinaryWriterExtensionsTests
 {
 	[Test]
-	public async Task WriteByteArrayAsync()
+	public static async Task WriteByteArrayAsync()
 	{
 		byte[] buffer = [22, 33, 44];
 
@@ -16,22 +16,22 @@ public sealed class BinaryWriterExtensionsTests
 
 		stream.Position = 0;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var lengthBuffer = new byte[4];
 			await stream.ReadAsync(lengthBuffer.AsMemory(0, 4));
 			var length = BitConverter.ToInt32(lengthBuffer);
 
-			await Assert.That(length).IsEqualTo(3);
+			Assert.That(length, Is.EqualTo(3));
 
 			var readBuffer = new byte[3];
 			await stream.ReadAsync(readBuffer.AsMemory(0, 3));
-			await Assert.That(readBuffer).IsEquivalentTo(buffer);
+			Assert.That(readBuffer, Is.EquivalentTo(buffer));
 		}
 	}
 
 	[Test]
-	public async Task WriteCharArrayAsync()
+	public static async Task WriteCharArrayAsync()
 	{
 		char[] buffer = ['a', 'b', 'c'];
 
@@ -41,25 +41,25 @@ public sealed class BinaryWriterExtensionsTests
 
 		stream.Position = 0;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var lengthBuffer = new byte[4];
 			await stream.ReadAsync(lengthBuffer.AsMemory(0, 4));
 			var length = BitConverter.ToInt32(lengthBuffer);
 
-			await Assert.That(length).IsEqualTo(3);
+			Assert.That(length, Is.EqualTo(3));
 
 			var readBuffer = new byte[3];
 			await stream.ReadAsync(readBuffer.AsMemory(0, 3));
-			await Assert.That(readBuffer).HasCount(3);
-			await Assert.That((char)readBuffer[0]).IsEqualTo(buffer[0]);
-			await Assert.That((char)readBuffer[1]).IsEqualTo(buffer[1]);
-			await Assert.That((char)readBuffer[2]).IsEqualTo(buffer[2]);
+			Assert.That(readBuffer, Has.Length.EqualTo(3));
+			Assert.That((char)readBuffer[0], Is.EqualTo(buffer[0]));
+			Assert.That((char)readBuffer[1], Is.EqualTo(buffer[1]));
+			Assert.That((char)readBuffer[2], Is.EqualTo(buffer[2]));
 		}
 	}
 
 	[Test]
-	public async Task WriteDateTimeAsync()
+	public static async Task WriteDateTimeAsync()
 	{
 		var value = DateTime.UtcNow;
 
@@ -73,11 +73,11 @@ public sealed class BinaryWriterExtensionsTests
 		await stream.ReadAsync(lengthBuffer.AsMemory(0, 8));
 		var ticks = BitConverter.ToInt64(lengthBuffer);
 
-		await Assert.That(ticks).IsEqualTo(value.Ticks);
+		Assert.That(ticks, Is.EqualTo(value.Ticks));
 	}
 
 	[Test]
-	public async Task WriteDateTimeOffsetAsync()
+	public static async Task WriteDateTimeOffsetAsync()
 	{
 		var value = DateTimeOffset.UtcNow;
 
@@ -87,24 +87,24 @@ public sealed class BinaryWriterExtensionsTests
 
 		stream.Position = 0;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var ticksBuffer = new byte[8];
 			await stream.ReadAsync(ticksBuffer.AsMemory(0, 8));
 			var ticks = BitConverter.ToInt64(ticksBuffer);
 
-			await Assert.That(ticks).IsEqualTo(value.Ticks);
+			Assert.That(ticks, Is.EqualTo(value.Ticks));
 
 			var offsetTicksBuffer = new byte[8];
 			await stream.ReadAsync(offsetTicksBuffer.AsMemory(0, 8));
 			var offsetTicks = BitConverter.ToInt64(offsetTicksBuffer);
 
-			await Assert.That(offsetTicks).IsEqualTo(value.Offset.Ticks);
+			Assert.That(offsetTicks, Is.EqualTo(value.Offset.Ticks));
 		}
 	}
 
 	[Test]
-	public async Task WriteDecimalAsync()
+	public static async Task WriteDecimalAsync()
 	{
 		var value = 3.4M;
 		var valueBits = decimal.GetBits(value);
@@ -115,20 +115,20 @@ public sealed class BinaryWriterExtensionsTests
 
 		stream.Position = 0;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var buffer = new byte[valueBits.Length * 4];
 			await stream.ReadAsync(buffer.AsMemory(0, buffer.Length));
 
 			for (var i = 0; i < valueBits.Length; i++)
 			{
-				await Assert.That(BitConverter.ToInt32(buffer.AsSpan(i * 4, 4))).IsEqualTo(valueBits[i]);
+				Assert.That(BitConverter.ToInt32(buffer.AsSpan(i * 4, 4)), Is.EqualTo(valueBits[i]));
 			}
 		}
 	}
 
 	[Test]
-	public async Task WriteGuidAsync()
+	public static async Task WriteGuidAsync()
 	{
 		var value = Guid.NewGuid();
 		var valueBuffer = value.ToByteArray();
@@ -142,11 +142,11 @@ public sealed class BinaryWriterExtensionsTests
 		var buffer = new byte[valueBuffer.Length];
 		await stream.ReadAsync(buffer.AsMemory(0, buffer.Length));
 
-		await Assert.That(buffer).IsEquivalentTo(valueBuffer);
+		Assert.That(buffer, Is.EquivalentTo(valueBuffer));
 	}
 
 	[Test]
-	public async Task WriteTimeSpanAsync()
+	public static async Task WriteTimeSpanAsync()
 	{
 		var value = TimeSpan.FromTicks(DateTimeOffset.UtcNow.Ticks);
 
@@ -160,6 +160,6 @@ public sealed class BinaryWriterExtensionsTests
 		await stream.ReadAsync(ticksBuffer.AsMemory(0, 8));
 		var ticks = BitConverter.ToInt64(ticksBuffer);
 
-		await Assert.That(ticks).IsEqualTo(value.Ticks);
+		Assert.That(ticks, Is.EqualTo(value.Ticks));
 	}
 }

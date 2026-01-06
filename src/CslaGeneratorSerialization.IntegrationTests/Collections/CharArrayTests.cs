@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Collections.CharArrayTestsDomain;
 
@@ -21,10 +22,10 @@ public sealed partial class CharArrayData
 	}
 }
 
-public sealed class CharArrayTests
+internal static class CharArrayTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -38,11 +39,11 @@ public sealed class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsEquivalentTo(['a', 'b', 'c']);
+		Assert.That(newData.Contents, Is.EquivalentTo(['a', 'b', 'c']));
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -57,6 +58,6 @@ public sealed class CharArrayTests
 		stream.Position = 0;
 		var newData = (CharArrayData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ReadOnlyListTestsDomain;
 
@@ -51,10 +52,10 @@ public partial class Data
 	}
 }
 
-public sealed class ListTests
+internal static class ListTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -66,10 +67,10 @@ public sealed class ListTests
 		stream.Position = 0;
 		var newData = (Experiments)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Values).HasCount(1);
-			await Assert.That(newData.Values[0].Value).IsEqualTo("123");
+			Assert.That(newData.Values, Has.Count.EqualTo(1));
+			Assert.That(newData.Values[0].Value, Is.EqualTo("123"));
 		}
 	}
 }

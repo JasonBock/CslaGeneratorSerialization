@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.SealedTestsDomain;
 
@@ -51,10 +52,10 @@ public sealed partial class ConsumingData
 	}
 }
 
-public sealed class SealedTests
+internal static class SealedTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -72,11 +73,11 @@ public sealed class SealedTests
 		stream.Position = 0;
 		var newData = (ConsumingData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var dataProperty = (DerivedData)newData.Contents;
-			await Assert.That(dataProperty.Core).IsEqualTo("ABC");
-			await Assert.That(dataProperty.Custom).IsEqualTo(3);
+			Assert.That(dataProperty.Core, Is.EqualTo("ABC"));
+			Assert.That(dataProperty.Custom, Is.EqualTo(3));
 		}
 	}
 }

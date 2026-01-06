@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.BooleanTestsDomain;
 
@@ -35,10 +36,10 @@ public sealed partial class BooleanNullableData
 	}
 }
 
-public sealed class BooleanTests
+internal static class BooleanTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -52,11 +53,11 @@ public sealed class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsTrue();
+		Assert.That(newData.Contents, Is.True);
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -71,6 +72,6 @@ public sealed class BooleanTests
 		stream.Position = 0;
 		var newData = (BooleanNullableData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

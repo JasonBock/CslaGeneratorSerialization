@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.ChildBusinessObjectTestsDomain;
 
@@ -68,10 +69,10 @@ public sealed class NonParticipatingChildData
 	}
 }
 
-public sealed class ChildBusinessObjectTests
+internal static class ChildBusinessObjectTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -85,11 +86,11 @@ public sealed class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents.ChildContents).IsEqualTo("ABC");
+		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}
 
 	[Test]
-	public async Task RoundtripWithNonParticipatingChildAsync()
+	public static async Task RoundtripWithNonParticipatingChildAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -103,11 +104,11 @@ public sealed class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (NonParticipatingParentData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents.ChildContents).IsEqualTo("ABC");
+		Assert.That(newData.Contents.ChildContents, Is.EqualTo("ABC"));
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -122,6 +123,6 @@ public sealed class ChildBusinessObjectTests
 		stream.Position = 0;
 		var newData = (ParentData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

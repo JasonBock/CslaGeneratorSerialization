@@ -1,12 +1,13 @@
 ﻿using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Analysis.Tests.Generators;
 
-public sealed class ErrorTests
+internal static class ErrorTests
 {
 	[Test]
-	public async Task CreateWhenBusinessObjectHasDiagnosticsAsync()
+	public static async Task CreateWhenBusinessObjectHasDiagnosticsAsync()
 	{
 		var code =
 			"""

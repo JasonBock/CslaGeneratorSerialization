@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.DuplicateTestsDomain;
 
@@ -35,10 +36,10 @@ public sealed partial class Node
 	}
 }
 
-public sealed class DuplicateTests
+internal static class DuplicateTests
 {
 	[Test]
-	public async Task RoundtripWhenDifferentAsync()
+	public static async Task RoundtripWhenDifferentAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -56,15 +57,15 @@ public sealed class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
-			await Assert.That(newData.Right!.Name).IsEqualTo("Right");
+			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
+			Assert.That(newData.Right!.Name, Is.EqualTo("Right"));
 		}
 	}
 
 	[Test]
-	public async Task RoundtripWhenRightIsSameAsLeftAsync()
+	public static async Task RoundtripWhenRightIsSameAsLeftAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -81,16 +82,16 @@ public sealed class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
-			await Assert.That(newData.Right!.Name).IsEqualTo("Left");
-			await Assert.That(newData.Left).IsSameReferenceAs(newData.Right);
+			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
+			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
+			Assert.That(newData.Left, Is.SameAs(newData.Right));
 		}
 	}
 
 	[Test]
-	public async Task RoundtripWhenLeftIsSameAsRightAsync()
+	public static async Task RoundtripWhenLeftIsSameAsRightAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -107,11 +108,11 @@ public sealed class DuplicateTests
 		stream.Position = 0;
 		var newData = (Node)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Left!.Name).IsEqualTo("Left");
-			await Assert.That(newData.Right!.Name).IsEqualTo("Left");
-			await Assert.That(newData.Left).IsSameReferenceAs(newData.Right);
+			Assert.That(newData.Left!.Name, Is.EqualTo("Left"));
+			Assert.That(newData.Right!.Name, Is.EqualTo("Left"));
+			Assert.That(newData.Left, Is.SameAs(newData.Right));
 		}
 	}
 }

@@ -1,9 +1,11 @@
-﻿namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
+﻿using NUnit.Framework;
 
-public sealed class BooleanGeneratorTests
+namespace CslaGeneratorSerialization.Analysis.Tests.Generators.ValueTypes;
+
+internal static class BooleanGeneratorTests
 {
 	[Test]
-	public async Task GenerateAsync()
+	public static async Task GenerateAsync()
 	{
 		var code =
 			"""
@@ -66,7 +68,7 @@ public sealed class BooleanGeneratorTests
 	}
 
 	[Test]
-	public async Task GenerateWithNullableAsync()
+	public static async Task GenerateWithNullableAsync()
 	{
 		var code =
 			"""

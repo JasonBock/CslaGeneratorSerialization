@@ -2,16 +2,28 @@
 	<PropertyGroup>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization.Tests</AssemblyName>
+		<EnableNUnitRunner>true</EnableNUnitRunner>
 		<OutputType>Exe</OutputType>
 		<NoWarn>$(NoWarn);CA2007;NU1903</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.Tests</RootNamespace>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Csla" />
+		<PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" />
+		<PackageReference Include="Microsoft.Testing.Platform.MSBuild" />
 		<PackageReference Include="NuGet.Frameworks" />
-		<PackageReference Include="TUnit" />
+		<PackageReference Include="NUnit.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit3TestAdapter">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 </Project>

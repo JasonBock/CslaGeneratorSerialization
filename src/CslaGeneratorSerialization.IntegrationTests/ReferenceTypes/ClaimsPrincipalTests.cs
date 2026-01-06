@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using System.Security.Claims;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ReferenceTypes.ClaimsPrincipalTestsDomain;
@@ -20,10 +21,10 @@ public sealed partial class ClaimsPrincipalData
 	}
 }
 
-public sealed class ClaimsPrincipalTests
+internal static class ClaimsPrincipalTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -41,18 +42,18 @@ public sealed class ClaimsPrincipalTests
 		stream.Position = 0;
 		var newData = (ClaimsPrincipalData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
 			var identity = newData.Contents.Identities.Single();
-			await Assert.That(identity.AuthenticationType).IsEqualTo("fake auth");
+			Assert.That(identity.AuthenticationType, Is.EqualTo("fake auth"));
 			var claim = identity.Claims.Single();
-			await Assert.That(claim.Type).IsEqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
-			await Assert.That(claim.Value).IsEqualTo("admin");
+			Assert.That(claim.Type, Is.EqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"));
+			Assert.That(claim.Value, Is.EqualTo("admin"));
 		}
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -71,6 +72,6 @@ public sealed class ClaimsPrincipalTests
 		stream.Position = 0;
 		var newData = (ClaimsPrincipalData)formatter.Deserialize(stream)!;
 
-		await Assert.That(newData.Contents).IsNull();
+		Assert.That(newData.Contents, Is.Null);
 	}
 }

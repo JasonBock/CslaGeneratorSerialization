@@ -1,33 +1,34 @@
 ﻿using Csla.Configuration;
 using CslaGeneratorSerialization.Extensions;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
-public sealed class IServiceCollectionExtensionsTests
+internal static class IServiceCollectionExtensionsTests
 {
 	[Test]
-	public async Task AddCslaGeneratorSerializationWithNoCustomizationsAsync()
+	public static async Task AddCslaGeneratorSerializationWithNoCustomizationsAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCslaGeneratorSerialization();
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(services).HasCount(2);
+			Assert.That(services, Has.Count.EqualTo(2));
 
 			var customSerializationResolverRegistration =
 				services.Single(_ => _.ServiceType == typeof(CustomSerializationResolver));
-			await Assert.That(customSerializationResolverRegistration.Lifetime).EqualTo(ServiceLifetime.Singleton);
+			Assert.That(customSerializationResolverRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
 
 			var mobileFormatterOptionsRegistration =
 				services.Single(_ => _.ServiceType == typeof(MobileFormatterOptions));
-			await Assert.That(mobileFormatterOptionsRegistration.Lifetime).EqualTo(ServiceLifetime.Singleton);
+			Assert.That(mobileFormatterOptionsRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
 		}
 	}
 
 	[Test]
-	public async Task AddCslaGeneratorSerializationWithCustomizationsAsync()
+	public static async Task AddCslaGeneratorSerializationWithCustomizationsAsync()
 	{
 		var services = new ServiceCollection();
 		services.AddCslaGeneratorSerialization(
@@ -35,24 +36,24 @@ public sealed class IServiceCollectionExtensionsTests
 				(data, writer) => { },
 				(reader) => "a")!);
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(services).HasCount(3);
+			Assert.That(services, Has.Count.EqualTo(3));
 
 			var customSerializationResolverRegistration =
 				services.Single(_ => _.ServiceType == typeof(CustomSerializationResolver));
-			await Assert.That(customSerializationResolverRegistration.Lifetime).EqualTo(ServiceLifetime.Singleton);
+			Assert.That(customSerializationResolverRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
 
 			var mobileFormatterOptionsRegistration =
 				services.Single(_ => _.ServiceType == typeof(MobileFormatterOptions));
-			await Assert.That(mobileFormatterOptionsRegistration.Lifetime).EqualTo(ServiceLifetime.Singleton);
+			Assert.That(mobileFormatterOptionsRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
 			var options = (MobileFormatterOptions)mobileFormatterOptionsRegistration.ImplementationInstance!;
-			await Assert.That(options.CustomSerializers).HasCount(1);
-			await Assert.That(options.CustomSerializers[0].GetType()).EqualTo(typeof(MobileTypeMap<string>));
+			Assert.That(options.CustomSerializers, Has.Count.EqualTo(1));
+			Assert.That(options.CustomSerializers[0].GetType(), Is.EqualTo(typeof(MobileTypeMap<string>)));
 
 			var customSerializationOfStringRegistration =
 				services.Single(_ => _.ServiceType == typeof(CustomSerialization<string>));
-			await Assert.That(customSerializationOfStringRegistration.Lifetime).EqualTo(ServiceLifetime.Singleton);
+			Assert.That(customSerializationOfStringRegistration.Lifetime, Is.EqualTo(ServiceLifetime.Singleton));
 		}
 	}
 }

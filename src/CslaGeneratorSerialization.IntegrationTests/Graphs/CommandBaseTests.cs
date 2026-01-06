@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.CommandBaseTestsDomain;
 
@@ -30,10 +31,10 @@ public sealed partial class Operation
 	}
 }
 
-public sealed class CommandBaseTestsTests
+internal static class CommandBaseTestsTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -48,10 +49,10 @@ public sealed class CommandBaseTestsTests
 		stream.Position = 0;
 		var newData = (Operation)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Int32Contents).IsEqualTo(3);
-			await Assert.That(newData.StringContents).IsEqualTo("4");
+			Assert.That(newData.Int32Contents, Is.EqualTo(3));
+			Assert.That(newData.StringContents, Is.EqualTo("4"));
 		}
 	}
 }

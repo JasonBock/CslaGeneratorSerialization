@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.MultiplePropertiesTestsDomain;
 
@@ -52,10 +53,10 @@ public sealed partial class ChildPropertiesData
 	}
 }
 
-public sealed class MultiplePropertiesTests
+internal static class MultiplePropertiesTests
 {
 	[Test]
-	public async Task RoundtripAsync()
+	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -71,16 +72,16 @@ public sealed class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Int32Contents).IsEqualTo(3);
-			await Assert.That(newData.StringContents).IsEqualTo("4");
-			await Assert.That(newData.ChildContents.Value).IsEqualTo("ABC");
+			Assert.That(newData.Int32Contents, Is.EqualTo(3));
+			Assert.That(newData.StringContents, Is.EqualTo("4"));
+			Assert.That(newData.ChildContents.Value, Is.EqualTo("ABC"));
 		}
 	}
 
 	[Test]
-	public async Task RoundtripWithNullableAsync()
+	public static async Task RoundtripWithNullableAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -97,10 +98,10 @@ public sealed class MultiplePropertiesTests
 		stream.Position = 0;
 		var newData = (ParentPropertiesData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.StringContents).IsEqualTo(string.Empty);
-			await Assert.That(newData.ChildContents).IsNull();
+			Assert.That(newData.StringContents, Is.EqualTo(string.Empty));
+			Assert.That(newData.ChildContents, Is.Null);
 		}
 	}
 }

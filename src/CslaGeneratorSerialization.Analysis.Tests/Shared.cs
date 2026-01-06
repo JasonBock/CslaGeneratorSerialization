@@ -1,5 +1,8 @@
 ﻿using Microsoft.CodeAnalysis;
+using NUnit.Framework;
 using System.Collections.Immutable;
+
+[assembly: Parallelizable(ParallelScope.Fixtures)]
 
 namespace CslaGeneratorSerialization.Analysis.Tests;
 

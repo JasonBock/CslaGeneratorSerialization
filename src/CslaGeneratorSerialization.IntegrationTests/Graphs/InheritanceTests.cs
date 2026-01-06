@@ -1,5 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs.InheritanceTestsDomain;
 
@@ -67,10 +68,10 @@ public sealed partial class DerivedFromBaseData
 	}
 }
 
-public sealed class InheritanceTests
+internal static class InheritanceTests
 {
 	[Test]
-	public async Task RoundtripFromAbstractTypeAsync()
+	public static async Task RoundtripFromAbstractTypeAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -85,15 +86,15 @@ public sealed class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromAbstractData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Core).IsEqualTo("ABC");
-			await Assert.That(newData.Custom).IsEqualTo(3);
+			Assert.That(newData.Core, Is.EqualTo("ABC"));
+			Assert.That(newData.Custom, Is.EqualTo(3));
 		}
 	}
 
 	[Test]
-	public async Task RoundtripFromBaseTypeAsync()
+	public static async Task RoundtripFromBaseTypeAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -108,10 +109,10 @@ public sealed class InheritanceTests
 		stream.Position = 0;
 		var newData = (DerivedFromBaseData)formatter.Deserialize(stream)!;
 
-		using (Assert.Multiple())
+		using (Assert.EnterMultipleScope())
 		{
-			await Assert.That(newData.Core).IsEqualTo("ABC");
-			await Assert.That(newData.Custom).IsEqualTo(3);
+			Assert.That(newData.Core, Is.EqualTo("ABC"));
+			Assert.That(newData.Custom, Is.EqualTo(3));
 		}
 	}
 }
