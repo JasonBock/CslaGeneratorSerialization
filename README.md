@@ -4,7 +4,7 @@ A custom CSLA serializer using C# source generators.
 
 ## Getting Started
 
-Reference the `CslaGeneratorSerialization` [NuGet package](https://www.nuget.org/packages/CslaGeneratorSerialization). You also need to reference `CSLA` as well, though if you're using this generator, you are probably already referencing `CSLA`.
+Reference the `CslaGeneratorSerialization` [NuGet package](https://www.nuget.org/packages/CslaGeneratorSerialization). You also need to reference `CSLA` as well, though if you're using this generator, you are probably already referencing `CSLA`. Furthermore, this package only works with CSLA version 10 and above.
 
 ### Prerequisites
 

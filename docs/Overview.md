@@ -13,7 +13,7 @@ In this document, I'll review `CslaGeneratorSerialization` and how it works. If 
 
 I'm a big fan of C# source generators. Under the right circumstances, they can improve performance and reduce memory consumption dramatically. In fact, `System.Text.Json` [has a source generator](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/source-generation) for its serialization. So why not add one for CSLA?
 
-One of the difficulties is that `MobileFormatter` is, for lack of a better term, the "dominant" serialization approach in CSLA. In fact, it's still hard-coded in some areas of CSLA where arguably `IMobileFormatter` should be used instead (though that may be resolved in the near future). Furthermore, there's a subtlety in `SerializationInfo` being used a lot during serialization, where this isn't necessarily needed either. That said, this library is an attempt to generate serializable BOs that do not use `MobileFormatter`, in the hope that serialization will be faster, and consume less memory.
+One of the difficulties is that `MobileFormatter` is, for lack of a better term, the "dominant" serialization approach in CSLA. In fact, it's still hard-coded in some areas of CSLA where arguably `IMobileFormatter` should be used instead (though this is mostly resolved with CSLA 10). Furthermore, there's a subtlety in `SerializationInfo` being used a lot during serialization, where this isn't necessarily needed either. That said, this library is an attempt to generate serializable BOs that do not use `MobileFormatter`, in the hope that serialization will be faster, and consume less memory.
 
 # Usage
 
@@ -60,7 +60,7 @@ public sealed partial class Person
 }
 ```
 
-The generator will create a custom implementation of `IGeneratorSerializable`. Note that you **must** do this for **all** of your BOs, even ones in other libraries. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
+The generator will create a another partial definition of `Person` that implements `IGeneratorSerializable`. Note that you **must** mark your BOs with this attribute for the formatter to work, even ones in other libraries. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
 
 You will also need to register the custom serializer during application configuration:
 
@@ -72,7 +72,7 @@ services.AddCslaGeneratorSerialization();
 var provider = services.BuildServiceProvider();
 ```
 
-That should do it to get your application to start using this custom serialization formatter. If you find any issues with this serializer, you can always back out by changing the serializer back to `MobileFormatter` in your call to `AddCsla()`.
+You need to register `GeneratorFormatter` as the serialization formatter CSLA. The call to `AddCslaGeneratorSerialization()` sets up other things that the generator needs. That should do it to get your application to start using this custom serialization formatter. If you find any issues with this serializer, you can always back out by changing the serializer back to `MobileFormatter` in your call to `AddCsla()`.
 
 You can also support for types that the generator doesn't know how to serialize. You need to call `AddCslaGeneratorSerialiation()` on your `IServiceCollection` instance, and then register instances of `CustomSerialization` for each type you want to support. For example, if you wanted to add support for `int[]`, you could do this:
 
@@ -104,7 +104,7 @@ services.AddSingleton(
 
 Now, if your managed backing field uses `int[]`, it'll serialize without any issues.
 
-With 0.3.0, you can also perform custom serialization within your business object by implementing `IGeneratorSerializableCustomization`:
+You can also perform custom serialization within your business object by implementing `IGeneratorSerializableCustomization`:
 
 ```c#
 [GeneratorSerializable]
