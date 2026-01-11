@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>CslaGeneratorSerialization.Completions.Tests</AssemblyName>
+		<EnableNUnitRunner>true</EnableNUnitRunner>
+		<!--
+		Turning this diagnostic off based on this advice:
+		https://github.com/dotnet/roslyn-analyzers/issues/7436
+		-->
+		<NoWarn>$(NoWarn),CS1705</NoWarn>
+		<RootNamespace>Rocks.Completions.Tests</RootNamespace>
+		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.csproj" />
+		<ProjectReference Include="..\CslaGeneratorSerialization.Completions\CslaGeneratorSerialization.Completions.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Csla" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.Common">
+			<NoWarn>NU1608</NoWarn>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" />
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="NuGet.Frameworks" />
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" />
+	</ItemGroup>
+</Project>
