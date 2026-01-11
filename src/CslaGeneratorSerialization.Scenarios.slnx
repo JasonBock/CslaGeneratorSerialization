@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="CslaGeneratorSerialization.Analysis/CslaGeneratorSerialization.Analysis.csproj" />
+  <Project Path="CslaGeneratorSerialization.Completions/CslaGeneratorSerialization.Completions.csproj" />
+  <Project Path="CslaGeneratorSerialization.Scenarios/CslaGeneratorSerialization.Scenarios.csproj" />
+  <Project Path="CslaGeneratorSerialization/CslaGeneratorSerialization.csproj" />
+</Solution>
