@@ -25,7 +25,7 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			"""
 			using Csla;
 			
-			[|public partial class Customer
+			public partial class [|Customer|]
 				: BusinessBase<Customer>
 			{
 				[Create]
@@ -38,7 +38,7 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 					get => this.GetProperty(Customer.AgeProperty);
 					set => this.SetProperty(Customer.AgeProperty, value);
 				}
-			}|]
+			}
 			""";
 		var fixedCode =
 			"""

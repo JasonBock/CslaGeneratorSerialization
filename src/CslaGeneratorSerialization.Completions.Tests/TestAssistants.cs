@@ -23,6 +23,7 @@ internal static class TestAssistants
 		test.TestState.AdditionalReferences.Add(typeof(TAnalyzer).Assembly);
 		test.TestState.AdditionalReferences.Add(typeof(TCodeFix).Assembly);
 		test.TestState.AdditionalReferences.Add(typeof(IMobileObject).Assembly);
+		test.TestState.AdditionalReferences.Add(typeof(GeneratorSerializableAttribute).Assembly);
 
 		await test.RunAsync();
 	}

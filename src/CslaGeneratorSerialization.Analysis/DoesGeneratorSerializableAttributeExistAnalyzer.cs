@@ -33,15 +33,13 @@ public sealed class DoesGeneratorSerializableAttributeExistAnalyzer
 		context.ConfigureGeneratedCodeAnalysis(
 			GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
-		context.RegisterSyntaxNodeAction(
-			DoesGeneratorSerializableAttributeExistAnalyzer.AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
+		context.RegisterSymbolAction(
+			DoesGeneratorSerializableAttributeExistAnalyzer.AnalyzeNamedTypeSymbol, SymbolKind.NamedType);
 	}
 
-	private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+	private static void AnalyzeNamedTypeSymbol(SymbolAnalysisContext context)
 	{
-		var classNode = (ClassDeclarationSyntax)context.Node;
-
-		if (context.SemanticModel.GetDeclaredSymbol(classNode) is INamedTypeSymbol typeSymbol)
+		if (context.Symbol is INamedTypeSymbol typeSymbol)
 		{
 			if (typeSymbol.IsMobileObject())
 			{
@@ -49,8 +47,12 @@ public sealed class DoesGeneratorSerializableAttributeExistAnalyzer
 					data.AttributeClass.Name == "GeneratorSerializableAttribute" &&
 					data.AttributeClass.ContainingAssembly.Name == "CslaGeneratorSerialization"))
 				{
-					context.ReportDiagnostic(Diagnostic.Create(
-						DoesGeneratorSerializableAttributeExistAnalyzer.rule, context.Node.GetLocation(), typeSymbol.Name));
+					if (typeSymbol.Locations.Length > 0)
+					{
+						context.ReportDiagnostic(Diagnostic.Create(
+							DoesGeneratorSerializableAttributeExistAnalyzer.rule,
+							typeSymbol.Locations[0], typeSymbol.Name));
+					}
 				}
 			}
 		}

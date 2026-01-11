@@ -65,7 +65,7 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 
 		var description = DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeTitle;
 
-		if (!root.HasUsing("CslaGeneratorSerialization"))
+		if (!newRoot.HasUsing("CslaGeneratorSerialization"))
 		{
 			newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(
 			  SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("CslaGeneratorSerialization")));

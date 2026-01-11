@@ -70,7 +70,7 @@ internal static class DoesGeneratorSerializableAttributeExistAnalyzerTests
 			""";
 
 		var diagnostic = new DiagnosticResult(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Id, DiagnosticSeverity.Error)
-			.WithSpan(3, 1, 16, 2).WithArguments("Customer");
+			.WithSpan(3, 22, 3, 30).WithArguments("Customer");
 		await TestAssistants.RunAnalyzerAsync<DoesGeneratorSerializableAttributeExistAnalyzer>(code, [diagnostic]);
 	}
 }
