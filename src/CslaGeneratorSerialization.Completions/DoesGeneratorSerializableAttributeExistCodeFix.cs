@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Xml.Linq;
 
 namespace CslaGeneratorSerialization.Completions;
 
@@ -21,10 +22,6 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 	/// Specifies the code fix title.
 	/// </summary>
 	public const string AddAttributeTitle = "Add [GeneratorSerializable]";
-	/// <summary>
-	/// Specifies the code fix title when adding a using statement.
-	/// </summary>
-	public const string AddAttributeAndUsingStatementTitle = "Add [GeneratorSerializable] And Using Statement";
 
 	/// <summary>
 	/// Gets the <see cref="FixAllProvider"/> value.
@@ -47,47 +44,39 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 
 		var classNode = root.FindNode(diagnosticSpan) as ClassDeclarationSyntax;
 
-		DoesGeneratorSerializableAttributeExistCodeFix.AddCodeFix(context, root, diagnostic, classNode!);
+		await DoesGeneratorSerializableAttributeExistCodeFix.AddCodeFixAsync(context, root, diagnostic, classNode!);
 	}
 
-	private static SyntaxNode AddAttribute(SyntaxNode root, ClassDeclarationSyntax classNode, string name)
+	private static async Task AddCodeFixAsync(CodeFixContext context, SyntaxNode root, 
+		Diagnostic diagnostic, ClassDeclarationSyntax classNode)
 	{
-		var attribute = SyntaxFactory.Attribute(SyntaxFactory.ParseName(name));
+		var typeSymbol = (await context.Document.GetSemanticModelAsync()).GetDeclaredSymbol(classNode)!;
+
+		// Add the attribute
+		var attribute = SyntaxFactory.Attribute(SyntaxFactory.ParseName("GeneratorSerializable"));
 		var attributeList = SyntaxFactory.AttributeList(SyntaxFactory.SeparatedList<AttributeSyntax>().Add(attribute));
 		var newClassNode = classNode.AddAttributeLists(attributeList);
-		return root.ReplaceNode(classNode, newClassNode);
-	}
 
-	private static void AddCodeFix(CodeFixContext context, SyntaxNode root,
-	  Diagnostic diagnostic, ClassDeclarationSyntax classNode)
-	{
-		// There's another case to consider...
-		// What if the class isn't "partial"? An error will be created,
-		// and there's a fix for it, but it will only be on the current class,
-		// not all of them. If I can detect that a definition is partial,
-		// which can be done like this (probably throw into an extension method):
-		//
-		// typeSymbol.DeclaringSyntaxReferences.Any(syntax =>
-		//   syntax.GetSyntax() is BaseTypeDeclarationSyntax declaration
-		//   && declaration.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword))
-		var newRoot = DoesGeneratorSerializableAttributeExistCodeFix.AddAttribute(root, classNode, "GeneratorSerializable");
-
-		var description = DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeTitle;
-
-		// TODO: I think this search should be 
-		// "does an existing using start with this string?"
-		if (!newRoot.HasUsing("CslaGeneratorSerialization"))
+		// Add "partial" if it doesn't exist.
+		if (!newClassNode.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword)))
 		{
-			newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(
+			newClassNode = newClassNode.AddModifiers(SyntaxFactory.Token(SyntaxKind.PartialKeyword));
+		}
+
+		root = root.ReplaceNode(classNode, newClassNode);
+
+		// Check to see if a using directives needs to be added.
+		if (root.RequiresUsingDirective("CslaGeneratorSerialization", typeSymbol.ContainingNamespace))
+		{
+			root = ((CompilationUnitSyntax)root).AddUsings(
 			  SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("CslaGeneratorSerialization")));
-			description = DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeAndUsingStatementTitle;
 		}
 
 		context.RegisterCodeFix(
 			CodeAction.Create(
-				description,
-				_ => Task.FromResult(context.Document.WithSyntaxRoot(newRoot)),
-				description),
+				DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeTitle,
+				_ => Task.FromResult(context.Document.WithSyntaxRoot(root)),
+				DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeTitle),
 			diagnostic);
 	}
 

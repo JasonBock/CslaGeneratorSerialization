@@ -65,4 +65,103 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
 			originalCode, fixedCode, 0);
 	}
+
+	[Test]
+	public static async Task VerifyGetFixesWhenWhenUsingDoesNotExistAndClassIsNotPartialAsync()
+	{
+		var originalCode =
+			"""
+			using Csla;
+			
+			public class [|Customer|]
+				: BusinessBase<Customer>
+			{
+				[Create]
+				private void Create() { }
+			
+				public static readonly PropertyInfo<uint> AgeProperty =
+					Customer.RegisterProperty<uint>(nameof(Customer.Age));
+				public uint Age
+				{
+					get => this.GetProperty(Customer.AgeProperty);
+					set => this.SetProperty(Customer.AgeProperty, value);
+				}
+			}
+			""";
+		var fixedCode =
+			"""
+			using Csla;
+			using CslaGeneratorSerialization;
+			
+			[GeneratorSerializable]
+			public partial class Customer
+				: BusinessBase<Customer>
+			{
+				[Create]
+				private void Create() { }
+			
+				public static readonly PropertyInfo<uint> AgeProperty =
+					Customer.RegisterProperty<uint>(nameof(Customer.Age));
+				public uint Age
+				{
+					get => this.GetProperty(Customer.AgeProperty);
+					set => this.SetProperty(Customer.AgeProperty, value);
+				}
+			}
+			""";
+
+		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+			originalCode, fixedCode, 0);
+	}
+
+	[Test]
+	public static async Task VerifyGetFixesWhenWhenClassExistsInNamespaceWithCorrectNameAndClassIsNotPartialAsync()
+	{
+		var originalCode =
+			"""
+			using Csla;
+			
+			namespace CslaGeneratorSerialization.SomethingElse;
+
+			public class [|Customer|]
+				: BusinessBase<Customer>
+			{
+				[Create]
+				private void Create() { }
+			
+				public static readonly PropertyInfo<uint> AgeProperty =
+					Customer.RegisterProperty<uint>(nameof(Customer.Age));
+				public uint Age
+				{
+					get => this.GetProperty(Customer.AgeProperty);
+					set => this.SetProperty(Customer.AgeProperty, value);
+				}
+			}
+			""";
+		var fixedCode =
+			"""
+			using Csla;
+			
+			namespace CslaGeneratorSerialization.SomethingElse;
+			
+			[GeneratorSerializable]
+			public partial class Customer
+				: BusinessBase<Customer>
+			{
+				[Create]
+				private void Create() { }
+			
+				public static readonly PropertyInfo<uint> AgeProperty =
+					Customer.RegisterProperty<uint>(nameof(Customer.Age));
+				public uint Age
+				{
+					get => this.GetProperty(Customer.AgeProperty);
+					set => this.SetProperty(Customer.AgeProperty, value);
+				}
+			}
+			""";
+
+		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+			originalCode, fixedCode, 0);
+	}
 }

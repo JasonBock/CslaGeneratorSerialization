@@ -5,9 +5,22 @@ namespace CslaGeneratorSerialization.Completions.Extensions;
 
 internal static class SyntaxNodeExtensions
 {
-	internal static bool HasUsing(this SyntaxNode self, string qualifiedName)
+	internal static bool RequiresUsingDirective(this SyntaxNode self, string qualifiedName, INamespaceSymbol? namespaceSymbol)
 	{
 		if (self is null) { throw new ArgumentNullException(nameof(self)); }
+
+		if (!namespaceSymbol?.IsGlobalNamespace ?? false)
+		{
+			while (!namespaceSymbol!.ContainingNamespace?.IsGlobalNamespace ?? false)
+			{
+				namespaceSymbol = namespaceSymbol.ContainingNamespace;
+			}
+
+			if (namespaceSymbol?.Name == qualifiedName)
+			{
+				return false;
+			}
+		}
 
 		var root = self;
 
@@ -27,12 +40,12 @@ internal static class SyntaxNodeExtensions
 
 		foreach (var usingNode in usingNodes)
 		{
-			if (usingNode.Name!.ToFullString().Contains(qualifiedName))
+			if (usingNode.Name!.ToFullString().Split('.')[0] == qualifiedName)
 			{
-				return true;
+				return false;
 			}
 		}
 
-		return false;
+		return true;
 	}
 }
