@@ -61,10 +61,21 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 	private static void AddCodeFix(CodeFixContext context, SyntaxNode root,
 	  Diagnostic diagnostic, ClassDeclarationSyntax classNode)
 	{
+		// There's another case to consider...
+		// What if the class isn't "partial"? An error will be created,
+		// and there's a fix for it, but it will only be on the current class,
+		// not all of them. If I can detect that a definition is partial,
+		// which can be done like this (probably throw into an extension method):
+		//
+		// typeSymbol.DeclaringSyntaxReferences.Any(syntax =>
+		//   syntax.GetSyntax() is BaseTypeDeclarationSyntax declaration
+		//   && declaration.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword))
 		var newRoot = DoesGeneratorSerializableAttributeExistCodeFix.AddAttribute(root, classNode, "GeneratorSerializable");
 
 		var description = DoesGeneratorSerializableAttributeExistCodeFix.AddAttributeTitle;
 
+		// TODO: I think this search should be 
+		// "does an existing using start with this string?"
 		if (!newRoot.HasUsing("CslaGeneratorSerialization"))
 		{
 			newRoot = ((CompilationUnitSyntax)newRoot).AddUsings(
@@ -76,7 +87,7 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 			CodeAction.Create(
 				description,
 				_ => Task.FromResult(context.Document.WithSyntaxRoot(newRoot)),
-				description), 
+				description),
 			diagnostic);
 	}
 

@@ -2,7 +2,7 @@
 
 namespace CslaGeneratorSerialization.Scenarios;
 
-public partial class Customer
+public class Customer
 	: BusinessBase<Customer>
 {
 	[Create]
