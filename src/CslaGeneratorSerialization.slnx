@@ -10,6 +10,8 @@
   </Folder>
   <Project Path="CslaGeneratorSerialization.Analysis.Tests/CslaGeneratorSerialization.Analysis.Tests.csproj" Id="4e1e9de2-cf3f-4a7f-809f-628c78611c9c" />
   <Project Path="CslaGeneratorSerialization.Analysis/CslaGeneratorSerialization.Analysis.csproj" Id="0074dd6a-690b-4945-92de-2a461acb4a13" />
+  <Project Path="CslaGeneratorSerialization.Completions.Tests/CslaGeneratorSerialization.Completions.Tests.csproj" Id="fbc2f1e7-ebad-4784-b689-18c39a2f0a9a" />
+  <Project Path="CslaGeneratorSerialization.Completions/CslaGeneratorSerialization.Completions.csproj" Id="9a29ff19-dfdf-41f6-bc69-fe5d8fd896f3" />
   <Project Path="CslaGeneratorSerialization.IntegrationTests/CslaGeneratorSerialization.IntegrationTests.csproj" />
   <Project Path="CslaGeneratorSerialization.Package/CslaGeneratorSerialization.Package.csproj" Id="1d104bb9-7eea-492f-9fe2-db97f0b61c1f" />
   <Project Path="CslaGeneratorSerialization.Performance/CslaGeneratorSerialization.Performance.csproj" />

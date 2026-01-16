@@ -23,7 +23,6 @@ To enable custom serialization, make your BO `partial` and mark it with `[Genera
 using CslaGeneratorSerialization;
 
 [GeneratorSerializable]
-[Serializable]
 public sealed partial class Person
   : BusinessBase<Person>
 {
@@ -60,7 +59,7 @@ public sealed partial class Person
 }
 ```
 
-The generator will create a another partial definition of `Person` that implements `IGeneratorSerializable`. Note that you **must** mark your BOs with this attribute for the formatter to work, even ones in other libraries. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
+The generator will create a another partial definition of `Person` that implements `IGeneratorSerializable`. Note that you **must** mark your BOs with this attribute for the formatter to work. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
 
 You will also need to register the custom serializer during application configuration:
 

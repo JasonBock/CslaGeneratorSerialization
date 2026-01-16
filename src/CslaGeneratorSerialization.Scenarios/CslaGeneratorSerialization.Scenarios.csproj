@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AnalysisMode>AllDisabledByDefault</AnalysisMode>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Csla" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CslaGeneratorSerialization.Analysis\CslaGeneratorSerialization.Analysis.csproj" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\CslaGeneratorSerialization.Completions\CslaGeneratorSerialization.Completions.csproj" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\CslaGeneratorSerialization\CslaGeneratorSerialization.csproj" />
+	</ItemGroup>
+</Project>
