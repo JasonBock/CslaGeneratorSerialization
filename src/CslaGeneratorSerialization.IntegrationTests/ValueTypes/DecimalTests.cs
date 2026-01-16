@@ -1,7 +1,6 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.ComponentModel.DataAnnotations;
 
 namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.DecimalTestsDomain;
 
