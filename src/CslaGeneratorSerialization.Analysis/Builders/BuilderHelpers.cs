@@ -43,8 +43,8 @@ internal static class BuilderHelpers
 			SpecialType.System_UInt64 => "context.Reader.ReadUInt64()",
 			SpecialType.System_Single => "context.Reader.ReadSingle()",
 			SpecialType.System_Double => "context.Reader.ReadDouble()",
-			SpecialType.System_DateTime => "new DateTime(context.Reader.ReadInt64())",
 			SpecialType.System_Decimal => "context.Reader.ReadDecimal()",
+			SpecialType.System_DateTime => "new DateTime(context.Reader.ReadInt64())",
 			_ => $"context.ReadCustom<{valueType.FullyQualifiedNameNoNullableAnnotation}>()"
 		};
 	}
