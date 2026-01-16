@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.ComponentModel.DataAnnotations;
 
-namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes;
+namespace CslaGeneratorSerialization.IntegrationTests.ValueTypes.DecimalTestsDomain;
 
 [GeneratorSerializable]
 public sealed partial class DecimalData
