@@ -117,6 +117,10 @@ internal static class BusinessBaseBuilder
 		{
 			ClaimsPrincipalBuilder.BuildReader(indentWriter, item);
 		}
+		else if (propertyType.FullyQualifiedName == Shared.SmartDateFullyQualifiedName)
+		{
+			SmartDateBuilder.BuildReader(indentWriter, item);
+		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
 			StereotypeBuilder.BuildReader(indentWriter, item);
@@ -205,6 +209,10 @@ internal static class BusinessBaseBuilder
 		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+		}
+		else if (propertyType.FullyQualifiedName == Shared.SmartDateFullyQualifiedName)
+		{
+			SmartDateBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
 		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{

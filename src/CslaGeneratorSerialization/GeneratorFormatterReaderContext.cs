@@ -102,6 +102,37 @@ public sealed class GeneratorFormatterReaderContext
 		}
 	}
 
+	public T? ReadMobileObjectStruct<T>()
+		where T : struct, IMobileObject
+	{
+		var state = this.Reader.ReadStateValue();
+
+		if (state == SerializationState.Duplicate)
+		{
+			if (this.GetReference(this.Reader.ReadInt32()) is T boxedStruct)
+			{
+				return boxedStruct;
+			}
+			return null;
+		}
+		else if (state == SerializationState.Value)
+		{
+			var mobileObjectData = this.Reader.ReadBytes(this.Reader.ReadInt32());
+			var mobileFormatter = new MobileFormatter(this.Context);
+			var newValue = ((ISerializationFormatter)mobileFormatter).Deserialize(mobileObjectData) as T?;
+
+			if (newValue.HasValue)
+			{
+				this.AddReference(newValue);
+			}
+			return newValue;
+		}
+		else
+		{
+			return null;
+		}
+	}
+
 	public TType? ReadCustom<TType>()
 	{
 		if (this.Reader.ReadStateValue() == SerializationState.Value)
