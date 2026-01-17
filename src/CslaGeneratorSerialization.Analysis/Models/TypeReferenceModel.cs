@@ -74,4 +74,14 @@ internal sealed record TypeReferenceModel
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
 	internal TypeKind TypeKind { get; }
+
+	internal string GetClassName()
+	{
+		if (this.TypeArguments.IsDefaultOrEmpty)
+		{
+			return this.Name;
+		}
+		var typeArgs = string.Join(", ", this.TypeArguments.Select(_ => _.GetClassName()));
+		return $"{this.Name}<{typeArgs}>";
+	}
 }

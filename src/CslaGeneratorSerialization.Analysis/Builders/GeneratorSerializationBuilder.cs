@@ -46,7 +46,7 @@ internal sealed class GeneratorSerializationBuilder
 
 		indentWriter.WriteLines(
 			$$"""
-			public {{derivation}}partial {{typeKind}} {{this.Model.BusinessObject.Name}}
+			public {{derivation}}partial {{typeKind}} {{this.Model.BusinessObject.GetClassName()}}
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
 			""");
