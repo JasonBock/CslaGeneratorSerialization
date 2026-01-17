@@ -9,6 +9,7 @@ internal sealed record TypeReferenceModel
 	internal TypeReferenceModel(ITypeSymbol type, Compilation compilation, Stereotypes stereotypes)
 	{
 		this.Name = type.Name;
+		this.DeclaredAccessibility = type.DeclaredAccessibility;
 		this.Namespace = type.GetNamespace();
 		this.FullName = !string.IsNullOrWhiteSpace(this.Namespace) ?
 			$"{this.Namespace}.{this.Name}" : this.Name;
@@ -69,7 +70,8 @@ internal sealed record TypeReferenceModel
 	internal bool IsSealed { get; }
 	internal bool IsValueType { get; }
 	internal string Name { get; }
-	internal string? Namespace { get; }
+   internal Accessibility DeclaredAccessibility { get; }
+   internal string? Namespace { get; }
 	internal bool ParticipatesInGeneratorSerialization { get; }
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
