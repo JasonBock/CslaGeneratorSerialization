@@ -73,11 +73,11 @@ internal static class BusinessBaseBuilder
 		}
 		if (valueType.FullyQualifiedName == "global::System.TimeSpan")
 		{
-			return "new TimeSpan(context.Reader.ReadInt64())";
+			return "new global::System.TimeSpan(context.Reader.ReadInt64())";
 		}
 		if (valueType.FullyQualifiedName == "global::System.DateTimeOffset")
 		{
-			return "new DateTimeOffset(context.Reader.ReadInt64(), new TimeSpan(context.Reader.ReadInt64()))";
+			return "new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64()))";
 		}
 
 		return valueType.SpecialType switch
