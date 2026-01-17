@@ -7,5 +7,7 @@ internal static class StringExtensions
 			.Replace(":", string.Empty)
 			.Replace("<", "_")
 			.Replace(">", string.Empty)
+			.Replace(",", "_")
+			.Replace(" ", string.Empty)
 			.Replace("?", "_null_");
 }
