@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Graphs.SealedTestsDomain;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
 
 enum TaskEnum
 {
