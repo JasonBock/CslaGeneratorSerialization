@@ -70,8 +70,8 @@ internal sealed record TypeReferenceModel
 	internal bool IsSealed { get; }
 	internal bool IsValueType { get; }
 	internal string Name { get; }
-   internal Accessibility DeclaredAccessibility { get; }
-   internal string? Namespace { get; }
+	internal Accessibility DeclaredAccessibility { get; }
+	internal string? Namespace { get; }
 	internal bool ParticipatesInGeneratorSerialization { get; }
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
