@@ -1,7 +1,6 @@
 ﻿using CslaGeneratorSerialization.Analysis.Extensions;
 using CslaGeneratorSerialization.Analysis.Models;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using System.CodeDom.Compiler;
 using System.Text;
