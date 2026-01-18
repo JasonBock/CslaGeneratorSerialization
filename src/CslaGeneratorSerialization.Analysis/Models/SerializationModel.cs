@@ -53,7 +53,7 @@ internal sealed record SerializationModel
 			// 3. Get the NullableContext at the symbol's position
 			var context = model.GetNullableContext(syntaxRef.Span.Start);
 
-			// 4. Map the NullableContext flags to NullableContextOptions
+			// 4. Check if nullable annotations and warnings are enabled
 			var annotationsEnabled = context.HasFlag(NullableContext.AnnotationsEnabled);
 			var warningsEnabled = context.HasFlag(NullableContext.WarningsEnabled);
 
