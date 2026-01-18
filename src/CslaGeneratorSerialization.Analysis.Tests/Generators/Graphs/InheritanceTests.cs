@@ -13,6 +13,8 @@ internal static class InheritanceTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -23,7 +25,7 @@ internal static class InheritanceTests
 					BaseData.RegisterProperty<string>(_ => _.Core);
 				public string Core
 				{
-					get => this.GetProperty(BaseData.CoreProperty);
+					get => this.GetProperty(BaseData.CoreProperty)!;
 					set => this.SetProperty(BaseData.CoreProperty, value);
 				}
 			}
@@ -157,6 +159,8 @@ internal static class InheritanceTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -167,7 +171,7 @@ internal static class InheritanceTests
 					BaseData.RegisterProperty<string>(_ => _.Core);
 				public string Core
 				{
-					get => this.GetProperty(BaseData.CoreProperty);
+					get => this.GetProperty(BaseData.CoreProperty)!;
 					set => this.SetProperty(BaseData.CoreProperty, value);
 				}
 			}

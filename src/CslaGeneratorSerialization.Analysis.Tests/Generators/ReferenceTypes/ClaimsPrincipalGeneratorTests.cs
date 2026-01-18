@@ -14,6 +14,8 @@ internal static class ClaimsPrincipalGeneratorTests
 			using System;
 			using System.Security.Claims;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -24,7 +26,7 @@ internal static class ClaimsPrincipalGeneratorTests
 					RegisterProperty<ClaimsPrincipal>(_ => _.Contents);
 				public ClaimsPrincipal Contents
 				{
-					get => this.GetProperty(Data.ContentsProperty);
+					get => this.GetProperty(Data.ContentsProperty)!;
 					set => this.SetProperty(Data.ContentsProperty, value);
 				}
 			}

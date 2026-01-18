@@ -13,6 +13,8 @@ internal static class CharArrayTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]

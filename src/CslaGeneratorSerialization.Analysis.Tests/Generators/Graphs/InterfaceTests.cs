@@ -13,6 +13,8 @@ internal static class InterfaceTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -30,7 +32,7 @@ internal static class InterfaceTests
 					RegisterProperty<string>(_ => _.Contents);
 				public string Contents
 				{
-					get => this.GetProperty(Data.ContentsProperty);
+					get => this.GetProperty(Data.ContentsProperty)!;
 					set => this.SetProperty(Data.ContentsProperty, value);
 				}
 			}
@@ -43,7 +45,7 @@ internal static class InterfaceTests
 					RegisterProperty<IData>(_ => _.Contents);
 				public IData Contents
 				{
-					get => this.GetProperty(ConsumeData.ContentsProperty);
+					get => this.GetProperty(ConsumeData.ContentsProperty)!;
 					set => this.SetProperty(ConsumeData.ContentsProperty, value);
 				}
 			}

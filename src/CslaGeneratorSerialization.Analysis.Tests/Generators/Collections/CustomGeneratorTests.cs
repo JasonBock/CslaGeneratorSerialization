@@ -13,6 +13,8 @@ internal static class CustomGeneratorTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]

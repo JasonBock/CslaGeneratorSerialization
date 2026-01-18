@@ -13,6 +13,8 @@ internal static class CommandBaseTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -23,7 +25,7 @@ internal static class CommandBaseTests
 					RegisterProperty<string>(_ => _.StringContents);
 				public string StringContents
 				{
-					get => this.ReadProperty(Operation.StringContentsProperty);
+					get => this.ReadProperty(Operation.StringContentsProperty)!;
 					set => this.LoadProperty(Operation.StringContentsProperty, value);
 				}
 						

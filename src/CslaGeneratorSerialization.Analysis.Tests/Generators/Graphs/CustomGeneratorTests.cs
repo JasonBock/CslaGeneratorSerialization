@@ -13,12 +13,14 @@ internal static class CustomGeneratorTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			public sealed class CustomData
 			{
 				public int Id { get; set; }
-				public string Name { get; set; }
+				public string Name { get; set; } = string.Empty;
 			}
 
 			[GeneratorSerializable]
@@ -81,6 +83,8 @@ internal static class CustomGeneratorTests
 			using Csla;
 			using CslaGeneratorSerialization;
 			using System;
+
+			#nullable enable
 
 			namespace Domains;
 

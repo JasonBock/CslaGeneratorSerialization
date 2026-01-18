@@ -13,6 +13,8 @@ internal static class SealedTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -23,7 +25,7 @@ internal static class SealedTests
 					BaseData.RegisterProperty<string>(_ => _.Core);
 				public string Core
 				{
-					get => this.GetProperty(BaseData.CoreProperty);
+					get => this.GetProperty(BaseData.CoreProperty)!;
 					set => this.SetProperty(BaseData.CoreProperty, value);
 				}
 			}
@@ -49,7 +51,7 @@ internal static class SealedTests
 					RegisterProperty<BaseData>(_ => _.Contents);
 				public BaseData Contents
 				{
-					get => this.GetProperty(ConsumingData.ContentsProperty);
+					get => this.GetProperty(ConsumingData.ContentsProperty)!;
 					set => this.SetProperty(ConsumingData.ContentsProperty, value);
 				}
 			}

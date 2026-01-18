@@ -13,6 +13,8 @@ internal static class StringGeneratorTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -23,7 +25,7 @@ internal static class StringGeneratorTests
 					RegisterProperty<string>(_ => _.Contents);
 				public string Contents
 				{
-					get => this.GetProperty(Data.ContentsProperty);
+					get => this.GetProperty(Data.ContentsProperty)!;
 					set => this.SetProperty(Data.ContentsProperty, value);
 				}
 			}

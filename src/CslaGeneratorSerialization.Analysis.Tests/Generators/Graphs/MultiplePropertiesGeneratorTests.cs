@@ -13,6 +13,8 @@ internal static class MultiplePropertiesGeneratorTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -23,7 +25,7 @@ internal static class MultiplePropertiesGeneratorTests
 					RegisterProperty<string>(_ => _.StringContents);
 				public string StringContents
 				{
-					get => this.GetProperty(Data.StringContentsProperty);
+					get => this.GetProperty(Data.StringContentsProperty)!;
 					set => this.SetProperty(Data.StringContentsProperty, value);
 				}
 
@@ -31,7 +33,7 @@ internal static class MultiplePropertiesGeneratorTests
 					RegisterProperty<ChildData>(_ => _.ChildContents);
 				public ChildData ChildContents
 				{
-					get => this.GetProperty(Data.ChildContentsProperty);
+					get => this.GetProperty(Data.ChildContentsProperty)!;
 					set => this.SetProperty(Data.ChildContentsProperty, value);
 				}
 
@@ -52,7 +54,7 @@ internal static class MultiplePropertiesGeneratorTests
 					RegisterProperty<string>(_ => _.Value);
 				public string Value
 				{
-					get => this.GetProperty(ChildData.ValueProperty);
+					get => this.GetProperty(ChildData.ValueProperty)!;
 					set => this.SetProperty(ChildData.ValueProperty, value);
 				}
 			}

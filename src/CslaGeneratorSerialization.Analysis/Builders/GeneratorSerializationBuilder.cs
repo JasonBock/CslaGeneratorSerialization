@@ -1,6 +1,7 @@
 ﻿using CslaGeneratorSerialization.Analysis.Extensions;
 using CslaGeneratorSerialization.Analysis.Models;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using System.CodeDom.Compiler;
 using System.Text;
@@ -22,9 +23,16 @@ internal sealed class GeneratorSerializationBuilder
 			
 			using CslaGeneratorSerialization.Extensions;
 
-			#nullable enable
-
 			""");
+
+		if (model.IsNullableEnabled)
+		{
+			indentWriter.WriteLines(
+				"""
+				#nullable enable
+				
+				""");
+		}
 
 		var boNamespace = this.Model.BusinessObject.Namespace;
 

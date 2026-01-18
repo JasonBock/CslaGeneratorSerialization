@@ -1,5 +1,6 @@
 ﻿using CslaGeneratorSerialization.Analysis.Extensions;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Immutable;
 
 namespace CslaGeneratorSerialization.Analysis.Models;
@@ -18,12 +19,19 @@ internal sealed record SerializationModel
 
 		if (type.TypeKind == TypeKind.Class)
 		{
-			model = new SerializationModel(type, type.GetPropertyInfoFields(), compilation);
+			model = new SerializationModel(type, type.GetPropertyInfoFields(), compilation)
+			{
+				IsNullableEnabled = IsNullable(type, compilation)
+			};
+
 			return true;
 		}
 		else if (type.TypeKind == TypeKind.Interface)
 		{
-			model = new SerializationModel(type, [], compilation);
+			model = new SerializationModel(type, [], compilation)
+			{
+				IsNullableEnabled = IsNullable(type, compilation)
+			};
 			return true;
 		}
 		else
@@ -31,6 +39,27 @@ internal sealed record SerializationModel
 			model = null;
 			return false;
 		}
+	}
+
+	private static bool IsNullable(INamedTypeSymbol symbol, Compilation compilation)
+	{
+		// 1. Get the syntax reference for the symbol
+		var syntaxRef = symbol.DeclaringSyntaxReferences.FirstOrDefault();
+		if (syntaxRef != null)
+		{
+			// 2. Get the semantic model for that specific syntax tree
+			var model = compilation.GetSemanticModel(syntaxRef.SyntaxTree);
+
+			// 3. Get the NullableContext at the symbol's position
+			var context = model.GetNullableContext(syntaxRef.Span.Start);
+
+			// 4. Map the NullableContext flags to NullableContextOptions
+			var annotationsEnabled = context.HasFlag(NullableContext.AnnotationsEnabled);
+			var warningsEnabled = context.HasFlag(NullableContext.WarningsEnabled);
+
+			return annotationsEnabled && warningsEnabled;
+		}
+		return false;
 	}
 
 	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, Compilation compilation)
@@ -52,6 +81,7 @@ internal sealed record SerializationModel
 
 	internal TypeReferenceModel BusinessObject { get; }
 	internal bool IsCustomizable { get; }
-   public bool ImplementsMetastate { get; }
-   internal EquatableArray<SerializationItemModel> Items { get; }
+	public bool ImplementsMetastate { get; }
+	internal EquatableArray<SerializationItemModel> Items { get; }
+	public bool IsNullableEnabled { get; private set; }
 }

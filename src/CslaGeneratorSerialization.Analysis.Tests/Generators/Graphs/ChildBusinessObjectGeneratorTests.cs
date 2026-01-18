@@ -13,6 +13,8 @@ internal static class ChildBusinessObjectGeneratorTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -137,6 +139,8 @@ internal static class ChildBusinessObjectGeneratorTests
 			using Csla;
 			using CslaGeneratorSerialization;
 			using System;
+
+			#nullable enable
 
 			namespace Domains;
 

@@ -13,6 +13,8 @@ internal static class ReadOnlyTests
 			using CslaGeneratorSerialization;
 			using System;
 
+			#nullable enable
+
 			namespace Domains;
 
 			[GeneratorSerializable]
@@ -21,11 +23,11 @@ internal static class ReadOnlyTests
 			{
 				public static readonly PropertyInfo<string> StringContentsProperty =
 					RegisterProperty<string>(_ => _.StringContents);
-			   public string StringContents => this.GetProperty(Data.StringContentsProperty);
+			   public string StringContents => this.GetProperty(Data.StringContentsProperty)!;
 
 			   public static readonly PropertyInfo<ChildData> ChildContentsProperty =
 					RegisterProperty<ChildData>(_ => _.ChildContents);
-			   public ChildData ChildContents => this.GetProperty(Data.ChildContentsProperty);
+			   public ChildData ChildContents => this.GetProperty(Data.ChildContentsProperty)!;
 
 			   public static readonly PropertyInfo<int> Int32ContentsProperty =
 					RegisterProperty<int>(_ => _.Int32Contents);
@@ -38,7 +40,7 @@ internal static class ReadOnlyTests
 			{
 				public static readonly PropertyInfo<string> ValueProperty =
 					RegisterProperty<string>(_ => _.Value);
-				public string Value => this.GetProperty(ChildData.ValueProperty);
+				public string Value => this.GetProperty(ChildData.ValueProperty)!;
 			}
 			""";
 
