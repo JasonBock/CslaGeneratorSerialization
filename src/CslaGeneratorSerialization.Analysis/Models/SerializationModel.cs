@@ -83,5 +83,5 @@ internal sealed record SerializationModel
 	internal bool IsCustomizable { get; }
 	public bool ImplementsMetastate { get; }
 	internal EquatableArray<SerializationItemModel> Items { get; }
-	public bool IsNullableEnabled { get; private set; }
+	public bool IsNullableEnabled { get; init; }
 }
