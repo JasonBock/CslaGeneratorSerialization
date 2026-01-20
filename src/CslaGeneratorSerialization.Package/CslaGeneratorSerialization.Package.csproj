@@ -34,6 +34,11 @@
 			Pack="true"
 			PackagePath="analyzers/dotnet/cs"
 			Visible="false" />
+		<None
+			Include="../artifacts/bin/CslaGeneratorSerialization.Completions/$(Configuration)/CslaGeneratorSerialization.Completions.dll"
+			Pack="true"
+			PackagePath="analyzers/dotnet/cs"
+			Visible="false" />
 		<TfmSpecificPackageFile
             Include="../artifacts/bin/CslaGeneratorSerialization/$(Configuration)/CslaGeneratorSerialization.dll"
             Pack="true"
@@ -45,6 +50,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="../CslaGeneratorSerialization.Analysis/CslaGeneratorSerialization.Analysis.csproj" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="../CslaGeneratorSerialization.Completions/CslaGeneratorSerialization.Completions.csproj" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="../CslaGeneratorSerialization/CslaGeneratorSerialization.csproj" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 </Project>

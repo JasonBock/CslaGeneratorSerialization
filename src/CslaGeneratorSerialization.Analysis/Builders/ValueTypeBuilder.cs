@@ -30,6 +30,7 @@ internal static class ValueTypeBuilder
 			propertyType.SpecialType == SpecialType.System_UInt64 ||
 			propertyType.SpecialType == SpecialType.System_Single ||
 			propertyType.SpecialType == SpecialType.System_Double ||
+			propertyType.SpecialType == SpecialType.System_Decimal ||
 			propertyType.SpecialType == SpecialType.System_DateTime)
 		{
 			indentWriter.WriteLine($"context.Writer.Write(this.ReadProperty<{propertyType.FullyQualifiedNameNoNullableAnnotation}>({managedBackingField}));");

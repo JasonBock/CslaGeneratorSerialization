@@ -37,6 +37,17 @@ internal sealed class GeneratorSerializationBuilder
 				""");
 		}
 
+		var accessibility = model.BusinessObject.DeclaredAccessibility switch
+		{
+			Accessibility.Public => "public",
+			Accessibility.Internal => "internal",
+			Accessibility.Protected => "protected",
+			Accessibility.ProtectedOrInternal => "protected internal",
+			Accessibility.Private => "private",
+			Accessibility.ProtectedAndInternal => "private protected",
+			_ => string.Empty
+		};
+
 		var derivation = model.BusinessObject.IsSealed ? "sealed " :
 			model.BusinessObject.TypeKind != TypeKind.Interface && model.BusinessObject.IsAbstract ? 
 				"abstract " : 
@@ -46,7 +57,7 @@ internal sealed class GeneratorSerializationBuilder
 
 		indentWriter.WriteLines(
 			$$"""
-			public {{derivation}}partial {{typeKind}} {{this.Model.BusinessObject.GetClassName()}}
+			{{accessibility}} {{derivation}}partial {{typeKind}} {{this.Model.BusinessObject.GetClassName()}}
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
 			""");

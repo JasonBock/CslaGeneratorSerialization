@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - Not Yet Released
+
+### Added
+* Created an analyzer + code fix to automatically add `[GeneratorSerializable]` (issue [#19](https://github.com/JasonBock/CslaGeneratorSerialization/issues/19))
+
+### Changed
+* Updated generated code to use `IMobileObjectMetastate` (issue [#14](https://github.com/JasonBock/CslaGeneratorSerialization/issues/14))
+
+### Fixed
+* Addressed an issue with n-level undo (issue [#16](https://github.com/JasonBock/CslaGeneratorSerialization/issues/16))
+* Business objects that do not exist in a namespace now work (issue [#18](https://github.com/JasonBock/CslaGeneratorSerialization/issues/18))
+
+## [1.0.0] - 2025-09-12
+
+### Fixed
+* Addressed an issue with n-level undo (issue [#16](https://github.com/JasonBock/CslaGeneratorSerialization/issues/16))
+* Business objects that do not exist in a namespace now work (issue [#18](https://github.com/JasonBock/CslaGeneratorSerialization/issues/18))
+
 ## [0.3.0] - 2025-02-01
 
 ### Added

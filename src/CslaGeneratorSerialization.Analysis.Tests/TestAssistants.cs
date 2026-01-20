@@ -25,6 +25,7 @@ internal static class TestAssistants
 		};
 
 		test.TestState.AdditionalReferences.Add(typeof(GeneratorSerializableAttribute).Assembly);
+		test.TestState.AdditionalReferences.Add(typeof(BusinessBase).Assembly);
 		test.TestState.AdditionalReferences.Add(typeof(TAnalyzer).Assembly);
 
 		if (additionalReferences is not null)

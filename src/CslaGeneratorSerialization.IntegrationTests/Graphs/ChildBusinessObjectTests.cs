@@ -54,6 +54,11 @@ public sealed partial class NonParticipatingParentData
 	}
 }
 
+// This type exists without the attribute to test the case
+// where a BO does not have the attribute and the generator needs
+// to essentially use MobileFormatter to handle it.
+// This is why CGSA1 is disabled for this type.
+#pragma warning disable CGSA1 // Business Object Does Not Have GeneratorSerializableAttribute
 public sealed class NonParticipatingChildData
 	: BusinessBase<NonParticipatingChildData>
 {
@@ -68,6 +73,7 @@ public sealed class NonParticipatingChildData
 		set => this.SetProperty(NonParticipatingChildData.ChildContentsProperty, value);
 	}
 }
+#pragma warning restore CGSA1 // Business Object Does Not Have GeneratorSerializableAttribute
 
 internal static class ChildBusinessObjectTests
 {
