@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 * Addressed an issue with n-level undo (issue [#16](https://github.com/JasonBock/CslaGeneratorSerialization/issues/16))
 * Business objects that do not exist in a namespace now work (issue [#18](https://github.com/JasonBock/CslaGeneratorSerialization/issues/18))
+* Numerous types are now handled correctly (issue [#20](https://github.com/JasonBock/CslaGeneratorSerialization/issues/20) and issue [#27](https://github.com/JasonBock/CslaGeneratorSerialization/issues/27))
+* An issue with generic types was fixed (issue [#25](https://github.com/JasonBock/CslaGeneratorSerialization/issues/20))
+* The accessibly of the target business object is now used in the generated code (issue [#29](https://github.com/JasonBock/CslaGeneratorSerialization/issues/29))
 
 ## [1.0.0] - 2025-09-12
 

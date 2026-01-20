@@ -37,7 +37,6 @@ public sealed partial class DecimalNullableData
 	}
 }
 
-
 internal static class DecimalTests
 {
 	[Test]
