@@ -55,7 +55,7 @@ internal static class TimeSpanTests
 		stream.Position = 0;
 		var newData = (TimeSpanData)formatter.Deserialize(stream)!;
 
-		Assert.That(newData.Contents, Is.EqualTo(TimeSpan.FromHours(1)));
+		Assert.That(newData.Contents, Is.EqualTo(new TimeSpan(1,0,0)));
 	}
 
 	[Test]
