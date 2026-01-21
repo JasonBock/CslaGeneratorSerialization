@@ -96,7 +96,7 @@ internal static class BusinessBaseBuilder
 			SpecialType.System_Single => "context.Reader.ReadSingle()",
 			SpecialType.System_Double => "context.Reader.ReadDouble()",
 			SpecialType.System_Decimal => "context.Reader.ReadDecimal()",
-			SpecialType.System_DateTime => "new DateTime(context.Reader.ReadInt64())",
+			SpecialType.System_DateTime => "new global::System.DateTime(context.Reader.ReadInt64())",
 			_ => throw new NotImplementedException($"The given type, {valueType.Name}, cannot be deserialized.")
 		};
 	}
