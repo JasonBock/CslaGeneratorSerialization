@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Updated generated code to use `IMobileObjectMetastate` (issue [#14](https://github.com/JasonBock/CslaGeneratorSerialization/issues/14))
+* Removed methods that were no longer used (issue [#33](https://github.com/JasonBock/CslaGeneratorSerialization/issues/33))
 
 ### Fixed
 * Addressed an issue with n-level undo (issue [#16](https://github.com/JasonBock/CslaGeneratorSerialization/issues/16))
