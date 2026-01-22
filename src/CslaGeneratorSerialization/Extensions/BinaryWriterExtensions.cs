@@ -1,4 +1,6 @@
-﻿namespace CslaGeneratorSerialization.Extensions;
+﻿using System.Numerics;
+
+namespace CslaGeneratorSerialization.Extensions;
 
 public static class BinaryWriterExtensions
 {
@@ -28,6 +30,12 @@ public static class BinaryWriterExtensions
 		{
 			self.Write(value.Ticks);
 			self.Write(value.Offset.Ticks);
+		}
+
+		public void Write(BigInteger value)
+		{
+			var bytes = value.ToByteArray();
+			self.Write((bytes.Length, bytes));
 		}
 
 		public void Write(decimal value)

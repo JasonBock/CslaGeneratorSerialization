@@ -1,4 +1,6 @@
-﻿namespace CslaGeneratorSerialization.Extensions;
+﻿using System.Numerics;
+
+namespace CslaGeneratorSerialization.Extensions;
 
 public static class BinaryReaderExtensions
 {
@@ -6,6 +8,9 @@ public static class BinaryReaderExtensions
 	{
 		public SerializationState ReadStateValue() =>
 			(SerializationState)self.ReadByte();
+
+		public BigInteger ReadBigInteger() => 
+			new BigInteger(self.ReadByteArray());
 
 		public byte[] ReadByteArray()
 		{

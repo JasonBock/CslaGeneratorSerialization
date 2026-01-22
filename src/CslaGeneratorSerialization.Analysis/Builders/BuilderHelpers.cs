@@ -30,6 +30,10 @@ internal static class BuilderHelpers
 		{
 			return "context.Reader.ReadHalf()";
 		}
+		if (valueType.FullyQualifiedName == "global::System.Numerics.BigInteger")
+		{
+			return "context.Reader.ReadBigInteger()";
+		}
 
 		return valueType.SpecialType switch
 		{

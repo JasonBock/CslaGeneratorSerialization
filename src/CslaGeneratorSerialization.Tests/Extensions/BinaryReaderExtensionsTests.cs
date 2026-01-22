@@ -1,5 +1,7 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using NUnit.Framework;
+using System.Globalization;
+using System.Numerics;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
@@ -17,6 +19,21 @@ internal static class BinaryReaderExtensionsTests
 
 		using var reader = new BinaryReader(stream);
 		Assert.That(reader.ReadStateValue(), Is.EqualTo(value));
+	}
+
+	[Test]
+	public static async Task ReadBigIntegerAsync()
+	{
+		var value = BigInteger.Parse("473107483917948931749814", CultureInfo.CurrentCulture);
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write(value);
+
+		stream.Position = 0;
+
+		using var reader = new BinaryReader(stream);
+		Assert.That(reader.ReadBigInteger(), Is.EqualTo(value));
 	}
 
 	[Test]

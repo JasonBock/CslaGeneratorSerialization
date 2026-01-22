@@ -1,10 +1,33 @@
 ﻿using CslaGeneratorSerialization.Extensions;
 using NUnit.Framework;
+using System.Globalization;
+using System.Numerics;
 
 namespace CslaGeneratorSerialization.Tests.Extensions;
 
 internal static class BinaryWriterExtensionsTests
 {
+	[Test]
+	public static async Task WriteBigIntegerAsync()
+	{
+		var number = BigInteger.Parse("473107483917948931749814", CultureInfo.CurrentCulture);
+
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write(number);
+
+		stream.Position = 0;
+
+		var lengthBuffer = new byte[4];
+		await stream.ReadAsync(lengthBuffer.AsMemory(0, 4));
+		var length = BitConverter.ToInt32(lengthBuffer);
+
+		var content = new byte[length];
+		await stream.ReadAsync(content.AsMemory(0, length));
+
+		Assert.That(new BigInteger(content), Is.EqualTo(number));
+	}
+
 	[Test]
 	public static async Task WriteByteArrayAsync()
 	{

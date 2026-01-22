@@ -17,6 +17,7 @@ internal static class ValueTypeBuilder
 			propertyType.FullyQualifiedName == "global::System.TimeSpan" ||
 			propertyType.FullyQualifiedName == "global::System.DateTimeOffset" ||
 			propertyType.FullyQualifiedName == "global::System.Half" ||
+			propertyType.FullyQualifiedName == "global::System.Numerics.BigInteger" ||
 			propertyType.SpecialType == SpecialType.System_Boolean ||
 			propertyType.SpecialType == SpecialType.System_Char ||
 			propertyType.SpecialType == SpecialType.System_String ||
