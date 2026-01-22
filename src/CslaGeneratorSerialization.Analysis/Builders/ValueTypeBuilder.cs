@@ -10,13 +10,13 @@ internal static class ValueTypeBuilder
 		indentWriter.WriteLine(
 			$"{BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(item.PropertyInfoDataType))}");
 
-
 	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField)
 	{
 		if (propertyType.FullyQualifiedName == "global::System.Guid" ||
 			propertyType.FullyQualifiedName == "global::System.Decimal" ||
 			propertyType.FullyQualifiedName == "global::System.TimeSpan" ||
 			propertyType.FullyQualifiedName == "global::System.DateTimeOffset" ||
+			propertyType.FullyQualifiedName == "global::System.Half" ||
 			propertyType.SpecialType == SpecialType.System_Boolean ||
 			propertyType.SpecialType == SpecialType.System_Char ||
 			propertyType.SpecialType == SpecialType.System_String ||

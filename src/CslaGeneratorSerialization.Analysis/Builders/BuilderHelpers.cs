@@ -26,6 +26,10 @@ internal static class BuilderHelpers
 		{
 			return "new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64()))";
 		}
+		if (valueType.FullyQualifiedName == "global::System.Half")
+		{
+			return "context.Reader.ReadHalf()";
+		}
 
 		return valueType.SpecialType switch
 		{
