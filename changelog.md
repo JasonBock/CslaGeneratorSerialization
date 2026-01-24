@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Created an analyzer + code fix to automatically add `[GeneratorSerializable]` (issue [#19](https://github.com/JasonBock/CslaGeneratorSerialization/issues/19))
-
+* Added support for `BigInteger` and `Half` (issue [#34](https://github.com/JasonBock/CslaGeneratorSerialization/issues/34))
+ 
 ### Changed
 * Updated generated code to use `IMobileObjectMetastate` (issue [#14](https://github.com/JasonBock/CslaGeneratorSerialization/issues/14))
 * Removed methods that were no longer used (issue [#33](https://github.com/JasonBock/CslaGeneratorSerialization/issues/33))
