@@ -59,7 +59,7 @@ public sealed partial class Person
 }
 ```
 
-The generator will create a another partial definition of `Person` that implements `IGeneratorSerializable`. Note that you **must** mark your BOs with this attribute for the formatter to work. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
+The generator will create another partial definition of `Person` that implements `IGeneratorSerializable`. Note that you **must** mark your BOs with this attribute for the formatter to work. The generator assumes that this interface will be implemented and attempt to cast all BOs to this type.
 
 You will also need to register the custom serializer during application configuration:
 
@@ -113,7 +113,7 @@ public sealed partial class Data
   public void GetCustomState(BinaryReader reader)
   {
     ArgumentNullException.ThrowIfNull(reader);
-    this.Custom = reader.ReadInt32();
+    this.Custom = reader.ReadString();
   }
 
   public void SetCustomState(BinaryWriter writer)
