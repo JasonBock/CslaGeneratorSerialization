@@ -16,6 +16,14 @@ internal sealed record SerializationModel
 			return false;
 		}
 
+		if (type.IsGeneratorSerializable())
+		{
+			// If for some reason the marked type implements IGeneratorSerializable,
+			// there's no reason to try and generate code.
+			model = null;
+			return false;
+		}
+
 		if (type.TypeKind == TypeKind.Class)
 		{
 			model = new SerializationModel(type, type.GetPropertyInfoFields(), compilation);
@@ -52,6 +60,6 @@ internal sealed record SerializationModel
 
 	internal TypeReferenceModel BusinessObject { get; }
 	internal bool IsCustomizable { get; }
-   public bool ImplementsMetastate { get; }
-   internal EquatableArray<SerializationItemModel> Items { get; }
+	public bool ImplementsMetastate { get; }
+	internal EquatableArray<SerializationItemModel> Items { get; }
 }

@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.1.0] - Not Yet Released
 
+### Changed
+* If a type is marked with `[GeneratorSerializable]` and it already implements `IGeneratorSerializable`, the generator will do nothing (issue [#13](https://github.com/JasonBock/CslaGeneratorSerialization/issues/13))
+
 ### Fixed
 * `null` objects are now handled by the formatter (issue [#38](https://github.com/JasonBock/CslaGeneratorSerialization/issues/38))
 
