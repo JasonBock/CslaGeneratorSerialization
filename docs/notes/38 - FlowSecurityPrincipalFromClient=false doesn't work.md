@@ -1,0 +1,3 @@
+So, it seems like the issue shows up here in `DataPortalProxy.CreateRequest()`. It's really not a question per-se about `FlowSecurityPrincipalFromClient` (I don't even see where this is coming into play), but how the serializer should handle a `null`. Looking [here](https://github.com/MarimerLLC/csla/blob/0f27cda24471d7a80286412a83b829023b77a922/Source/Csla/Serialization/Mobile/MobileFormatter.cs#L102), it uses something called a [`NullPlaceholder`](https://github.com/MarimerLLC/csla/blob/main/Source/Csla/Serialization/Mobile/NullPlaceholder.cs), and "serializes" an instance of that.
+
+I'm thinking that if we're given a `null` object, we store the string `"NULL"` and that's it. On the deserialization side, if the string is `"NULL"`, we return `null`.

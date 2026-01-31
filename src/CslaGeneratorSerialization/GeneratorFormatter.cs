@@ -4,11 +4,16 @@ using Csla.Serialization.Mobile;
 
 namespace CslaGeneratorSerialization;
 
+/// <summary>
+/// A custom serialization formatter for CSLA
+/// using a source generator.
+/// </summary>
 public sealed class GeneratorFormatter
 	: ISerializationFormatter
 {
-   private const string SerializationExceptionMessage = "The given object must implement IGeneratorSerializable or derive from IMobileObject.";
-   private readonly ApplicationContext applicationContext;
+	private const string NullMarker = "-";
+	private const string SerializationExceptionMessage = "The given object must implement IGeneratorSerializable or derive from IMobileObject.";
+	private readonly ApplicationContext applicationContext;
 	private readonly CustomSerializationResolver resolver;
 
 	public GeneratorFormatter(ApplicationContext applicationContext, CustomSerializationResolver resolver) =>
@@ -19,21 +24,28 @@ public sealed class GeneratorFormatter
 		var reader = new BinaryReader(serializationStream);
 		var graphTypeName = reader.ReadString();
 
-		var graph = this.applicationContext.CreateInstance(Type.GetType(graphTypeName));
-
-		if (graph is IGeneratorSerializable generatorGraph)
+		if (graphTypeName == GeneratorFormatter.NullMarker)
 		{
-			generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
-			return generatorGraph;
-		}
-		else if (graph is IMobileObject)
-		{
-			var mobileFormatter = new MobileFormatter(this.applicationContext);
-			return mobileFormatter.Deserialize(serializationStream);
+			return null;
 		}
 		else
 		{
-			throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+			var graph = this.applicationContext.CreateInstance(Type.GetType(graphTypeName));
+
+			if (graph is IGeneratorSerializable generatorGraph)
+			{
+				generatorGraph.GetState(new GeneratorFormatterReaderContext(this.applicationContext, this.resolver, reader));
+				return generatorGraph;
+			}
+			else if (graph is IMobileObject)
+			{
+				var mobileFormatter = new MobileFormatter(this.applicationContext);
+				return mobileFormatter.Deserialize(serializationStream);
+			}
+			else
+			{
+				throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+			}
 		}
 	}
 
@@ -56,22 +68,30 @@ public sealed class GeneratorFormatter
 	/// </param>
 	public void Serialize(Stream serializationStream, object? graph)
 	{
-		if (graph is IGeneratorSerializable generatorGraph)
+		if (graph is null)
 		{
 			var writer = new BinaryWriter(serializationStream);
-			writer.Write(graph.GetType().AssemblyQualifiedName);
-			generatorGraph.SetState(new GeneratorFormatterWriterContext(this.applicationContext, this.resolver, writer));
-		}
-		else if (graph is IMobileObject mobileGraph)
-		{
-			var writer = new BinaryWriter(serializationStream);
-			writer.Write(graph.GetType().AssemblyQualifiedName);
-			var mobileFormatter = new MobileFormatter(this.applicationContext);
-			mobileFormatter.Serialize(serializationStream, mobileGraph);
+			writer.Write(GeneratorFormatter.NullMarker);
 		}
 		else
 		{
-			throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+			if (graph is IGeneratorSerializable generatorGraph)
+			{
+				var writer = new BinaryWriter(serializationStream);
+				writer.Write(graph.GetType().AssemblyQualifiedName);
+				generatorGraph.SetState(new GeneratorFormatterWriterContext(this.applicationContext, this.resolver, writer));
+			}
+			else if (graph is IMobileObject mobileGraph)
+			{
+				var writer = new BinaryWriter(serializationStream);
+				writer.Write(graph.GetType().AssemblyQualifiedName);
+				var mobileFormatter = new MobileFormatter(this.applicationContext);
+				mobileFormatter.Serialize(serializationStream, mobileGraph);
+			}
+			else
+			{
+				throw new NotSupportedException(GeneratorFormatter.SerializationExceptionMessage);
+			}
 		}
 	}
 
