@@ -5,24 +5,24 @@ namespace CslaGeneratorSerialization.Completions.Tests;
 
 internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 {
-	[Test]
-	public static void VerifyGetFixableDiagnosticIds()
-	{
-		var fix = new DoesGeneratorSerializableAttributeExistCodeFix();
-		var ids = fix.FixableDiagnosticIds;
+   [Test]
+   public static void VerifyGetFixableDiagnosticIds()
+   {
+	  var fix = new DoesGeneratorSerializableAttributeExistCodeFix();
+	  var ids = fix.FixableDiagnosticIds;
 
-		using (Assert.EnterMultipleScope())
-		{
-			Assert.That(ids, Has.Length.EqualTo(1), nameof(ids.Length));
-			Assert.That(ids[0], Is.EqualTo("CGSA1"));
-		}
-	}
+	  using (Assert.EnterMultipleScope())
+	  {
+		 Assert.That(ids, Has.Length.EqualTo(1), nameof(ids.Length));
+		 Assert.That(ids[0], Is.EqualTo("CGSA1"));
+	  }
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenUsingDoesNotExistAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenUsingDoesNotExistAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			public partial class [|Customer|]
@@ -40,8 +40,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -62,15 +62,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenUsingExistsAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenUsingExistsAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 						
@@ -89,8 +89,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -111,15 +111,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenUsingDoesNotExistAndClassIsNotPartialAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenUsingDoesNotExistAndClassIsNotPartialAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			public class [|Customer|]
@@ -137,8 +137,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -159,15 +159,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenUsingExistsAndClassIsNotPartialAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenUsingExistsAndClassIsNotPartialAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 						
@@ -186,8 +186,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -208,15 +208,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenClassExistsInNamespaceWithCorrectNameAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenClassExistsInNamespaceWithCorrectNameAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			namespace CslaGeneratorSerialization.SomethingElse;
@@ -236,8 +236,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			
 			namespace CslaGeneratorSerialization.SomethingElse;
@@ -259,15 +259,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenClassExistsInNamespaceWithCorrectNameAndClassIsNotPartialAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenClassExistsInNamespaceWithCorrectNameAndClassIsNotPartialAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			namespace CslaGeneratorSerialization.SomethingElse;
@@ -287,8 +287,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			
 			namespace CslaGeneratorSerialization.SomethingElse;
@@ -310,15 +310,15 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			namespace ABC.CslaGeneratorSerialization.SomethingElse;
@@ -338,8 +338,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -362,15 +362,48 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 
-	[Test]
-	public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAndClassIsNotPartialAsync()
-	{
-		var originalCode =
-			"""
+   [Test]
+   public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAndInterfaceIsNotPartialAsync()
+   {
+	  var originalCode =
+		  """
+			using Csla.Serialization.Mobile;
+			
+			namespace ABC.CslaGeneratorSerialization.SomethingElse;
+			
+			public interface [|ICustomer|]
+				: IMobileObject
+			{				
+			}
+			""";
+	  var fixedCode =
+		  """
+			using Csla.Serialization.Mobile;
+			using CslaGeneratorSerialization;
+			
+			namespace ABC.CslaGeneratorSerialization.SomethingElse;
+			
+			[GeneratorSerializable]
+			public partial interface ICustomer
+				: IMobileObject
+			{
+				
+			}
+			""";
+
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
+
+   [Test]
+   public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAndClassIsNotPartialAsync()
+   {
+	  var originalCode =
+		  """
 			using Csla;
 			
 			namespace ABC.CslaGeneratorSerialization.SomethingElse;
@@ -390,8 +423,8 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 				}
 			}
 			""";
-		var fixedCode =
-			"""
+	  var fixedCode =
+		  """
 			using Csla;
 			using CslaGeneratorSerialization;
 			
@@ -414,7 +447,7 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 			}
 			""";
 
-		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
-			originalCode, fixedCode, 0);
-	}
+	  await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
+		  originalCode, fixedCode, 0);
+   }
 }
