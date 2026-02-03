@@ -41,13 +41,13 @@ public sealed class DoesGeneratorSerializableAttributeExistCodeFix
 
 		context.CancellationToken.ThrowIfCancellationRequested();
 
-		var classNode = root.FindNode(diagnosticSpan) as ClassDeclarationSyntax;
+		var classNode = root.FindNode(diagnosticSpan) as TypeDeclarationSyntax;
 
 		await DoesGeneratorSerializableAttributeExistCodeFix.AddCodeFixAsync(context, root, diagnostic, classNode!);
 	}
 
 	private static async Task AddCodeFixAsync(CodeFixContext context, SyntaxNode root, 
-		Diagnostic diagnostic, ClassDeclarationSyntax classNode)
+		Diagnostic diagnostic, TypeDeclarationSyntax classNode)
 	{
 		var typeSymbol = (await context.Document.GetSemanticModelAsync()).GetDeclaredSymbol(classNode)!;
 

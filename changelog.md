@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * `null` objects are now handled by the formatter (issue [#38](https://github.com/JasonBock/CslaGeneratorSerialization/issues/38))
+* The code fix for adding `[GeneratorSerializable]` now works with interfaces (issue [#41](https://github.com/JasonBock/CslaGeneratorSerialization/issues/41))
 
 ## [2.0.0] - 2026-01-24
 

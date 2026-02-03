@@ -417,4 +417,36 @@ internal static class DoesGeneratorSerializableAttributeExistCodeFixTests
 		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer, DoesGeneratorSerializableAttributeExistCodeFix>(
 			originalCode, fixedCode, 0);
 	}
+
+	[Test]
+	public static async Task VerifyGetFixesWhenNamespaceExistsWithoutCorrectNameAndInterfaceIsNotPartialAsync()
+	{
+		var originalCode =
+		"""
+		using Csla.Serialization.Mobile;
+			
+		namespace ABC.CslaGeneratorSerialization.SomethingElse;
+			
+		public interface [|ICustomer|]
+			: IMobileObject
+		{ }
+		""";
+
+		var fixedCode =
+			"""
+			using Csla.Serialization.Mobile;
+			using CslaGeneratorSerialization;
+			
+			namespace ABC.CslaGeneratorSerialization.SomethingElse;
+			
+			[GeneratorSerializable]
+			public partial interface ICustomer
+				: IMobileObject
+			{ }
+			""";
+
+		await TestAssistants.RunCodeFixAsync<DoesGeneratorSerializableAttributeExistAnalyzer,
+		  DoesGeneratorSerializableAttributeExistCodeFix>(
+			 originalCode, fixedCode, 0);
+	}
 }
