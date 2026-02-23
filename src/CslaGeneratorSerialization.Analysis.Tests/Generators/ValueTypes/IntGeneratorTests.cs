@@ -57,6 +57,7 @@ internal static class IntGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadInt32());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -133,6 +134,7 @@ internal static class IntGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

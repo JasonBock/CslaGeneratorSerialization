@@ -114,7 +114,7 @@ internal static class ReadOnlyListBaseTests
 					{
 						context.Write(item, false);
 					}
-				
+					
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
 					context.Writer.Write((metastate.Length, metastate));
 				}
@@ -130,7 +130,7 @@ internal static class ReadOnlyListBaseTests
 							this.Add(context.Read<global::Domains.Data>(false)!);
 						}
 					}
-				
+					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
 					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}

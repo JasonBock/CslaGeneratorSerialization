@@ -58,6 +58,7 @@ internal static class BigIntegerGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBigInteger());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -135,6 +136,7 @@ internal static class BigIntegerGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

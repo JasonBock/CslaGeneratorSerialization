@@ -59,6 +59,7 @@ internal static class EnumGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, (global::Domains.States)context.Reader.ReadInt32());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -137,6 +138,7 @@ internal static class EnumGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

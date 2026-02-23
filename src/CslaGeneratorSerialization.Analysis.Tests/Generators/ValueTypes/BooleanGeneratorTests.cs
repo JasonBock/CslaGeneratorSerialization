@@ -57,6 +57,7 @@ internal static class BooleanGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Reader.ReadBoolean());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -133,6 +134,7 @@ internal static class BooleanGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

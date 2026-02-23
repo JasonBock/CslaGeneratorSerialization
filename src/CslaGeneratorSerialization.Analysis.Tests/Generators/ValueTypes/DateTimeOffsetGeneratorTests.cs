@@ -57,6 +57,7 @@ internal static class DateTimeOffsetGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64())));
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -133,6 +134,7 @@ internal static class DateTimeOffsetGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
