@@ -107,6 +107,7 @@ internal static class InterfaceTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -140,6 +141,7 @@ internal static class InterfaceTests
 					this.LoadProperty(global::Domains.ConsumeData.ContentsProperty, context.Read<global::Domains.IData>(false)!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

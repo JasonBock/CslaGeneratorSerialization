@@ -57,6 +57,7 @@ internal static class ArrayGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadCustom<int[]>());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

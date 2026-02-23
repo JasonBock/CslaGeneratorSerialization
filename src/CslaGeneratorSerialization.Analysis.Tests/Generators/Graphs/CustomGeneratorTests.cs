@@ -63,6 +63,7 @@ internal static class CustomGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadCustom<global::Domains.CustomData>());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -132,6 +133,7 @@ internal static class CustomGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadCustom<global::Domains.CustomData>());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

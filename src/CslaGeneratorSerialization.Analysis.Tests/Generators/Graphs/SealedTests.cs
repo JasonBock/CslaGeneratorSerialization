@@ -96,6 +96,7 @@ internal static class SealedTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -148,6 +149,7 @@ internal static class SealedTests
 					this.LoadProperty(global::Domains.DerivedData.CustomProperty, context.Reader.ReadInt32());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -181,6 +183,7 @@ internal static class SealedTests
 					this.LoadProperty(global::Domains.ConsumingData.ContentsProperty, context.Read<global::Domains.BaseData>(false)!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

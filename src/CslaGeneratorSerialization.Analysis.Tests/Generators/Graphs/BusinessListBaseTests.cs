@@ -87,6 +87,7 @@ internal static class BusinessListBaseTests
 					this.LoadProperty(global::Domains.Experiments.ValuesProperty, context.Read<global::Domains.Datum>(false)!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -121,7 +122,7 @@ internal static class BusinessListBaseTests
 						(_, var deletedReferenceId) = context.GetReference(deletedItem);
 						context.Writer.Write(deletedReferenceId);
 					}
-				
+					
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
 					context.Writer.Write((metastate.Length, metastate));
 				}
@@ -141,8 +142,9 @@ internal static class BusinessListBaseTests
 					{
 						this.DeletedList.Add((global::Domains.Data)context.GetReference(context.Reader.ReadInt32())!);
 					}
-				
+					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -189,6 +191,7 @@ internal static class BusinessListBaseTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

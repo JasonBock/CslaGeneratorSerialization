@@ -36,24 +36,9 @@ internal static class BusinessListBaseBuilder
 				}
 			""");
 
-		if (model.ImplementsMetastate)
-		{
-			indentWriter.WriteLines(
-				"""
-
-					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
-				""");
-		}
-
-		if (model.IsCustomizable)
-		{
-			indentWriter.WriteLines(
-				"""
-
-					this.GetCustomState(context.Reader);				
-				""");
-		}
-
+		indentWriter.Indent++;
+		DeserializationBuilder.Build(indentWriter, model);
+		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 	}
 
@@ -81,25 +66,9 @@ internal static class BusinessListBaseBuilder
 				}
 			""");
 
-		if (model.ImplementsMetastate)
-		{
-			indentWriter.WriteLines(
-				"""
-
-					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
-					context.Writer.Write((metastate.Length, metastate));
-				""");
-		}
-
-		if (model.IsCustomizable)
-		{
-			indentWriter.WriteLines(
-				"""
-
-					this.SetCustomState(context.Writer);
-				""");
-		}
-
+		indentWriter.Indent++;
+		SerializationBuilder.Build(indentWriter, model);
+		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 	}
 }

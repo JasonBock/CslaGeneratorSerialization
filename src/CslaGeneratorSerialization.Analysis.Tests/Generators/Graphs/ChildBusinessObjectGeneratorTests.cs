@@ -70,6 +70,7 @@ internal static class ChildBusinessObjectGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.Read<global::Domains.ChildData>(true)!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -116,6 +117,7 @@ internal static class ChildBusinessObjectGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -194,6 +196,7 @@ internal static class ChildBusinessObjectGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadMobileObject<global::Domains.ChildData>()!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

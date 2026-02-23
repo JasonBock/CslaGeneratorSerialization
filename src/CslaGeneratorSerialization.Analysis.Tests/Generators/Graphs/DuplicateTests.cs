@@ -103,6 +103,7 @@ internal static class DuplicateTests
 					this.LoadProperty(global::Domains.Node.RightProperty, context.Read<global::Domains.Node>(true)!);
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			

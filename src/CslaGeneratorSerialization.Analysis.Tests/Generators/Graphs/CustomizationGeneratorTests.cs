@@ -74,7 +74,6 @@ internal static class CustomizationGeneratorTests
 					
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
 					context.Writer.Write((metastate.Length, metastate));
-					
 					this.SetCustomState(context.Writer);
 				}
 				
@@ -87,8 +86,8 @@ internal static class CustomizationGeneratorTests
 					}
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
-					
 					this.GetCustomState(context.Reader);
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
@@ -158,6 +157,7 @@ internal static class CustomizationGeneratorTests
 					this.LoadProperty(global::Domains.Data.ContentsProperty, context.ReadCustom<global::Domains.CustomData>());
 					
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
+					((global::Csla.Serialization.Mobile.ISerializationNotification)this).Deserialized();
 				}
 			}
 			
