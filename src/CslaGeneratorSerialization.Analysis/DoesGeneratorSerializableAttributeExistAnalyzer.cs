@@ -1,7 +1,6 @@
 ﻿using CslaGeneratorSerialization.Analysis.Descriptors;
 using CslaGeneratorSerialization.Analysis.Extensions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using System.Collections.Immutable;
 

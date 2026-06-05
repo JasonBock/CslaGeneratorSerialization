@@ -42,7 +42,7 @@ internal static class TestAssistants
 			 "net10.0",
 			 new PackageIdentity(
 				  "Microsoft.NETCore.App.Ref",
-				  "10.0.0"),
+				  "10.0.8"),
 			 Path.Combine("ref", "net10.0"));
 	}, LazyThreadSafetyMode.ExecutionAndPublication);
 }
