@@ -8,12 +8,14 @@ internal sealed class Stereotypes
 	internal Stereotypes(Compilation compilation)
 	{
 		this.BusinessBase = compilation.GetTypeByMetadataName("Csla.BusinessBase`1")!;
+		this.BusinessDocumentBase = compilation.GetTypeByMetadataName("Csla.BusinessDocumentBase`2")!;
 		this.BusinessListBase = compilation.GetTypeByMetadataName("Csla.BusinessListBase`2")!;
 		this.ReadOnlyBase = compilation.GetTypeByMetadataName("Csla.ReadOnlyBase`1")!;
 		this.ReadOnlyListBase = compilation.GetTypeByMetadataName("Csla.ReadOnlyListBase`2")!;
 		this.CommandBase = compilation.GetTypeByMetadataName("Csla.CommandBase`1")!;
 
 		this.IBusinessBase = compilation.GetTypeByMetadataName("Csla.IBusinessBase")!;
+		this.IBusinessDocumentBase = compilation.GetTypeByMetadataName("Csla.IBusinessDocumentBase`1")!;
 		this.IBusinessListBase = compilation.GetTypeByMetadataName("Csla.IBusinessListBase`1")!;
 		this.IReadOnlyBase = compilation.GetTypeByMetadataName("Csla.IReadOnlyBase")!;
 		this.IReadOnlyListBase = compilation.GetTypeByMetadataName("Csla.IReadOnlyListBase`1")!;
@@ -22,6 +24,22 @@ internal sealed class Stereotypes
 
 	public (StereotypeKind, ITypeSymbol?) GetStereotype(ITypeSymbol type)
 	{
+		if (type.DerivesFrom(this.BusinessDocumentBase) || type.DerivesFrom(this.IBusinessDocumentBase))
+		{
+			var target = type.BaseType;
+
+			while (target is not null)
+			{
+				if (SymbolEqualityComparer.Default.Equals(target.OriginalDefinition, this.BusinessDocumentBase))
+				{
+					return (StereotypeKind.BusinessDocumentBase, target.TypeArguments[1]);
+				}
+
+				target = target.BaseType;
+			}
+
+			throw new NotSupportedException();
+		}
 		if (type.DerivesFrom(this.BusinessBase) || type.DerivesFrom(this.IBusinessBase))
 		{
 			return (StereotypeKind.BusinessBase, type);
@@ -73,12 +91,14 @@ internal sealed class Stereotypes
 	}
 
 	internal INamedTypeSymbol BusinessBase { get; }
+	internal INamedTypeSymbol BusinessDocumentBase { get; }
 	internal INamedTypeSymbol BusinessListBase { get; }
 	internal INamedTypeSymbol CommandBase { get; }
 	internal INamedTypeSymbol ReadOnlyBase { get; }
 	internal INamedTypeSymbol ReadOnlyListBase { get; }
 
 	internal INamedTypeSymbol IBusinessBase { get; }
+	internal INamedTypeSymbol IBusinessDocumentBase { get; }
 	internal INamedTypeSymbol IBusinessListBase { get; }
 	internal INamedTypeSymbol ICommandBase { get; }
 	internal INamedTypeSymbol IReadOnlyBase { get; }

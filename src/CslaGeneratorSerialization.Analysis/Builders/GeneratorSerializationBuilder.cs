@@ -66,6 +66,9 @@ internal sealed class GeneratorSerializationBuilder
 		{
 			switch (model.BusinessObject.BusinessObjectKind)
 			{
+				case StereotypeKind.BusinessDocumentBase:
+					BusinessDocumentBaseBuilder.Build(indentWriter, model);
+					break;
 				case StereotypeKind.BusinessBase:
 					BusinessBaseBuilder.Build(indentWriter, model);
 					break;

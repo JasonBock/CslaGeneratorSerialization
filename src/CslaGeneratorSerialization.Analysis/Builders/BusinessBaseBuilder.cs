@@ -45,7 +45,7 @@ internal static class BusinessBaseBuilder
 	internal static string GetLoadProperty(SerializationItemModel item, string readerInvocation) =>
 		$"this.LoadProperty({item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}, {readerInvocation});";
 
-	private static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item)
+	internal static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
 		var propertyType = item.PropertyInfoDataType;
@@ -111,7 +111,7 @@ internal static class BusinessBaseBuilder
 		indentWriter.WriteLine("}");
 	}
 
-	private static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, int itemId)
+	internal static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, int itemId)
 	{
 		// Note that all of the "Write" invocations should either be handled
 		// natively by BinaryWriter or by an extension method I've created.

@@ -3,6 +3,7 @@
 public enum StereotypeKind
 {
 	None,
+	BusinessDocumentBase,
 	BusinessBase,
 	BusinessListBase,
 	CommandBase,

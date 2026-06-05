@@ -29,7 +29,7 @@ internal sealed record TypeReferenceModel
 
 		(this.BusinessObjectKind, this.BusinessObjectTarget) = kind switch
 		{
-			StereotypeKind.BusinessListBase or StereotypeKind.ReadOnlyListBase => (kind, new TypeReferenceModel(targetType!, compilation, stereotypes)),
+			StereotypeKind.BusinessListBase or StereotypeKind.BusinessDocumentBase or StereotypeKind.ReadOnlyListBase => (kind, new TypeReferenceModel(targetType!, compilation, stereotypes)),
 			_ => (kind, null)
 		};
 	
