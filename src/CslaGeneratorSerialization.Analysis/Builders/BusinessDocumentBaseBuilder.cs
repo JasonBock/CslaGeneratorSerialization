@@ -27,7 +27,7 @@ internal static class BusinessDocumentBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			BusinessBaseBuilder.BuildReadOperation(indentWriter, item);
+			OperationBuilder.BuildReadOperation(indentWriter, item, true);
 			indentWriter.WriteLine();
 		}
 
@@ -62,7 +62,7 @@ internal static class BusinessDocumentBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			BusinessBaseBuilder.BuildWriteOperation(indentWriter, item, itemId++);
+			OperationBuilder.BuildWriteOperation(indentWriter, item, itemId++, true);
 			indentWriter.WriteLine();
 		}
 

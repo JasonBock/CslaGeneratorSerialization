@@ -28,7 +28,7 @@ internal static class ReadOnlyBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			ReadOnlyBaseBuilder.BuildReadOperation(indentWriter, item);
+			OperationBuilder.BuildReadOperation(indentWriter, item, false);
 
 			if (i < model.Items.Length - 1)
 			{
@@ -40,41 +40,6 @@ internal static class ReadOnlyBaseBuilder
 
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
-	}
-
-	private static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item)
-	{
-		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
-		var propertyType = item.PropertyInfoDataType;
-
-		if (propertyType.TypeKind == TypeKind.Enum)
-		{
-			EnumBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.Array is not null)
-		{
-			ArrayBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
-		{
-			ClaimsPrincipalBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
-		{
-			StereotypeBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.IsNullable && propertyType.IsValueType)
-		{
-			NullableValueTypeBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.SpecialType == SpecialType.System_String)
-		{
-			StringBuilder.BuildReader(indentWriter, item);
-		}
-		else if (propertyType.IsValueType)
-		{
-			ValueTypeBuilder.BuildReader(indentWriter, item);
-		}
 	}
 
 	private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
@@ -91,7 +56,7 @@ internal static class ReadOnlyBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			ReadOnlyBaseBuilder.BuildWriteOperation(indentWriter, item, itemId++);
+			OperationBuilder.BuildWriteOperation(indentWriter, item, itemId++, false);
 
 			if (i < model.Items.Length - 1)
 			{
@@ -103,45 +68,5 @@ internal static class ReadOnlyBaseBuilder
 
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
-	}
-
-	private static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, int itemId)
-	{
-		// Note that all of the "Write" invocations should either be handled
-		// natively by BinaryWriter or by an extension method I've created.
-		var managedBackingField = $"{item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}";
-		var valueVariable = $"value{itemId}";
-		var propertyType = item.PropertyInfoDataType;
-
-		indentWriter.WriteLine($"// {managedBackingField}");
-
-		if (propertyType.TypeKind == TypeKind.Enum)
-		{
-			EnumBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
-		}
-		else if (propertyType.Array is not null)
-		{
-			ArrayBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
-		}
-		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
-		{
-			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
-		}
-		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
-		{
-			StereotypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
-		}
-		else if (propertyType.IsNullable && propertyType.IsValueType)
-		{
-			NullableValueTypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
-		}
-		else if (propertyType.SpecialType == SpecialType.System_String)
-		{
-			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
-		}
-		else if (propertyType.IsValueType)
-		{
-			ValueTypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
-		}
 	}
 }
