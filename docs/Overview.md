@@ -66,7 +66,7 @@ You will also need to register the custom serializer during application configur
 ```c#
 var services = new ServiceCollection();
 services.AddCsla(o =>
-  o.Serialization(so => so.SerializationFormatter<GeneratorFormatter>));
+  o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
 services.AddCslaGeneratorSerialization();
 var provider = services.BuildServiceProvider();
 ```
