@@ -50,10 +50,13 @@ internal sealed record TypeReferenceModel
 			{
 				this.EnumUnderlyingType = new TypeReferenceModel(namedTypeSymbol.EnumUnderlyingType, compilation, stereotypes);
 			}
+
+			this.UnionCaseTypes = namedTypeSymbol.GetUnionCaseTypes(compilation, stereotypes);
 		}
 		else
 		{
-			this.TypeArguments = [];
+			this.TypeArguments = ImmutableArray<TypeReferenceModel>.Empty;
+			this.UnionCaseTypes = ImmutableArray<TypeReferenceModel>.Empty;
 		}
 	}
 
@@ -76,6 +79,7 @@ internal sealed record TypeReferenceModel
 	internal EquatableArray<TypeReferenceModel> TypeArguments { get; }
 	internal SpecialType SpecialType { get; }
 	internal TypeKind TypeKind { get; }
+	internal EquatableArray<TypeReferenceModel> UnionCaseTypes { get; }
 
 	internal string GetClassName()
 	{

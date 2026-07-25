@@ -1,23 +1,56 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using CslaGeneratorSerialization.Analysis.Models;
+using Microsoft.CodeAnalysis;
+using System.Collections.Immutable;
 
 namespace CslaGeneratorSerialization.Analysis.Extensions;
 
 internal static class INamedTypeSymbolExtensions
 {
-	internal static List<IFieldSymbol> GetPropertyInfoFields(this INamedTypeSymbol self)
+	extension(INamedTypeSymbol self)
 	{
-		var fields = new List<IFieldSymbol>();
-
-		var targetType = self;
-
-		while (targetType is not null)
+		internal ImmutableArray<TypeReferenceModel> GetUnionCaseTypes(Compilation compilation, Stereotypes stereotypes)
 		{
-			fields.AddRange(targetType.GetMembers().OfType<IFieldSymbol>()
-				.Where(_ => _.IsStatic && _.DeclaredAccessibility == Accessibility.Public && _.IsPropertyInfo()));
+			// First, check if the type has [Union] on it.
+			if (self.GetAttributes().Any(
+				attribute =>
+					attribute.AttributeClass is not null &&
+					attribute.AttributeClass.GetFullyQualifiedName(compilation) == "global::System.Runtime.CompilerServices.UnionAttribute"))
+			{
+				// Now look for all public constructors that have one parameter, those are the types.
+				var constructors = self.Constructors.Where(
+					constructor => constructor.Parameters.Length == 1).ToArray();
 
-			targetType = targetType.BaseType;
+				if (constructors.Length > 0)
+				{
+					return [.. constructors.Select(
+						constructor => new TypeReferenceModel(constructor.Parameters[0].Type, compilation, stereotypes))];
+				}
+				else
+				{
+					return ImmutableArray<TypeReferenceModel>.Empty;
+				}
+			}
+			else
+			{
+				return ImmutableArray<TypeReferenceModel>.Empty;
+			}
 		}
 
-		return fields;
+		internal List<IFieldSymbol> GetPropertyInfoFields()
+		{
+			var fields = new List<IFieldSymbol>();
+
+			var targetType = self;
+
+			while (targetType is not null)
+			{
+				fields.AddRange(targetType.GetMembers().OfType<IFieldSymbol>()
+					.Where(_ => _.IsStatic && _.DeclaredAccessibility == Accessibility.Public && _.IsPropertyInfo()));
+
+				targetType = targetType.BaseType;
+			}
+
+			return fields;
+		}
 	}
 }

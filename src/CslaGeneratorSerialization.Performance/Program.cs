@@ -5,57 +5,31 @@
 
 switch (pet)
 {
-	case Dog u1:
+	case global::Dog u1:
 		Console.WriteLine($"Dog: {u1.Name}");
 		break;
-	case Cat u2:
+	case global::Cat u2:
 		Console.WriteLine($"Cat: {u2.Name}");
 		break;
-	case BirdUnion u3:
-		HandleBirdUnion(u3);
+	case global::BirdUnion u3:
+		UnionHandlers.Handle(u3);
 		break;
 }
 
 var a = new A(new A1());
 
-var aValue = a switch
+switch (a)
 {
-	A1 u1 => u1.ToString(),
-	A2 u2 => u2.ToString(),
-	B u3 => HandleB(u3).ToString()
-};
-
-static void HandleBirdUnion(BirdUnion birdUnion)
-{
-	switch (birdUnion)
-	{
-		case Parakeet u1:
-			Console.WriteLine($"Parakeet: {u1.Name}");
-			break;
-		case Hummingbird u2:
-			Console.WriteLine($"Hummingbird: {u2.Name}");
-			break;
-		case Robin u3:
-			Console.WriteLine($"Robin: {u3.Name}");
-			break;
-	}
+	case A1 u1:
+		Console.WriteLine($"A1: {u1}");
+		break;
+	case A2 u2:
+		Console.WriteLine($"A2: {u2}");
+		break;
+	case B u3:
+		UnionHandlers.Handle(u3);
+		break;
 }
-
-static A HandleA(A a) => a switch
-{
-	A1 u1 => u1,
-	A2 u2 => u2,
-	B u3 => HandleB(u3)
-};
-
-static B HandleB(B b) => b switch
-{
-	B1 u1 => u1,
-	B2 u2 => u2,
-	A u3 => HandleA(u3)
-};
-
-Console.WriteLine(aValue);
 
 #pragma warning disable CA1050 // Declare types in namespaces
 public record class Cat(string Name);
@@ -80,6 +54,63 @@ public record class B2;
 
 public union B(B1, B2, A);
 public union A(A1, A2, B);
+
+public static class Stuff
+{
+	public static void Process(string value) => Console.WriteLine(value);
+	public static void Process(int value) => Console.WriteLine(value);
+}
+
+public static class UnionHandlers
+{
+	public static void Handle(global::BirdUnion birdUnion)
+	{
+		switch (birdUnion)
+		{
+			case global::Parakeet u1:
+				Console.WriteLine($"Parakeet: {u1.Name}");
+				break;
+			case global::Hummingbird u2:
+				Console.WriteLine($"Hummingbird: {u2.Name}");
+				break;
+			case global::Robin u3:
+				Console.WriteLine($"Robin: {u3.Name}");
+				break;
+		}
+	}
+
+	public static void Handle(A a)
+	{
+		switch (a)
+		{
+			case A1 u1:
+				Console.WriteLine($"A1: {u1}");
+				break;
+			case A2 u2:
+				Console.WriteLine($"A2: {u2}");
+				break;
+			case B u3:
+				UnionHandlers.Handle(u3);
+				break;
+		}
+	}
+
+	public static void Handle(B b)
+	{
+		switch (b)
+		{
+			case B1 u1:
+				Console.WriteLine($"B1: {u1}");
+				break;
+			case B2 u2:
+				Console.WriteLine($"B1: {u2}");
+				break;
+			case A u3:
+				Handle(u3);
+				break;
+		}
+	}
+}
 
 /*
 using System.Numerics;

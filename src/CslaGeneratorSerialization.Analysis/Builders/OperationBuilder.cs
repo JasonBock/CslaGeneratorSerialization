@@ -11,7 +11,11 @@ internal static class OperationBuilder
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
 		var propertyType = item.PropertyInfoDataType;
 
-		if (propertyType.TypeKind == TypeKind.Enum)
+		if (!propertyType.UnionCaseTypes.IsEmpty)
+		{
+			// This is a union type.
+		}
+		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
 			EnumBuilder.BuildReader(indentWriter, item);
 		}
@@ -55,7 +59,11 @@ internal static class OperationBuilder
 
 		indentWriter.WriteLine($"// {managedBackingField}");
 
-		if (propertyType.TypeKind == TypeKind.Enum)
+		if (!propertyType.UnionCaseTypes.IsEmpty)
+		{
+			// This is a union type.
+		}
+		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
 			EnumBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
 		}
