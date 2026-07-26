@@ -6,7 +6,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-		<NoWarn>CA1861;CSLA0007</NoWarn>
+		<!-- Ignoring NU1603 for Roslyn pre-release package sanity -->
+		<NoWarn>CA1861;CSLA0007;NU1603</NoWarn>
 		<!-- https://learn.microsoft.com/en-us/nuget/concepts/auditing-packages -->
 		<NuGetAudit>true</NuGetAudit>
 		<NuGetAuditMode>all</NuGetAuditMode>
