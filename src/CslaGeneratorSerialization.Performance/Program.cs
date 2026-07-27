@@ -16,6 +16,21 @@ switch (pet)
 		break;
 }
 
+pet = new Cat("Tank");
+
+switch (pet)
+{
+	case global::Dog u1:
+		Console.WriteLine($"Dog: {u1.Name}");
+		break;
+	case global::Cat u2:
+		Console.WriteLine($"Cat: {u2.Name}");
+		break;
+	case global::BirdUnion u3:
+		UnionHandlers.Handle(u3);
+		break;
+}
+
 var a = new A(new A1());
 
 switch (a)
@@ -54,6 +69,9 @@ public record class B2;
 
 public union B(B1, B2, A);
 public union A(A1, A2, B);
+
+public record class R1(R2 Value);
+public record class R2(R1 Value);
 
 public static class Stuff
 {

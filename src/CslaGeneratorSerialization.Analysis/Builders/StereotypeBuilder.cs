@@ -24,17 +24,17 @@ internal static class StereotypeBuilder
 		}
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField)
+	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
-		if(propertyType.ParticipatesInGeneratorSerialization)
+		if (propertyType.ParticipatesInGeneratorSerialization)
 		{
 			indentWriter.WriteLine(
-				$"context.Write(this.ReadProperty<{propertyType.FullyQualifiedName}>({managedBackingField}), {propertyType.IsSealed.ToString().ToLower()});");
+				$"context.Write({valueVariable}, {propertyType.IsSealed.ToString().ToLower()});");
 		}
 		else
 		{
 			indentWriter.WriteLine(
-				$"context.WriteMobileObject(this.ReadProperty<{propertyType.FullyQualifiedName}>({managedBackingField}));");
+				$"context.WriteMobileObject({valueVariable});");
 		}
 	}
 }

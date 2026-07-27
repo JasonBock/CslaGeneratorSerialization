@@ -10,7 +10,7 @@ internal static class ValueTypeBuilder
 		indentWriter.WriteLine(
 			$"{BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(item.PropertyInfoDataType))}");
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField)
+	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.FullyQualifiedName == "global::System.Guid" ||
 			propertyType.FullyQualifiedName == "global::System.Decimal" ||
@@ -34,11 +34,11 @@ internal static class ValueTypeBuilder
 			propertyType.SpecialType == SpecialType.System_Decimal ||
 			propertyType.SpecialType == SpecialType.System_DateTime)
 		{
-			indentWriter.WriteLine($"context.Writer.Write(this.ReadProperty<{propertyType.FullyQualifiedNameNoNullableAnnotation}>({managedBackingField}));");
+			indentWriter.WriteLine($"context.Writer.Write({valueVariable});");
 		}
 		else
 		{
-			indentWriter.WriteLine($"context.WriteCustom<{propertyType.FullyQualifiedNameNoNullableAnnotation}>(this.ReadProperty<{propertyType.FullyQualifiedNameNoNullableAnnotation}>({managedBackingField}));");
+			indentWriter.WriteLine($"context.WriteCustom<{propertyType.FullyQualifiedNameNoNullableAnnotation}>({valueVariable});");
 		}
 	}
 }

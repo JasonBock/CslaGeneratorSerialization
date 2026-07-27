@@ -11,10 +11,7 @@ internal static class INamedTypeSymbolExtensions
 		internal ImmutableArray<TypeReferenceModel> GetUnionCaseTypes(Compilation compilation, Stereotypes stereotypes)
 		{
 			// First, check if the type has [Union] on it.
-			if (self.GetAttributes().Any(
-				attribute =>
-					attribute.AttributeClass is not null &&
-					attribute.AttributeClass.GetFullyQualifiedName(compilation) == "global::System.Runtime.CompilerServices.UnionAttribute"))
+			if (self.IsUnion)
 			{
 				// Now look for all public constructors that have one parameter, those are the types.
 				var constructors = self.Constructors.Where(

@@ -6,6 +6,7 @@
 		<DebugType>embedded</DebugType>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<EnforceExtendedAnalyzerRules>false</EnforceExtendedAnalyzerRules>
+		<NoWarn>$(NoWarn);RSEXPERIMENTAL006</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.Analysis</RootNamespace>
 		<TargetFramework>netstandard2.0</TargetFramework>
 	</PropertyGroup>

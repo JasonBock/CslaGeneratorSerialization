@@ -15,11 +15,9 @@ internal static class StringBuilder
 			}
 			""");
 
-   internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField, string valueVariable) =>
+   internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
-			var {{valueVariable}} = this.ReadProperty<{{propertyType.FullyQualifiedName}}>({{managedBackingField}})!;
-
 			if ({{valueVariable}} is not null)
 			{
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);

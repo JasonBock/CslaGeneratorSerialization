@@ -32,15 +32,13 @@ internal static class ArrayBuilder
 		}
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField, string valueVariable)
+	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.Array!.Rank == 1 &&
 			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
 		{
 			indentWriter.WriteLines(
 				$$"""
-				var {{valueVariable}} = this.ReadProperty<{{propertyType.FullyQualifiedName}}>({{managedBackingField}})!;
-
 				if ({{valueVariable}} is not null)
 				{
 					context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
@@ -54,7 +52,7 @@ internal static class ArrayBuilder
 		}
 		else
 		{
-			CustomBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			CustomBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 	}
 }

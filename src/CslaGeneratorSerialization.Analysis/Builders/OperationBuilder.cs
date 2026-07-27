@@ -1,4 +1,5 @@
-﻿using CslaGeneratorSerialization.Analysis.Models;
+﻿using CslaGeneratorSerialization.Analysis.Extensions;
+using CslaGeneratorSerialization.Analysis.Models;
 using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 
@@ -57,43 +58,48 @@ internal static class OperationBuilder
 		var valueVariable = $"value{itemId}";
 		var propertyType = item.PropertyInfoDataType;
 
-		indentWriter.WriteLine($"// {managedBackingField}");
-
+		indentWriter.WriteLines(
+			$"""
+			// {managedBackingField}
+			var {valueVariable} = this.ReadProperty<{propertyType.FullyQualifiedName}>({managedBackingField})!;
+			""");
+			
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
 			// This is a union type.
+			//UnionBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
-			EnumBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			EnumBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.Array is not null)
 		{
-			ArrayBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			ArrayBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
-			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
-			StereotypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			StereotypeBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.IsNullable && propertyType.IsValueType)
 		{
-			NullableValueTypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			NullableValueTypeBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			StringBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.IsValueType)
 		{
-			ValueTypeBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			ValueTypeBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (includeCustom)
 		{
-			CustomBuilder.BuildWriter(indentWriter, propertyType, managedBackingField);
+			CustomBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 	}
 }

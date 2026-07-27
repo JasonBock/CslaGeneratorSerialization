@@ -32,7 +32,7 @@ internal static class NullableValueTypeBuilder
 			""");
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField, string valueVariable)
+	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		var valueToWrite = $"{valueVariable}.Value";
 
@@ -41,8 +41,6 @@ internal static class NullableValueTypeBuilder
 
 		indentWriter.WriteLines(
 			$$"""
-			var {{valueVariable}} = this.ReadProperty<{{propertyType.FullyQualifiedName}}>({{managedBackingField}});
-
 			if ({{valueVariable}} is not null)
 			{
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);

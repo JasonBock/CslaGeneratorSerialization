@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class EnumBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) 
+	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var loadProperty = BuilderHelpers.GetLoadProperty(item,
 			$"({item.PropertyInfoDataType.FullyQualifiedName}){BuilderHelpers.GetReadOperation(item.PropertyInfoDataType.EnumUnderlyingType!)}");
@@ -16,6 +16,6 @@ internal static class EnumBuilder
 			""");
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string managedBackingField) =>
-		indentWriter.WriteLine($"context.Writer.Write(({propertyType.EnumUnderlyingType!.FullyQualifiedName})this.ReadProperty<{propertyType.FullyQualifiedName}>({managedBackingField}));");
+	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+		indentWriter.WriteLine($"context.Writer.Write(({propertyType.EnumUnderlyingType!.FullyQualifiedName}){valueVariable});");
 }
