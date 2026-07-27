@@ -15,6 +15,7 @@ internal static class OperationBuilder
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
 			// This is a union type.
+			//UnionBuilder.BuildReader(...);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
@@ -67,7 +68,7 @@ internal static class OperationBuilder
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
 			// This is a union type.
-			//UnionBuilder.BuildWriter(indentWriter, propertyType, managedBackingField, valueVariable);
+			//UnionBuilder.BuildWriter(...);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
