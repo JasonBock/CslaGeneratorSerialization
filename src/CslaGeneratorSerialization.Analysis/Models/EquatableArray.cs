@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace CslaGeneratorSerialization.Analysis.Models;
 
 /// <summary>
-/// Extensions for <see cref="EquatableArray{T}"/>.
+/// Extensions and factories for <see cref="EquatableArray{T}"/>.
 /// </summary>
 internal static class EquatableArray
 {
@@ -21,12 +21,23 @@ internal static class EquatableArray
 	/// <returns>An <see cref="EquatableArray{T}"/> instance from a given <see cref="ImmutableArray{T}"/>.</returns>
 	public static EquatableArray<T> AsEquatableArray<T>(this ImmutableArray<T> array)
 		where T : IEquatable<T> => new(array);
+
+
+	/// <summary>
+	/// Creates an <see cref="EquatableArray{T}"/> with the specified elements.
+	/// </summary>
+	/// <typeparam name="T">The type of element stored in the array.</typeparam>
+	/// <param name="items">The elements to store in the array.</param>
+	/// <returns>An <see cref="EquatableArray{T}"/> instance containing the specified items.</returns>
+	public static EquatableArray<T> Create<T>(params ReadOnlySpan<T> items)
+		where T : IEquatable<T> => ImmutableArray.Create(items);
 }
 
 /// <summary>
 /// An imutable, equatable array. This is equivalent to <see cref="ImmutableArray{T}"/> but with value equality support.
 /// </summary>
 /// <typeparam name="T">The type of values in the array.</typeparam>
+[CollectionBuilder(typeof(EquatableArray), nameof(EquatableArray.Create))]
 internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>, IEnumerable<T>
 	 where T : IEquatable<T>
 {
