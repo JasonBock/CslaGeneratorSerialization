@@ -22,7 +22,6 @@ internal static class EquatableArray
 	public static EquatableArray<T> AsEquatableArray<T>(this ImmutableArray<T> array)
 		where T : IEquatable<T> => new(array);
 
-
 	/// <summary>
 	/// Creates an <see cref="EquatableArray{T}"/> with the specified elements.
 	/// </summary>
