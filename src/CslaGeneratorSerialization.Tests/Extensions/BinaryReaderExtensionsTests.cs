@@ -24,7 +24,7 @@ internal static class BinaryReaderExtensionsTests
 	[Test]
 	public static async Task ReadBigIntegerAsync()
 	{
-		var value = BigInteger.Parse("473107483917948931749814", CultureInfo.CurrentCulture);
+		var value = BigInteger.Parse("473107483917948931749814", CultureInfo.InvariantCulture);
 
 		var stream = new MemoryStream();
 		using var writer = new BinaryWriter(stream);

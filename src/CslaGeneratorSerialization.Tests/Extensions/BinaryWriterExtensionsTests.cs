@@ -10,7 +10,7 @@ internal static class BinaryWriterExtensionsTests
 	[Test]
 	public static async Task WriteBigIntegerAsync()
 	{
-		var number = BigInteger.Parse("473107483917948931749814", CultureInfo.CurrentCulture);
+		var number = BigInteger.Parse("473107483917948931749814", CultureInfo.InvariantCulture);
 
 		var stream = new MemoryStream();
 		using var writer = new BinaryWriter(stream);
