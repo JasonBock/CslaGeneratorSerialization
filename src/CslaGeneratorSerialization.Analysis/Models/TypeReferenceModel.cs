@@ -55,8 +55,8 @@ internal sealed record TypeReferenceModel
 		}
 		else
 		{
-			this.TypeArguments = ImmutableArray<TypeReferenceModel>.Empty;
-			this.UnionCaseTypes = ImmutableArray<TypeReferenceModel>.Empty;
+			this.TypeArguments = [];
+			this.UnionCaseTypes = [];
 		}
 	}
 
