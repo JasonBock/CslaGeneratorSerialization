@@ -16,8 +16,8 @@ internal static class BusinessObjectDoesNotHaveSerializationAttributeDescriptorT
 		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(descriptor.Id, Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Id));
-			Assert.That(descriptor.Title.ToString(CultureInfo.CurrentCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Title));
-			Assert.That(descriptor.MessageFormat.ToString(CultureInfo.CurrentCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Message));
+			Assert.That(descriptor.Title.ToString(CultureInfo.InvariantCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Title));
+			Assert.That(descriptor.MessageFormat.ToString(CultureInfo.InvariantCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Message));
 			Assert.That(descriptor.DefaultSeverity, Is.EqualTo(DiagnosticSeverity.Error));
 			Assert.That(descriptor.Category, Is.EqualTo(DiagnosticConstants.Usage));
 			Assert.That(descriptor.HelpLinkUri, Is.EqualTo(HelpUrlBuilder.Build(

@@ -26,7 +26,7 @@ internal static class BusinessObjectDoesNotHaveSerializationAttributeDiagnosticT
 		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(descriptor.GetMessage(CultureInfo.InvariantCulture), Is.EqualTo("The type X is not marked with GeneratorSerializableAttribute"));
-			Assert.That(descriptor.Descriptor.Title.ToString(CultureInfo.CurrentCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Title));
+			Assert.That(descriptor.Descriptor.Title.ToString(CultureInfo.InvariantCulture), Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Title));
 			Assert.That(descriptor.Id, Is.EqualTo(BusinessObjectDoesNotHaveSerializationAttributeDescriptor.Id));
 			Assert.That(descriptor.Severity, Is.EqualTo(DiagnosticSeverity.Error));
 		}
