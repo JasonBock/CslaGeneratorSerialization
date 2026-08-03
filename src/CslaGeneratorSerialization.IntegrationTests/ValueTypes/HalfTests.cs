@@ -47,7 +47,7 @@ internal static class HalfTests
 		var portal = provider.GetRequiredService<IDataPortal<HalfData>>();
 		var data = await portal.CreateAsync();
 
-		data.Contents = Half.Parse("3.14", CultureInfo.CurrentCulture);
+		data.Contents = Half.Parse("3.14", CultureInfo.InvariantCulture);
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
@@ -65,7 +65,7 @@ internal static class HalfTests
 		var portal = provider.GetRequiredService<IDataPortal<HalfNullableData>>();
 		var data = await portal.CreateAsync();
 
-		data.Contents = Half.Parse("3.14", CultureInfo.CurrentCulture);
+		data.Contents = Half.Parse("3.14", CultureInfo.InvariantCulture);
 		data.Contents = null;
 
 		using var stream = new MemoryStream();

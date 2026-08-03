@@ -48,7 +48,7 @@ internal static class BigIntegerTests
 		var portal = provider.GetRequiredService<IDataPortal<BigIntegerData>>();
 		var data = await portal.CreateAsync();
 
-		data.Contents = BigInteger.Parse("750389174809371089431", CultureInfo.CurrentCulture);
+		data.Contents = BigInteger.Parse("750389174809371089431", CultureInfo.InvariantCulture);
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, data);
@@ -66,7 +66,7 @@ internal static class BigIntegerTests
 		var portal = provider.GetRequiredService<IDataPortal<BigIntegerNullableData>>();
 		var data = await portal.CreateAsync();
 
-		data.Contents = BigInteger.Parse("750389174809371089431", CultureInfo.CurrentCulture);
+		data.Contents = BigInteger.Parse("750389174809371089431", CultureInfo.InvariantCulture);
 		data.Contents = null;
 
 		using var stream = new MemoryStream();
