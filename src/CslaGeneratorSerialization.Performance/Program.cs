@@ -62,6 +62,8 @@ public union BirdUnion(Parakeet, Hummingbird, Robin);
 
 public union Pet(Cat, Dog, BirdUnion);
 
+public union Simple(Cat);
+
 public record class A1;
 public record class A2;
 public record class B1;
