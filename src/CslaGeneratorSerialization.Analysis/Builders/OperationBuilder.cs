@@ -9,7 +9,19 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 // from properties with managed backing fields.
 internal static class OperationBuilder
 {
-	internal static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
+	internal static void BuildUnionReadOperation(
+		IndentedTextWriter indentWriter, TypeReferenceModel unionType,
+		TypeReferenceModel unionCaseType, bool includeCustom)
+	{
+		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
+
+		if (!unionCaseType.UnionCaseTypes.IsEmpty)
+		{
+			UnionBuilder.BuildUnionReader(indentWriter, unionCaseType);
+		}
+	}
+
+	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
 		int itemId, bool includeCustom)
 	{
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
@@ -70,7 +82,7 @@ internal static class OperationBuilder
 			
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
-			UnionBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			UnionBuilder.BuildWriter(indentWriter, valueVariable, "new global::System.Collections.Generic.List<byte>()");
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{

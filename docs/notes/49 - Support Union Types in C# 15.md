@@ -97,12 +97,119 @@ MoreStuff ReadMoreStuffUnion(this GeneratorFormatterReaderContext self, byte[] t
     }
 }
 
+Actually, more like this for the reader:
+
+```c#
+public static class GeneratorFormatterWriterContextExtensions
+{
+    extension(GeneratorFormatterWriterContext context)
+    {
+        public void WriteUnion(Stuff value, List<byte> typeIdentifiers)
+        {
+            var context = self;
+
+            switch(value)
+            {
+                case string u0:
+                    // It's a string
+                    typeIdentifiers.Add(0);
+                    context.Write(typeIdentifiers.ToArray());
+                    context.Writer.Write(u0);
+                    break;
+                case int u1:
+                    typeIdentifiers.Add(1);
+                    context.Write(typeIdentifiers.ToArray());
+                    context.Writer.Write(u1);
+                    break;
+                case MoreStuff u2:
+                    typeIdentifiers.Add(2);
+                    context.WriteUnion(u2, typeIdentifiers);
+                    break;
+            }
+        }
+
+        public void WriteUnion(MoreStuff value, List<byte> typeIdentifiers)
+        {
+            var context = self;
+
+            switch(value)
+            {
+                case Guid u0:
+                    // It's a Guid
+                    typeIdentifiers.Add(0);
+                    context.Write(typeIdentifiers.ToArray());
+                    // Write the Guid valuetype
+                    context.Writer.Write(u0);
+                    break;
+                case DateTimeOffset u1:
+                    typeIdentifiers.Add(1);
+                    context.Write(typeIdentifiers.ToArray());
+                    // Write the DateTimeOffset valuetype
+                    context.Writer.Write(u1);
+                    break;
+            }
+        }        
+    }
+}
+
+public static class GeneratorFormatterReaderContextExtensions
+{
+    extension(GeneratorFormatterReaderContext context)
+    {
+        public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifierIndex)
+        {
+            if (typeof(T) == typeof(Stuff))
+            {
+                switch(typeIdentifiers[typeIdentifierIndex])
+                {
+                    case 0:
+                        // string
+                        if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+                        {
+                            return new Stuff(context.ReadString());                            
+                        }
+
+                        return new Stuff(null as string?);
+                        break;
+                    case 1:
+                        // int
+                        return new Stuff(context.Reader.ReadInt32());
+                        break;
+                    case 2:
+                        // MoreStuff
+                        typeIdentifierIndex++;
+                        return new Stuff((MoreStuff)context.ReadUnion<MoreStuff>(typeIdentifiers, typeIdentifierIndex));
+                        break;
+                }
+            }
+            else if (typeof(T) == typeof(MoreStuff))
+            {
+                switch(typeIdentifiers[typeIdentifierIndex])
+                {
+                    case 0:
+                        // Guid
+                        return new MoreStuff(new global::System.Guid(context.Reader.ReadBytes(16)));                            
+                        break;
+                    case 1:
+                        // DateTimeOffset
+                        return new MoreStuff(new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64())));
+                        break;
+                }
+            }
+        }
+    }
+}
+```
+
 Right now, `ValueTypeBuilder.BuildReader` uses a `TypeReferenceModel` from the property to determine what kind of value type it is. For a union, we'll know based on the index value, but we'll have to figure out how to get that to the reader without using a `TypeReferenceModel` (probably).
 
 OK, reset...
 
 * DONE - I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
-* Update all readers in `OperationBuilder.BuildReadOperation()` so the "read" can be "reused"
+* DONE - Update all readers in `OperationBuilder.BuildReadOperation()` so the "read" can be "reused"
+* DONE - Rename the current `BuildReader()` methods to `BuildPropertyReader()`
+* Add a `BuildUnionReader()` to handle union creation, along with possible nullable values passed into the union constructor
+    * I will need to have a `UsesUnionMembersProvider`, as then I would use a static `Create()` method, not a constructor
 * Generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
     * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
@@ -110,6 +217,7 @@ TODO:
 * `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
 * Why are we doing casts in the `BuildWriter()` methods?
 * Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
+* Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 * Need tests for 
     * `GetFullyQualifiedName()` in `StringExtensions`
     * `BuilderHelpers`
