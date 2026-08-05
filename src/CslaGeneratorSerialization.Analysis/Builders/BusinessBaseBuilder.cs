@@ -28,7 +28,7 @@ internal static class BusinessBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			OperationBuilder.BuildReadOperation(indentWriter, item, true);
+			OperationBuilder.BuildReadOperation(indentWriter, item, i, true);
 
 			if (i < model.Items.Length - 1)
 			{

@@ -24,12 +24,12 @@ internal static class INamedTypeSymbolExtensions
 				}
 				else
 				{
-					return ImmutableArray<TypeReferenceModel>.Empty;
+					return [];
 				}
 			}
 			else
 			{
-				return ImmutableArray<TypeReferenceModel>.Empty;
+				return [];
 			}
 		}
 

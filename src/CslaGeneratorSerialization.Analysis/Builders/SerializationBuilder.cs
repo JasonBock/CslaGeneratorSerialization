@@ -10,7 +10,11 @@ internal static class SerializationBuilder
 	{
 		if(model.ImplementsMetastate || model.IsCustomizable)
 		{
-			indentWriter.WriteLine();
+			indentWriter.WriteLines(
+				"""
+				
+				// General Serialization
+				""");
 		}
 
 		if (model.ImplementsMetastate)

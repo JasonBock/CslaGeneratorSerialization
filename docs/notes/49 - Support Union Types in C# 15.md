@@ -16,42 +16,94 @@ array of type identifiers - for example:
 "new Stuff("abc")" -> [0]
 "new Stuff(new MoreStuff(1234bacd...))" -> [2, 0]
 
-ReadStuffUnion(int[] typeIdentifiers, int typeIdentifierIndex)
+void WriteUnion(this GeneratorFormatterWriterContext self, Stuff value, List<byte> typeIdentifiers)
+{
+    var context = self;
+
+    switch(value)
+    {
+        case string u0:
+            // It's a string
+            typeIdentifiers.Add(0);
+            context.Write(typeIdentifiers.ToArray());
+            context.Writer.Write(u0);
+            break;
+        case int u1:
+            typeIdentifiers.Add(1);
+            context.Write(typeIdentifiers.ToArray());
+            context.Writer.Write(u1);
+            break;
+        case MoreStuff u2:
+            typeIdentifiers.Add(2);
+            context.WriteUnion(u2, typeIdentifiers);
+            break;
+    }
+}
+
+void WriteUnion(this GeneratorFormatterWriterContext self, MoreStuff value, List<byte> typeIdentifiers)
+{
+    var context = self;
+
+    switch(value)
+    {
+        case Guid u0:
+            // It's a Guid
+            typeIdentifiers.Add(0);
+            context.Write(typeIdentifiers.ToArray());
+            context.Writer.Write(u0);
+            break;
+        case DateTimeOffset u1:
+            typeIdentifiers.Add(1);
+            context.Write(typeIdentifiers.ToArray());
+            context.Writer.Write(u1);
+            break;
+    }
+}
+
+
+Stuff ReadStuffUnion(this GeneratorFormatterReaderContext self, byte[] typeIdentifiers, int typeIdentifierIndex)
 {
     switch(typeIdentifiers[typeIdentifierIndex])
     {
         case 0:
             // It's a string
-            stringreader;
+            new Stuff(stringreader);
             break;
         case 1:
             // It's an int
-            valuetypereader;
+            new Stuff(valuetypereader);
             break;
         case 2:
             typeIdentifierIndex++;
-            LoadProperty "new MoreStuff(ReadMoreStuff(typeIdentifiers, typeIdentifierIndex))"
+            new Stuff(ReadMoreStuff(typeIdentifiers, typeIdentifierIndex))"
             break;
     }
 }
 
-ReadMoreStuffUnion(int[] typeIdentifiers, int typeIdentifierIndex)
+MoreStuff ReadMoreStuffUnion(this GeneratorFormatterReaderContext self, byte[] typeIdentifiers, int typeIdentifierIndex)
 {
     switch(typeIdentifiers[typeIdentifierIndex])
     {
         case 0:
             // It's a Guid
-            valuetypereader;
+            new MoreStuff(valuetypereader);
             break;
         case 1:
             // It's a DateTimeOffset
-            valuetypereader;
+            new MoreStuff(valuetypereader);
             break;
     }
 }
 
 Right now, `ValueTypeBuilder.BuildReader` uses a `TypeReferenceModel` from the property to determine what kind of value type it is. For a union, we'll know based on the index value, but we'll have to figure out how to get that to the reader without using a `TypeReferenceModel` (probably).
 
+OK, reset...
+
+* First, I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
+* Second, generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
+
 TODO:
+* Why are we doing casts in the `BuildWriter()` methods?
+* Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
 * Need a test for `GetFullyQualifiedName()` in `StringExtensions`
-* Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
+* DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?

@@ -10,7 +10,11 @@ internal static class DeserializationBuilder
 	{
 		if (model.ImplementsMetastate || model.IsCustomizable || model.RequiresDeserializationNotification)
 		{
-			indentWriter.WriteLine();
+			indentWriter.WriteLines(
+				"""
+
+				// General Deserialization
+				""");
 		}
 
 		if (model.ImplementsMetastate)

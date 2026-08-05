@@ -1,4 +1,7 @@
-﻿var pet = new Pet(new Dog("Rex"));
+﻿Console.WriteLine(UnionHandlers.Read<string>());
+Console.WriteLine(UnionHandlers.Read<Guid>());
+
+var pet = new Pet(new Dog("Rex"));
 
 #pragma warning disable IDE0010 // Add missing cases
 #pragma warning disable IDE0072
@@ -83,6 +86,26 @@ public static class Stuff
 
 public static class UnionHandlers
 {
+	public static object Read<T>()
+	{
+		if (typeof(T) == typeof(string))
+		{
+			return "hello";
+		}
+		else if (typeof(T) == typeof(int))
+		{
+			return 42;
+		}
+		else if (typeof(T) == typeof(Guid))
+		{
+			return Guid.NewGuid();
+		}
+		else
+		{
+			throw new NotImplementedException();
+		}
+	}
+
 	public static void Handle(global::BirdUnion birdUnion)
 	{
 		switch (birdUnion)

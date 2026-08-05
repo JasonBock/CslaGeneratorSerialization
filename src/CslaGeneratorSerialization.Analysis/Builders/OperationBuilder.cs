@@ -7,15 +7,15 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class OperationBuilder
 {
-	internal static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, bool includeCustom)
+	internal static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
+		int itemId, bool includeCustom)
 	{
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
 		var propertyType = item.PropertyInfoDataType;
 
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
-			// This is a union type.
-			//UnionBuilder.BuildReader(...);
+			UnionBuilder.BuildReader(indentWriter, item);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
@@ -51,7 +51,8 @@ internal static class OperationBuilder
 		}
 	}
 
-	internal static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, int itemId, bool includeCustom)
+	internal static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
+		int itemId, bool includeCustom)
 	{
 		// Note that all of the "Write" invocations should either be handled
 		// natively by BinaryWriter or by an extension method I've created.
@@ -67,8 +68,7 @@ internal static class OperationBuilder
 			
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
-			// This is a union type.
-			//UnionBuilder.BuildWriter(...);
+			UnionBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{

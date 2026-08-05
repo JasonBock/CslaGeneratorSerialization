@@ -9,8 +9,8 @@ public static class BinaryReaderExtensions
 		public SerializationState ReadStateValue() =>
 			(SerializationState)self.ReadByte();
 
-		public BigInteger ReadBigInteger() => 
-			new BigInteger(self.ReadByteArray());
+		public BigInteger ReadBigInteger() =>
+			new(self.ReadByteArray());
 
 		public byte[] ReadByteArray()
 		{
