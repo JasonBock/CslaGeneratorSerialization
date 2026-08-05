@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class ValueTypeBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
 		indentWriter.WriteLine(
 			$"{BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(item.PropertyInfoDataType))}");
 

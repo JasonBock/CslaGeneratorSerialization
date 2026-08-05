@@ -17,39 +17,39 @@ internal static class OperationBuilder
 
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
-			UnionBuilder.BuildReader(indentWriter, item);
+			UnionBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{
-			EnumBuilder.BuildReader(indentWriter, item);
+			EnumBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.IsSupportedArray)
 		{
-			ArrayBuilder.BuildReader(indentWriter, item);
+			ArrayBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
-			ClaimsPrincipalBuilder.BuildReader(indentWriter, item);
+			ClaimsPrincipalBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
-			StereotypeBuilder.BuildReader(indentWriter, item);
+			StereotypeBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.IsNullable && propertyType.IsValueType)
 		{
-			NullableValueTypeBuilder.BuildReader(indentWriter, item);
+			NullableValueTypeBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildReader(indentWriter, item);
+			StringBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (propertyType.IsValueType)
 		{
-			ValueTypeBuilder.BuildReader(indentWriter, item);
+			ValueTypeBuilder.BuildPropertyReader(indentWriter, item);
 		}
 		else if (includeCustom)
 		{
-			CustomBuilder.BuildReader(indentWriter, item);
+			CustomBuilder.BuildPropertyReader(indentWriter, item);
 		}
 	}
 

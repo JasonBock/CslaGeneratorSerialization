@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class StringBuilder
 {
-   internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
+   internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
 		indentWriter.WriteLines(
 		   $$"""
 			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)

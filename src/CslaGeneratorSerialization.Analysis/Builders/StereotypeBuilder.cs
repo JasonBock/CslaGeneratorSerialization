@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class StereotypeBuilder
 {
-   internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
+   internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
 		indentWriter.WriteLines(
 		   $$"""
 			this.LoadProperty({{item.PropertyInfoContainingType.FullyQualifiedName}}.{{item.PropertyInfoFieldName}}, {{BuilderHelpers.GetReadOperation(item.PropertyInfoDataType)}});

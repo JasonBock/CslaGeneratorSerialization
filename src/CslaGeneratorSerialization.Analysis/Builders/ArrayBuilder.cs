@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class ArrayBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item)
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var propertyType = item.PropertyInfoDataType;
 		var loadProperty = BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(propertyType));

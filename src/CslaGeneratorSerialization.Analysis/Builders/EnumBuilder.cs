@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class EnumBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item)
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var loadProperty = BuilderHelpers.GetLoadProperty(item,
 			$"({item.PropertyInfoDataType.FullyQualifiedName}){BuilderHelpers.GetReadOperation(item.PropertyInfoDataType.EnumUnderlyingType!)}");

@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class NullableValueTypeBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item)
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var propertyType = item.PropertyInfoDataType;
 

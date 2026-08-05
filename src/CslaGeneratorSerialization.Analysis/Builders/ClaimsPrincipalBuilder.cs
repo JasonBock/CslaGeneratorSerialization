@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class ClaimsPrincipalBuilder
 {
-	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
 		indentWriter.WriteLines(
 			$$"""
 			switch (context.Reader.ReadStateValue())
