@@ -17,24 +17,21 @@ internal static class UnionTests
 			
 			namespace Domains;
 
-			public sealed record Cat(string Description);
-			public sealed record Dog(string Name);
-
-			public union Pet(Cat, Dog);
+			public union Identifier(string, int, Guid);
 
 			[GeneratorSerializable]
-			public partial class Owner
-				: BusinessBase<Owner>
+			public partial class Customer
+				: BusinessBase<Customer>
 			{
 				[Create]
 				private void Create() { }
 
-				public static readonly PropertyInfo<Pet> PetProperty =
-					Customer.RegisterProperty<Pet>(_ => _.Pet);
-				public Pet Pet
+				public static readonly PropertyInfo<Identifier> IdentifierProperty =
+					Customer.RegisterProperty<Identifier>(_ => _.Identifier);
+				public Identifier Identifier
 				{
-					get => this.GetProperty(Owner.PetProperty);
-					set => this.SetProperty(Owner.PetProperty, value);
+					get => this.GetProperty(Customer.IdentifierProperty);
+					set => this.SetProperty(Customer.IdentifierProperty, value);
 				}
 			}
 			""";
@@ -49,13 +46,13 @@ internal static class UnionTests
 			
 			namespace Domains;
 			
-			public partial class Owner
+			public partial class Customer
 				: global::CslaGeneratorSerialization.IGeneratorSerializable
 			{
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.SetState(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					// global::Domains.Owner.PetProperty
-					var value0 = this.ReadProperty<global::Domains.Pet>(global::Domains.Owner.PetProperty)!;
+					// global::Domains.Customer.IdentifierProperty
+					var value0 = this.ReadProperty<global::Domains.Identifier>(global::Domains.Customer.IdentifierProperty)!;
 					context.WriteUnion(value0);
 					
 					// General Serialization
@@ -65,8 +62,8 @@ internal static class UnionTests
 				
 				void global::CslaGeneratorSerialization.IGeneratorSerializable.GetState(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					// global::Domains.Owner.PetProperty
-					this.LoadProperty(global::Domains.Owner.PetProperty, context.ReadUnion<global::Domains.Pet>());
+					// global::Domains.Customer.IdentifierProperty
+					this.LoadProperty(global::Domains.Customer.IdentifierProperty, context.ReadUnion<global::Domains.Identifier>());
 					
 					// General Deserialization
 					((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).SetMetastate(context.Reader.ReadByteArray());
@@ -77,7 +74,7 @@ internal static class UnionTests
 			""";
 
 		await TestAssistants.RunGeneratorAsync<GeneratorSerializationGenerator>(code,
-			[("Domains.Owner_GeneratorSerialization.g.cs", generatedCode)],
+			[("Domains.Customer_GeneratorSerialization.g.cs", generatedCode)],
 			[]);
 	}
 

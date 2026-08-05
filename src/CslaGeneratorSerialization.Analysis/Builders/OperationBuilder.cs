@@ -5,6 +5,8 @@ using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Analysis.Builders;
 
+// These are for reading and writing
+// from properties with managed backing fields.
 internal static class OperationBuilder
 {
 	internal static void BuildReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
@@ -21,7 +23,7 @@ internal static class OperationBuilder
 		{
 			EnumBuilder.BuildReader(indentWriter, item);
 		}
-		else if (propertyType.Array is not null)
+		else if (propertyType.IsSupportedArray)
 		{
 			ArrayBuilder.BuildReader(indentWriter, item);
 		}
@@ -74,7 +76,7 @@ internal static class OperationBuilder
 		{
 			EnumBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}
-		else if (propertyType.Array is not null)
+		else if (propertyType.IsSupportedArray)
 		{
 			ArrayBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
 		}

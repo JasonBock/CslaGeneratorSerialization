@@ -39,6 +39,8 @@ internal sealed record TypeReferenceModel
 		if (type is IArrayTypeSymbol arrayTypeSymbol)
 		{
 			this.Array = new ArrayTypeReferenceModel(arrayTypeSymbol, compilation, stereotypes);
+			this.IsSupportedArray = arrayTypeSymbol.Rank == 1 &&
+				(arrayTypeSymbol.ElementType.SpecialType == SpecialType.System_Byte || arrayTypeSymbol.ElementType.SpecialType == SpecialType.System_Char);
 		}
 
 		if (type is INamedTypeSymbol namedTypeSymbol)
@@ -61,7 +63,7 @@ internal sealed record TypeReferenceModel
 	}
 
 	internal ArrayTypeReferenceModel? Array { get; }
-	internal StereotypeKind BusinessObjectKind { get; }
+   internal StereotypeKind BusinessObjectKind { get; }
 	internal TypeReferenceModel? BusinessObjectTarget { get; }
 	internal TypeReferenceModel? EnumUnderlyingType { get; }
 	internal string FullName { get; }
@@ -71,6 +73,7 @@ internal sealed record TypeReferenceModel
 	internal bool IsArray { get; }
 	internal bool IsNullable { get; }
 	internal bool IsSealed { get; }
+	internal bool IsSupportedArray { get; }
 	internal bool IsValueType { get; }
 	internal string Name { get; }
 	internal Accessibility DeclaredAccessibility { get; }

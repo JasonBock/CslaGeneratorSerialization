@@ -10,26 +10,15 @@ internal static class ArrayBuilder
 	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var propertyType = item.PropertyInfoDataType;
+		var loadProperty = BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(propertyType));
 
-		if (propertyType.Array!.Rank == 1 &&
-			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
-		{
-			var elementSpecialType = propertyType.Array.ElementType.SpecialType;
-			var readType = elementSpecialType == SpecialType.System_Byte ? "Byte" : "Char";
-			var loadProperty = BuilderHelpers.GetLoadProperty(item, $"context.Reader.Read{readType}Array()");
-
-			indentWriter.WriteLines(
-				$$"""
-				if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-				{
-					{{loadProperty}}
-				}
-				""");
-		}
-		else
-		{
-			CustomBuilder.BuildReader(indentWriter, item);
-		}
+		indentWriter.WriteLines(
+			$$"""
+			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+			{
+				{{loadProperty}}
+			}
+			""");
 	}
 
 	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)

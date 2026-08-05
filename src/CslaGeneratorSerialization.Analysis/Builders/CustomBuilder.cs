@@ -9,7 +9,7 @@ internal static class CustomBuilder
 	internal static void BuildReader(IndentedTextWriter indentWriter, SerializationItemModel item) 
 	{
 		var loadProperty = BuilderHelpers.GetLoadProperty(item,
-			$"context.ReadCustom<{item.PropertyInfoDataType.FullyQualifiedNameNoNullableAnnotation}>()");
+			BuilderHelpers.GetReadOperation(item.PropertyInfoDataType));
 		indentWriter.WriteLines(
 			$$"""
 			{{loadProperty}}

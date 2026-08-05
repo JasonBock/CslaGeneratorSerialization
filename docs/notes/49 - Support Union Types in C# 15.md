@@ -101,9 +101,13 @@ OK, reset...
 
 * First, I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
 * Second, generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
+    * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
 TODO:
+* `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
 * Why are we doing casts in the `BuildWriter()` methods?
 * Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
-* Need a test for `GetFullyQualifiedName()` in `StringExtensions`
+* Need tests for 
+    * `GetFullyQualifiedName()` in `StringExtensions`
+    * `BuilderHelpers`
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?

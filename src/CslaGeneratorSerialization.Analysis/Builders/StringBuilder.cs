@@ -11,7 +11,7 @@ internal static class StringBuilder
 		   $$"""
 			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 			{
-				{{BuilderHelpers.GetLoadProperty(item, "context.Reader.ReadString()")}}
+				{{BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(item.PropertyInfoDataType))}}
 			}
 			""");
 

@@ -1,6 +1,5 @@
 ﻿using CslaGeneratorSerialization.Analysis.Extensions;
 using CslaGeneratorSerialization.Analysis.Models;
-using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 
 namespace CslaGeneratorSerialization.Analysis.Builders;
@@ -41,9 +40,6 @@ internal static class BusinessBaseBuilder
 		indentWriter.Indent--;
 		indentWriter.WriteLine("}");
 	}
-
-	internal static string GetLoadProperty(SerializationItemModel item, string readerInvocation) =>
-		$"this.LoadProperty({item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}, {readerInvocation});";
 
 	private static void BuildWriter(IndentedTextWriter indentWriter, SerializationModel model)
 	{
