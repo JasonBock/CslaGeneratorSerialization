@@ -106,22 +106,30 @@ public static class GeneratorFormatterWriterContextExtensions
     {
         public void WriteUnion(Stuff value, List<byte> typeIdentifiers)
         {
-            var context = self;
-
             switch(value)
             {
                 case string u0:
-                    // It's a string
+                    // string
                     typeIdentifiers.Add(0);
                     context.Write(typeIdentifiers.ToArray());
-                    context.Writer.Write(u0);
+                    if (u0 is not null)
+                    {
+                        context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+                        context.Writer.Write(u0);
+                    }
+                    else
+                    {
+                        context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+                    }
                     break;
                 case int u1:
+                    // int
                     typeIdentifiers.Add(1);
                     context.Write(typeIdentifiers.ToArray());
                     context.Writer.Write(u1);
                     break;
                 case MoreStuff u2:
+                    // MoreStuff
                     typeIdentifiers.Add(2);
                     context.WriteUnion(u2, typeIdentifiers);
                     break;
@@ -130,21 +138,17 @@ public static class GeneratorFormatterWriterContextExtensions
 
         public void WriteUnion(MoreStuff value, List<byte> typeIdentifiers)
         {
-            var context = self;
-
             switch(value)
             {
                 case Guid u0:
-                    // It's a Guid
+                    // Guid
                     typeIdentifiers.Add(0);
                     context.Write(typeIdentifiers.ToArray());
-                    // Write the Guid valuetype
                     context.Writer.Write(u0);
                     break;
                 case DateTimeOffset u1:
                     typeIdentifiers.Add(1);
                     context.Write(typeIdentifiers.ToArray());
-                    // Write the DateTimeOffset valuetype
                     context.Writer.Write(u1);
                     break;
             }
