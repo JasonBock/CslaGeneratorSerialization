@@ -50,11 +50,13 @@ void WriteUnion(this GeneratorFormatterWriterContext self, MoreStuff value, List
             // It's a Guid
             typeIdentifiers.Add(0);
             context.Write(typeIdentifiers.ToArray());
+            // Write the Guid valuetype
             context.Writer.Write(u0);
             break;
         case DateTimeOffset u1:
             typeIdentifiers.Add(1);
             context.Write(typeIdentifiers.ToArray());
+            // Write the DateTimeOffset valuetype
             context.Writer.Write(u1);
             break;
     }
@@ -67,15 +69,15 @@ Stuff ReadStuffUnion(this GeneratorFormatterReaderContext self, byte[] typeIdent
     {
         case 0:
             // It's a string
-            new Stuff(stringreader);
+            return new Stuff(stringreader);
             break;
         case 1:
             // It's an int
-            new Stuff(valuetypereader);
+            return new Stuff(valuetypereader);
             break;
         case 2:
             typeIdentifierIndex++;
-            new Stuff(ReadMoreStuff(typeIdentifiers, typeIdentifierIndex))"
+            return new Stuff(ReadMoreStuff(typeIdentifiers, typeIdentifierIndex))"
             break;
     }
 }
@@ -86,11 +88,11 @@ MoreStuff ReadMoreStuffUnion(this GeneratorFormatterReaderContext self, byte[] t
     {
         case 0:
             // It's a Guid
-            new MoreStuff(valuetypereader);
+            return new MoreStuff(valuetypereader);
             break;
         case 1:
             // It's a DateTimeOffset
-            new MoreStuff(valuetypereader);
+            return new MoreStuff(valuetypereader);
             break;
     }
 }
@@ -99,8 +101,9 @@ Right now, `ValueTypeBuilder.BuildReader` uses a `TypeReferenceModel` from the p
 
 OK, reset...
 
-* First, I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
-* Second, generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
+* DONE - I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
+* Update all readers in `OperationBuilder.BuildReadOperation()` so the "read" can be "reused"
+* Generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
     * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
 TODO:

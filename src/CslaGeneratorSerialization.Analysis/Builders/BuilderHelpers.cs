@@ -16,6 +16,14 @@ internal static class BuilderHelpers
 			return $"context.ReadUnion<{type.FullyQualifiedNameNoNullableAnnotation}>()";
 		}
 
+		// Stereotype
+		if (type.BusinessObjectKind != StereotypeKind.None)
+		{
+			return type.ParticipatesInGeneratorSerialization ?
+				$$"""context.Read<{{type.FullyQualifiedNameNoNullableAnnotation}}>({{type.IsSealed.ToString().ToLower()}})!""" :
+				$$"""context.ReadMobileObject<{{type.FullyQualifiedNameNoNullableAnnotation}}>()!""";
+		}
+
 		// "Special" value types that we can easily handle.
 		if (type.FullyQualifiedName == "global::System.Guid")
 		{
@@ -48,6 +56,25 @@ internal static class BuilderHelpers
 			var elementSpecialType = type.Array!.ElementType.SpecialType;
 			var readType = elementSpecialType == SpecialType.System_Byte ? "Byte" : "Char";
 			return $"context.Reader.Read{readType}Array()";
+		}
+
+		// Nullable value
+		if (type.IsNullable && type.IsValueType)
+		{
+			// This is because a nullable, like "byte?",
+			// is actually a "Nullable<byte>" -
+			// hence that's why we're pulling out the 0th
+			// type argument.
+			var nullableType = type.TypeArguments[0];
+			var enumCast = string.Empty;
+
+			if (nullableType.TypeKind == TypeKind.Enum)
+			{
+				nullableType = nullableType.EnumUnderlyingType!;
+				enumCast = $"({type.TypeArguments[0].FullyQualifiedName})";
+			}
+
+			return $"{enumCast}{BuilderHelpers.GetReadOperation(nullableType)}";
 		}
 
 		// Common value types -

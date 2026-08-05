@@ -11,17 +11,8 @@ internal static class NullableValueTypeBuilder
 	{
 		var propertyType = item.PropertyInfoDataType;
 
-		var nullableType = propertyType.TypeArguments[0];
-		var enumCast = string.Empty;
-
-		if (nullableType.TypeKind == TypeKind.Enum)
-		{
-			nullableType = nullableType.EnumUnderlyingType!;
-			enumCast = $"({propertyType.TypeArguments[0].FullyQualifiedName})";
-		}
-
 		var loadProperty = BuilderHelpers.GetLoadProperty(item,
-			$"{enumCast}{BuilderHelpers.GetReadOperation(nullableType)}");
+			$"{BuilderHelpers.GetReadOperation(propertyType)}");
 
 		indentWriter.WriteLines(
 			$$"""

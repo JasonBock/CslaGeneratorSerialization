@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.IntegrationTests;
 internal static class NullTests
 {
 	[Test]
-	public static async Task RoundtripAsync()
+	public static void Roundtrip()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
@@ -15,7 +15,7 @@ internal static class NullTests
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, null);
 		stream.Position = 0;
-		var newData = formatter.Deserialize(stream)!;
+		var newData = formatter.Deserialize(stream);
 
 		Assert.That(newData, Is.Null);
 	}
