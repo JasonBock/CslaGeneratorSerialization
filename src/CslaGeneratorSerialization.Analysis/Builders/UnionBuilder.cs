@@ -6,10 +6,11 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class UnionBuilder
 {
-	internal static void BuildUnionReader(IndentedTextWriter indentWriter, TypeReferenceModel unionType)
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter, 
+		TypeReferenceModel parentUnionType, TypeReferenceModel childUnionCaseType)
 	{
-		var readOperation = BuilderHelpers.GetReadOperation(unionType);
-		var constructUnion = $"new {unionType.FullyQualifiedName}()";
+		var readOperation = BuilderHelpers.GetReadOperation(childUnionCaseType);
+		var constructUnion = $"new {parentUnionType.FullyQualifiedName}(({childUnionCaseType.FullyQualifiedName}){readOperation})";
 		indentWriter.WriteLines(
 			$$"""
 			{{constructUnion}}
@@ -22,7 +23,11 @@ internal static class UnionBuilder
 			$"{BuilderHelpers.GetReadOperation(item.PropertyInfoDataType)}");
 		indentWriter.WriteLines(
 			$$"""
-			{{loadProperty}}
+			{
+				var typeIdentifiers = context.Reader.ReadByteArray();
+				var typeIdentifiersIndex = 0;
+				{{loadProperty}}
+			}
 			""");
 	}
 

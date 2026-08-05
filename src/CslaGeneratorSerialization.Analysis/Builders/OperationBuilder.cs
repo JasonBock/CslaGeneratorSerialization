@@ -10,15 +10,12 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class OperationBuilder
 {
 	internal static void BuildUnionReadOperation(
-		IndentedTextWriter indentWriter, TypeReferenceModel unionType,
-		TypeReferenceModel unionCaseType, bool includeCustom)
+		IndentedTextWriter indentWriter,
+		TypeReferenceModel parentUnionType, TypeReferenceModel childUnionCaseType)
 	{
-		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
+		indentWriter.WriteLine($"// {childUnionCaseType.FullyQualifiedName}");
 
-		if (!unionCaseType.UnionCaseTypes.IsEmpty)
-		{
-			UnionBuilder.BuildUnionReader(indentWriter, unionCaseType);
-		}
+		UnionBuilder.BuildUnionReader(indentWriter, parentUnionType, childUnionCaseType);
 	}
 
 	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 

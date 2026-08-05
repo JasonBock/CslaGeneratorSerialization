@@ -13,7 +13,7 @@ internal static class BuilderHelpers
 		// Unions
 		if (type.UnionCaseTypes.Length > 0)
 		{
-			return $"context.ReadUnion<{type.FullyQualifiedName}>(context.Reader.ReadByteArray(), 0)";
+			return $"context.ReadUnion<{type.FullyQualifiedName}>(typeIdentifiers, typeIdentifiersIndex)";
 		}
 
 		// Stereotype
