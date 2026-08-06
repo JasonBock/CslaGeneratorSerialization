@@ -38,10 +38,57 @@ internal sealed class GeneratorSerializationGenerator
 
 	private static void CreateOutput(ImmutableArray<SerializationModel> models, SourceProductionContext context)
 	{
+		var propertyUnionTypes = new HashSet<TypeReferenceModel>();
+
 		foreach (var model in models.Distinct())
 		{
 			var builder = new GeneratorSerializationBuilder(model);
 			context.AddSource(builder.FileName, builder.Text);
+
+			propertyUnionTypes.AddRange(
+				model.Items
+					.Where(model => model.PropertyInfoDataType.UnionCaseTypes.Length > 0)
+					.Select(model => model.PropertyInfoDataType));
+		}
+
+		if (propertyUnionTypes.Count > 0)
+		{
+			var unionTypes = propertyUnionTypes.ToList();
+
+			var startingIndex = 0;
+			var endingIndex = unionTypes.Count;
+			var startingCount = unionTypes.Count;
+
+			do
+			{
+				startingCount = unionTypes.Count;
+
+				for (var i = startingIndex; i <= endingIndex - 1; i++)
+				{
+					var unionType = unionTypes[i];
+
+					foreach (var unionCaseType in unionType.UnionCaseTypes)
+					{
+						if (unionCaseType.UnionCaseTypes.Length > 0 &&
+							!unionTypes.Contains(unionCaseType))
+						{
+							unionTypes.Add(unionCaseType);
+						}
+					}
+				}
+
+				if (unionTypes.Count > startingCount)
+				{
+					startingIndex = endingIndex;
+					endingIndex = unionTypes.Count;
+				}
+			} while (startingCount != unionTypes.Count);
+
+			var readerExtensionsBuilder = new GeneratorFormatterReaderContextExtensionsBuilder(unionTypes);
+			context.AddSource(readerExtensionsBuilder.FileName, readerExtensionsBuilder.Text);
+
+			var writerExtensionsBuilder = new GeneratorFormatterWriterContextExtensionsBuilder(unionTypes);
+			context.AddSource(writerExtensionsBuilder.FileName, writerExtensionsBuilder.Text);
 		}
 	}
 }

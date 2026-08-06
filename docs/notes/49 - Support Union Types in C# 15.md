@@ -109,7 +109,6 @@ public static class GeneratorFormatterWriterContextExtensions
             switch(value)
             {
                 case string u0:
-                    // string
                     typeIdentifiers.Add(0);
                     context.Write(typeIdentifiers.ToArray());
                     if (u0 is not null)
@@ -123,13 +122,11 @@ public static class GeneratorFormatterWriterContextExtensions
                     }
                     break;
                 case int u1:
-                    // int
                     typeIdentifiers.Add(1);
                     context.Write(typeIdentifiers.ToArray());
                     context.Writer.Write(u1);
                     break;
                 case MoreStuff u2:
-                    // MoreStuff
                     typeIdentifiers.Add(2);
                     context.WriteUnion(u2, typeIdentifiers);
                     break;
@@ -170,19 +167,19 @@ public static class GeneratorFormatterReaderContextExtensions
                         // string
                         if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
                         {
-                            return new Stuff(context.ReadString());                            
+                            return (Stuff)context.ReadString();                            
                         }
 
-                        return new Stuff(null as string?);
+                        return (Stuff)(null as string?);
                         break;
                     case 1:
                         // int
-                        return new Stuff(context.Reader.ReadInt32());
+                        return (Stuff)(context.Reader.ReadInt32());
                         break;
                     case 2:
                         // MoreStuff
                         typeIdentifierIndex++;
-                        return new Stuff((MoreStuff)context.ReadUnion<MoreStuff>(typeIdentifiers, typeIdentifierIndex));
+                        return (Stuff)((MoreStuff)context.ReadUnion<MoreStuff>(typeIdentifiers, typeIdentifierIndex));
                         break;
                 }
             }
@@ -192,11 +189,11 @@ public static class GeneratorFormatterReaderContextExtensions
                 {
                     case 0:
                         // Guid
-                        return new MoreStuff(new global::System.Guid(context.Reader.ReadBytes(16)));                            
+                        return (MoreStuff)(new global::System.Guid(context.Reader.ReadBytes(16)));                            
                         break;
                     case 1:
                         // DateTimeOffset
-                        return new MoreStuff(new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64())));
+                        return (MoreStuff)(new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64())));
                         break;
                 }
             }
@@ -213,7 +210,6 @@ OK, reset...
 * DONE - Update all readers in `OperationBuilder.BuildReadOperation()` so the "read" can be "reused"
 * DONE - Rename the current `BuildReader()` methods to `BuildPropertyReader()`
 * Add a `BuildUnionReader()` to handle union creation, along with possible nullable values passed into the union constructor
-    * I will need to have a `UsesUnionMembersProvider`, as then I would use a static `Create()` method, not a constructor
 * Generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
     * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
