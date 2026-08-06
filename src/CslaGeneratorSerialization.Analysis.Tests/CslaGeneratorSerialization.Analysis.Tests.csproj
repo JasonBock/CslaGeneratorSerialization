@@ -3,7 +3,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AssemblyName>CslaGeneratorSerialization.Analysis.Tests</AssemblyName>
 		<EnableNUnitRunner>true</EnableNUnitRunner>
-		<NoWarn>$(NoWarn);CA2007;NU1903</NoWarn>
+		<NoWarn>$(NoWarn);CA2007;NU1903;EnableGenerateDocumentationFile</NoWarn>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>CslaGeneratorSerialization.Analysis.Tests</RootNamespace>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>

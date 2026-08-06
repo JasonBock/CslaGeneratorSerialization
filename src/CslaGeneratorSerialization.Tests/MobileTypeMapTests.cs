@@ -5,7 +5,7 @@ namespace CslaGeneratorSerialization.Tests;
 internal static class MobileTypeMapTests
 {
 	[Test]
-	public static async Task CreateAsync()
+	public static void Create()
 	{
 		var typeMap = new MobileTypeMap<string>();
 

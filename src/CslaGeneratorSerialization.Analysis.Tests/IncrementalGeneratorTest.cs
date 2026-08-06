@@ -31,7 +31,7 @@ internal sealed class IncrementalGeneratorTest<TIncrementalGenerator>
 		return parseOptions.WithLanguageVersion(LanguageVersion.Preview);
 	}
 
-	static class CSharpVerifierHelper
+   private static class CSharpVerifierHelper
 	{
 		/// <summary>
 		/// By default, the compiler reports diagnostics for nullable reference types at
@@ -42,7 +42,7 @@ internal sealed class IncrementalGeneratorTest<TIncrementalGenerator>
 		/// </summary>
 		internal static ImmutableDictionary<string, ReportDiagnostic> CompilationOptions { get; } = GetCompilationOptionsFromCompiler();
 
-		static ImmutableDictionary<string, ReportDiagnostic> GetCompilationOptionsFromCompiler()
+		private static ImmutableDictionary<string, ReportDiagnostic> GetCompilationOptionsFromCompiler()
 		{
 			var args = new[] { "/warnaserror:nullable" };
 			var commandLineArguments = CSharpCommandLineParser.Default.Parse(

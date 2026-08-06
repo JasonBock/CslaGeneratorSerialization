@@ -8,7 +8,7 @@ namespace CslaGeneratorSerialization.Tests.Extensions;
 internal static class BinaryReaderExtensionsTests
 {
 	[Test]
-	public static async Task ReadStateValueAsync()
+	public static void ReadStateValue()
 	{
 		var value = SerializationState.Duplicate;
 		var stream = new MemoryStream();
@@ -22,7 +22,7 @@ internal static class BinaryReaderExtensionsTests
 	}
 
 	[Test]
-	public static async Task ReadBigIntegerAsync()
+	public static void ReadBigInteger()
 	{
 		var value = BigInteger.Parse("473107483917948931749814", CultureInfo.InvariantCulture);
 
@@ -37,7 +37,7 @@ internal static class BinaryReaderExtensionsTests
 	}
 
 	[Test]
-	public static async Task ReadByteArrayAsync()
+	public static void ReadByteArray()
 	{
 		byte[] value = [22, 33, 44];
 		var stream = new MemoryStream();
@@ -51,7 +51,7 @@ internal static class BinaryReaderExtensionsTests
 	}
 
 	[Test]
-	public static async Task ReadCharArrayAsync()
+	public static void ReadCharArray()
 	{
 		char[] value = ['a', 'b', 'c'];
 		var stream = new MemoryStream();

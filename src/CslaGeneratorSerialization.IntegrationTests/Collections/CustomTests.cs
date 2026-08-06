@@ -30,9 +30,9 @@ internal static class CustomTests
 	public static async Task RoundtripAsync()
 	{
 		var services = new ServiceCollection();
-		services.AddCsla(o =>
+		_ = services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization(
+		_ = services.AddCslaGeneratorSerialization(
 			new CustomSerialization<int[]>(
 				(data, writer) =>
 				{

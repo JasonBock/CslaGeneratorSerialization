@@ -5,7 +5,7 @@ namespace CslaGeneratorSerialization.Tests.CustomSerializationTestsDomain;
 internal static class CustomSerializationTests
 {
 	[Test]
-	public static async Task RoundtripAsync()
+	public static void Roundtrip()
 	{
 		var customSerialization = new CustomSerialization<CustomData>(
 			(data, writer) =>

@@ -30,7 +30,7 @@ internal static class INamedTypeSymbolExtensionsTests
 			""";
 
 		var typeSymbol = await INamedTypeSymbolExtensionsTests.GetNamedTypeSymbolAsync(code);
-		var fields = typeSymbol.GetPropertyInfoFields()!;
+		var fields = typeSymbol.GetPropertyInfoFields();
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -53,7 +53,7 @@ internal static class INamedTypeSymbolExtensionsTests
 			""";
 
 		var typeSymbol = await INamedTypeSymbolExtensionsTests.GetNamedTypeSymbolAsync(code);
-		var fields = typeSymbol.GetPropertyInfoFields()!;
+		var fields = typeSymbol.GetPropertyInfoFields();
 		Assert.That(fields, Has.Count.EqualTo(0));
 	}
 
@@ -67,6 +67,6 @@ internal static class INamedTypeSymbolExtensionsTests
 
 		var typeSyntax = (await syntaxTree.GetRootAsync()).DescendantNodes(_ => true)
 			.OfType<TypeDeclarationSyntax>().Single();
-		return (model.GetDeclaredSymbol(typeSyntax) as INamedTypeSymbol)!;
+		return model.GetDeclaredSymbol(typeSyntax)!;
 	}
 }

@@ -54,9 +54,9 @@ internal static class CustomTests
 	public static async Task RoundtripAsync()
 	{
 		var services = new ServiceCollection();
-		services.AddCsla(o =>
+		_ = services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization(
+		_ = services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
@@ -100,23 +100,23 @@ internal static class CustomTests
 	public static async Task CloneAsync()
 	{
 		var services = new ServiceCollection();
-		services.AddCsla(o =>
+		_ = services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization(
+		_ = services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
 
 		var provider = services.BuildServiceProvider();
 		var context = provider.GetRequiredService<ApplicationContext>();
@@ -144,23 +144,23 @@ internal static class CustomTests
 	public static async Task NLevelUndoAsync()
 	{
 		var services = new ServiceCollection();
-		services.AddCsla(o =>
+		_ = services.AddCsla(o =>
 			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		services.AddCslaGeneratorSerialization(
+		_ = services.AddCslaGeneratorSerialization(
 			new CustomSerialization<CustomClassData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }),
 			new CustomSerialization<CustomStructData>(
 				(data, writer) =>
 				{
 					writer.Write(data.Id);
 					writer.Write(data.Name);
 				},
-				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() }));
 
 		var provider = services.BuildServiceProvider();
 

@@ -15,9 +15,9 @@ public static class Shared
 		new(() =>
 		{
 			var services = new ServiceCollection();
-			services.AddCsla(o =>
-				o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-			services.AddCslaGeneratorSerialization();
+		   _ = services.AddCsla(o =>
+			   o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
+		   _ = services.AddCslaGeneratorSerialization();
 			return services.BuildServiceProvider();
 		}, true);
 

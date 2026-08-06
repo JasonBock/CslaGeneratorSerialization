@@ -1,158 +1,46 @@
-﻿Console.WriteLine(UnionHandlers.Read<string>());
-Console.WriteLine(UnionHandlers.Read<Guid>());
+﻿using System.Runtime.CompilerServices;
 
-var pet = new Pet(new Dog("Rex"));
+var stringStuff = (Stuff)"hello";
+Console.WriteLine(stringStuff.Value);
 
-#pragma warning disable IDE0010 // Add missing cases
-#pragma warning disable IDE0072
+var intStuff = (Stuff)42;
+Console.WriteLine(intStuff.Value);
 
-switch (pet)
-{
-	case global::Dog u1:
-		Console.WriteLine($"Dog: {u1.Name}");
-		break;
-	case global::Cat u2:
-		Console.WriteLine($"Cat: {u2.Name}");
-		break;
-	case global::BirdUnion u3:
-		UnionHandlers.Handle(u3);
-		break;
-}
+var guidStuff = (Stuff)Guid.NewGuid();
+Console.WriteLine(guidStuff.Value);
 
-pet = new Cat("Tank");
+Console.WriteLine();
 
-switch (pet)
-{
-	case global::Dog u1:
-		Console.WriteLine($"Dog: {u1.Name}");
-		break;
-	case global::Cat u2:
-		Console.WriteLine($"Cat: {u2.Name}");
-		break;
-	case global::BirdUnion u3:
-		UnionHandlers.Handle(u3);
-		break;
-}
+var stringAbstract = (AbstractOutcome)"abstract hello";
+Console.WriteLine(stringAbstract.Value);
 
-var a = new A(new A1());
-
-switch (a)
-{
-	case A1 u1:
-		Console.WriteLine($"A1: {u1}");
-		break;
-	case A2 u2:
-		Console.WriteLine($"A2: {u2}");
-		break;
-	case B u3:
-		UnionHandlers.Handle(u3);
-		break;
-}
+var intAbstract = (AbstractOutcome)69420;
+Console.WriteLine(intAbstract.Value);
 
 #pragma warning disable CA1050 // Declare types in namespaces
-public record class Cat(string Name);
-public record class Dog(string Name);
-public record class Bird(string Name);
-
-public record class Parakeet(string Name);
-public record class Hummingbird(string Name);
-public record class Robin(string Name);
-
 #pragma warning disable CA1815 // Override equals and operator equals on value types
 #pragma warning disable IDE0250 // Make struct 'readonly'
+public union Stuff(string, int, Guid);
 
-public union BirdUnion(Parakeet, Hummingbird, Robin);
-
-public union Pet(Cat, Dog, BirdUnion);
-
-public union Simple(Cat);
-
-public record class A1;
-public record class A2;
-public record class B1;
-public record class B2;
-
-public union B(B1, B2, A);
-public union A(A1, A2, B);
-
-public record class R1(R2 Value);
-public record class R2(R1 Value);
-
-public static class Stuff
+[Union]
+public sealed record class AbstractOutcome
+	: AbstractOutcome.IUnionMembers
 {
-	public static void Process(string value) => Console.WriteLine(value);
-	public static void Process(int value) => Console.WriteLine(value);
-}
+	private AbstractOutcome(object? value) => this.Value = value;
 
-public static class UnionHandlers
-{
-	public static object Read<T>()
+#pragma warning disable CA1034 // Nested types should not be visible
+	public interface IUnionMembers
 	{
-		if (typeof(T) == typeof(string))
-		{
-			return "hello";
-		}
-		else if (typeof(T) == typeof(int))
-		{
-			return 42;
-		}
-		else if (typeof(T) == typeof(Guid))
-		{
-			return Guid.NewGuid();
-		}
-		else
-		{
-			throw new NotImplementedException();
-		}
+		static abstract AbstractOutcome Create(string value);
+		static abstract AbstractOutcome Create(int value);
+		object? Value { get; }
 	}
 
-	public static void Handle(global::BirdUnion birdUnion)
-	{
-		switch (birdUnion)
-		{
-			case global::Parakeet u1:
-				Console.WriteLine($"Parakeet: {u1.Name}");
-				break;
-			case global::Hummingbird u2:
-				Console.WriteLine($"Hummingbird: {u2.Name}");
-				break;
-			case global::Robin u3:
-				Console.WriteLine($"Robin: {u3.Name}");
-				break;
-		}
-	}
+	public object? Value { get; }
 
-	public static void Handle(A a)
-	{
-		switch (a)
-		{
-			case A1 u1:
-				Console.WriteLine($"A1: {u1}");
-				break;
-			case A2 u2:
-				Console.WriteLine($"A2: {u2}");
-				break;
-			case B u3:
-				UnionHandlers.Handle(u3);
-				break;
-		}
-	}
+	public static AbstractOutcome Create(string value) => new((object?)value);
 
-	public static void Handle(B b)
-	{
-		switch (b)
-		{
-			case B1 u1:
-				Console.WriteLine($"B1: {u1}");
-				break;
-			case B2 u2:
-				Console.WriteLine($"B1: {u2}");
-				break;
-			case A u3:
-				Handle(u3);
-				break;
-		}
-	}
+	public static AbstractOutcome Create(int value) => new((object?)value);
 }
 
 /*

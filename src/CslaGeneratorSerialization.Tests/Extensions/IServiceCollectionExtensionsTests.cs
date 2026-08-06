@@ -8,10 +8,10 @@ namespace CslaGeneratorSerialization.Tests.Extensions;
 internal static class IServiceCollectionExtensionsTests
 {
 	[Test]
-	public static async Task AddCslaGeneratorSerializationWithNoCustomizationsAsync()
+	public static void AddCslaGeneratorSerializationWithNoCustomizations()
 	{
 		var services = new ServiceCollection();
-		services.AddCslaGeneratorSerialization();
+		_ = services.AddCslaGeneratorSerialization();
 
 		using (Assert.EnterMultipleScope())
 		{
@@ -28,10 +28,10 @@ internal static class IServiceCollectionExtensionsTests
 	}
 
 	[Test]
-	public static async Task AddCslaGeneratorSerializationWithCustomizationsAsync()
+	public static void AddCslaGeneratorSerializationWithCustomizations()
 	{
 		var services = new ServiceCollection();
-		services.AddCslaGeneratorSerialization(
+		_ = services.AddCslaGeneratorSerialization(
 			new CustomSerialization<string>(
 				(data, writer) => { },
 				(reader) => "a")!);

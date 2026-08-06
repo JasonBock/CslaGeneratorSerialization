@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<NoWarn>$(NoWarn);CSLA0007</NoWarn>
+		<NoWarn>$(NoWarn);CSLA0007;IDE0051;EnableGenerateDocumentationFile</NoWarn>
 		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 	<ItemGroup>

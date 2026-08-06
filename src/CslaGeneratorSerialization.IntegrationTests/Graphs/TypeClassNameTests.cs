@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace CslaGeneratorSerialization.IntegrationTests.Graphs;
 
-enum TaskEnum
+internal enum TaskEnum
 {
 	First,
 	Second,

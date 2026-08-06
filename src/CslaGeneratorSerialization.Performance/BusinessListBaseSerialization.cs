@@ -19,9 +19,9 @@ public class BusinessListBaseSerialization
 	public BusinessListBaseSerialization()
 	{
 		var generatorServices = new ServiceCollection();
-		generatorServices.AddCsla(o =>
-			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
-		generatorServices.AddCslaGeneratorSerialization();
+	  _ = generatorServices.AddCsla(o =>
+		  o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
+	  _ = generatorServices.AddCslaGeneratorSerialization();
 		var generatorProvider = generatorServices.BuildServiceProvider();
 
 		var generatorApplicationContext = generatorProvider.GetService<ApplicationContext>()!;
@@ -41,7 +41,7 @@ public class BusinessListBaseSerialization
 		(this.generatorPeople, this.generatorFormatter) = (generatorPeople, new GeneratorFormatter(generatorApplicationContext, new(generatorProvider)));
 
 		var mobileServices = new ServiceCollection();
-		mobileServices.AddCsla();
+	  _ = mobileServices.AddCsla();
 		var mobileProvider = mobileServices.BuildServiceProvider();
 
 		var mobileApplicationContext = mobileProvider.GetService<ApplicationContext>()!;

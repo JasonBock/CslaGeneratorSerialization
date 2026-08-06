@@ -3,6 +3,7 @@
 		<AnalysisMode>all</AnalysisMode>
 		<Authors>Jason Bock</Authors>
 		<Copyright>Copyright © 2026</Copyright>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>preview</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>

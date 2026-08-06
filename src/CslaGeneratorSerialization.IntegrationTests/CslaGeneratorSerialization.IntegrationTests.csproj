@@ -4,7 +4,7 @@
 		<AssemblyName>CslaGeneratorSerialization.IntegrationTests</AssemblyName>
 		<EnableNUnitRunner>true</EnableNUnitRunner>
 		<OutputType>Exe</OutputType>
-		<NoWarn>$(NoWarn);CA1724;CA1822;CSLA0001</NoWarn>
+		<NoWarn>$(NoWarn);CA1724;CA1822;CSLA0001;IDE0051;EnableGenerateDocumentationFile</NoWarn>
 		<RootNamespace>CslaGeneratorSerialization.IntegrationTests</RootNamespace>
 		<TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
 	</PropertyGroup>

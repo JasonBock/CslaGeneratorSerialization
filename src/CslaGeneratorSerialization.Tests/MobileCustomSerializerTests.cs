@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Tests.MobileCustomSerializerTestsDomain;
 internal static class MobileCustomSerializerTests
 {
 	[Test]
-	public static async Task RoundtripAsync()
+	public static void Roundtrip()
 	{
 		var customSerialization = new CustomSerialization<CustomData>(
 			(data, writer) =>
@@ -27,7 +27,7 @@ internal static class MobileCustomSerializerTests
 	}
 
 	[Test]
-	public static async Task CreateWhenCustomSerializationIsNullAsync() =>
+	public static void CreateWhenCustomSerializationIsNull() =>
 		Assert.That(() => new MobileCustomSerializer<CustomData>(null!), Throws.TypeOf<ArgumentNullException>());
 }
 

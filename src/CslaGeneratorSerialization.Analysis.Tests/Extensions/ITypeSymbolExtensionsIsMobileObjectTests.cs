@@ -54,6 +54,6 @@ internal static class ITypeSymbolExtensionsIsMobileObjectTests
 
 		var typeSyntax = (await syntaxTree.GetRootAsync()).DescendantNodes(_ => true)
 			.OfType<TypeDeclarationSyntax>().Single();
-		return (model.GetDeclaredSymbol(typeSyntax) as ITypeSymbol)!;
+		return model.GetDeclaredSymbol(typeSyntax)!;
 	}
 }
