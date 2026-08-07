@@ -138,7 +138,6 @@ public static class GeneratorFormatterWriterContextExtensions
             switch(value)
             {
                 case Guid u0:
-                    // Guid
                     typeIdentifiers.Add(0);
                     context.Write(typeIdentifiers.ToArray());
                     context.Writer.Write(u0);

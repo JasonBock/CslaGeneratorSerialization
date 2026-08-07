@@ -109,8 +109,8 @@ internal static class UnionTests
 			
 			internal static class GeneratorFormatterWriterContextExtensions
 			{
-			    extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
-			    {
+				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
+				{
 					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
 					{
 						switch(value)

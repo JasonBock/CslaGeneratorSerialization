@@ -23,8 +23,8 @@ internal sealed class GeneratorFormatterWriterContextExtensionsBuilder
 
 			internal static class GeneratorFormatterWriterContextExtensions
 			{
-			    extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
-			    {
+				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
+				{
 			""");
 
 		indentWriter.Indent += 2;

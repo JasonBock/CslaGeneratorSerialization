@@ -1,5 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 
+var stringOutcome = (Outcome<string>)"hello";
+Console.WriteLine(((Outcome<string>.IUnionMembers)stringOutcome).Value);
+
 var stringStuff = (Stuff)"hello";
 Console.WriteLine(stringStuff.Value);
 
@@ -22,8 +25,53 @@ Console.WriteLine(intAbstract.Value);
 #pragma warning disable IDE0250 // Make struct 'readonly'
 public union Stuff(string, int, Guid);
 
+[System.Runtime.CompilerServices.Union]
+public struct Outcome<T> : Outcome<T>.IUnionMembers
+{
+	private readonly object? _value;
+
+	private Outcome(object? value) => this._value = value;
+
+#pragma warning disable CA1034 // Nested types should not be visible
+	public interface IUnionMembers
+	{
+#pragma warning disable CA1000 // Do not declare static members on generic types
+		static Outcome<T> Create(T? value) => new(value);
+		static Outcome<T> Create(Exception? value) => new(value);
+		object? Value { get; }
+
+		// only when needed
+		bool TryGetValue(out T value);
+		bool TryGetValue(out Exception value);
+	}
+
+	readonly object? IUnionMembers.Value => this._value;
+
+	public readonly bool TryGetValue(out T value)
+	{
+		if (this._value is T t)
+		{
+			value = t;
+			return true;
+		}
+		value = default!;
+		return false;
+	}
+
+	public readonly bool TryGetValue(out Exception value)
+	{
+		if (this._value is Exception e)
+		{
+			value = e;
+			return true;
+		}
+		value = default!;
+		return false;
+	}
+}
+
 [Union]
-public sealed record class AbstractOutcome
+public struct AbstractOutcome
 	: AbstractOutcome.IUnionMembers
 {
 	private AbstractOutcome(object? value) => this.Value = value;
@@ -34,6 +82,9 @@ public sealed record class AbstractOutcome
 		static abstract AbstractOutcome Create(string value);
 		static abstract AbstractOutcome Create(int value);
 		object? Value { get; }
+
+		bool TryGetValue(out string value);
+		bool TryGetValue(out int value);
 	}
 
 	public object? Value { get; }
@@ -41,6 +92,28 @@ public sealed record class AbstractOutcome
 	public static AbstractOutcome Create(string value) => new((object?)value);
 
 	public static AbstractOutcome Create(int value) => new((object?)value);
+
+	public readonly bool TryGetValue(out string value)
+	{
+		if (this.Value is string t)
+		{
+			value = t;
+			return true;
+		}
+		value = default!;
+		return false;
+	}
+
+	public readonly bool TryGetValue(out int value)
+	{
+		if (this.Value is int e)
+		{
+			value = e;
+			return true;
+		}
+		value = default;
+		return false;
+	}
 }
 
 /*
