@@ -62,7 +62,7 @@ internal static class OperationBuilder
 		}
 	}
 
-	internal static void BuildWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
+	internal static void BuildPropertyWriteOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
 		int itemId, bool includeCustom)
 	{
 		// Note that all of the "Write" invocations should either be handled
@@ -112,6 +112,47 @@ internal static class OperationBuilder
 		else if (includeCustom)
 		{
 			CustomBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+		}
+	}
+
+	internal static void BuildUnionWriteOperation(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, 
+		string valueVariable, bool includeCustom)
+	{
+		if (!unionCaseType.UnionCaseTypes.IsEmpty)
+		{
+			UnionBuilder.BuildWriter(indentWriter, valueVariable, "typeIdentifiers");
+		}
+		else if (unionCaseType.TypeKind == TypeKind.Enum)
+		{
+			EnumBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.IsSupportedArray)
+		{
+			ArrayBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
+		{
+			ClaimsPrincipalBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.BusinessObjectKind != StereotypeKind.None)
+		{
+			StereotypeBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.IsNullable && unionCaseType.IsValueType)
+		{
+			NullableValueTypeBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.SpecialType == SpecialType.System_String)
+		{
+			StringBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (unionCaseType.IsValueType)
+		{
+			ValueTypeBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+		}
+		else if (includeCustom)
+		{
+			CustomBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
 		}
 	}
 }

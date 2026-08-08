@@ -62,7 +62,7 @@ internal static class BusinessDocumentBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			OperationBuilder.BuildWriteOperation(indentWriter, item, itemId++, true);
+			OperationBuilder.BuildPropertyWriteOperation(indentWriter, item, itemId++, true);
 			indentWriter.WriteLine();
 		}
 

@@ -57,7 +57,7 @@ internal static class CommandBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			OperationBuilder.BuildWriteOperation(indentWriter, item, i, false);
+			OperationBuilder.BuildPropertyWriteOperation(indentWriter, item, i, false);
 
 			if (i < model.Items.Length - 1)
 			{
