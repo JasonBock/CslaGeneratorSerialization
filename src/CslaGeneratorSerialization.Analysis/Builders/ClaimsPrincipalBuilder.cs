@@ -6,6 +6,31 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class ClaimsPrincipalBuilder
 {
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
+		TypeReferenceModel unionType) =>
+		indentWriter.WriteLines(
+			$$"""
+			switch (context.Reader.ReadStateValue())
+			{
+				case global::CslaGeneratorSerialization.SerializationState.Duplicate:
+					return ({{unionType.FullyQualifiedName}})(global::System.Security.Claims.ClaimsPrincipal)context.GetReference(context.Reader.ReadInt32());
+				case global::CslaGeneratorSerialization.SerializationState.Value:
+					var buffer = context.Reader.ReadByteArray();
+				
+					using (var stream = new global::System.IO.MemoryStream(buffer))
+					{
+						using (var reader = new global::System.IO.BinaryReader(stream))
+						{
+							var principal = new global::System.Security.Claims.ClaimsPrincipal(reader);
+							context.AddReference(principal);
+							return ({{unionType.FullyQualifiedName}})principal;
+						}
+					}
+				case global::CslaGeneratorSerialization.SerializationState.Null:
+					return ({{unionType.FullyQualifiedName}})(null as global::System.Security.Claims.ClaimsPrincipal);
+			}
+			""");
+
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
 		indentWriter.WriteLines(
 			$$"""

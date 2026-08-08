@@ -182,7 +182,7 @@ public static class GeneratorFormatterReaderContextExtensions
                         break;
                 }
             }
-            else if (typeof(T) == typeof(MoreStuff))
+            if (typeof(T) == typeof(MoreStuff))
             {
                 switch(typeIdentifiers[typeIdentifierIndex])
                 {
@@ -213,6 +213,7 @@ OK, reset...
     * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
 TODO:
+* Need to address recursive `TypeReferenceModel`
 * `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
 * Why are we doing casts in the `BuildWriter()` methods?
 * Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.

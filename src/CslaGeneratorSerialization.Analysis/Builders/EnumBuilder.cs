@@ -6,6 +6,13 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class EnumBuilder
 {
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter, 
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+	{
+		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType.EnumUnderlyingType!);
+		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName}){readOperation};");
+	}
+
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var loadProperty = BuilderHelpers.GetLoadProperty(item,

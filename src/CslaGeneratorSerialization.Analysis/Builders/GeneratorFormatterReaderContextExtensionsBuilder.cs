@@ -39,8 +39,8 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 			"""
 				}
 			}
-			"""); 
-			this.Text = SourceText.From(writer.ToString(), Encoding.UTF8);
+			""");
+		this.Text = SourceText.From(writer.ToString(), Encoding.UTF8);
 		this.FileName = "GeneratorFormatterReaderContextExtensions.g.cs";
 	}
 
@@ -53,8 +53,47 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 			""");
 
 		indentWriter.Indent++;
-		// TODO: lots of code
-		indentWriter.WriteLine("return new object();");
+
+		foreach (var unionType in unionTypes)
+		{
+			indentWriter.WriteLines(
+				$$"""
+				if (typeof(T) == typeof({{unionType.FullyQualifiedName}}))
+				{
+				    switch(typeIdentifiers[typeIdentifierIndex])
+				    {
+				""");
+
+			indentWriter.Indent += 2;
+
+			for (var i = 0; i < unionType.UnionCaseTypes.Length; i++)
+			{
+				var unionCaseType = unionType.UnionCaseTypes[i];
+				indentWriter.WriteLine($"case {i}:");
+				indentWriter.Indent++;
+				OperationBuilder.BuildUnionReadOperation(indentWriter, unionType, unionCaseType, true);
+				indentWriter.Indent--;
+			}
+
+			indentWriter.WriteLines(
+				$$"""
+				default:
+				    throw new global::System.NotSupportedException($"Unexpected case identifier for type {{unionType.FullyQualifiedName}} at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
+				""");
+			indentWriter.Indent -= 2;
+
+			indentWriter.WriteLines(
+				"""
+					}
+				}
+				""");
+		}
+
+		indentWriter.WriteLines(
+			"""
+
+			throw new global::System.NotSupportedException($"Unexpected union type: {typeof(T).FullName}");
+			""");
 
 		indentWriter.Indent--;
 

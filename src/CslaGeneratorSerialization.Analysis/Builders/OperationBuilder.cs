@@ -11,11 +11,46 @@ internal static class OperationBuilder
 {
 	internal static void BuildUnionReadOperation(
 		IndentedTextWriter indentWriter,
-		TypeReferenceModel parentUnionType, TypeReferenceModel childUnionCaseType)
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType, bool includeCustom)
 	{
-		indentWriter.WriteLine($"// {childUnionCaseType.FullyQualifiedName}");
+		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
 
-		UnionBuilder.BuildUnionReader(indentWriter, parentUnionType, childUnionCaseType);
+		if (!unionCaseType.UnionCaseTypes.IsEmpty)
+		{
+			UnionBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.TypeKind == TypeKind.Enum)
+		{
+			EnumBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.IsSupportedArray)
+		{
+			ArrayBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
+		{
+			ClaimsPrincipalBuilder.BuildUnionReader(indentWriter, unionType);
+		}
+		else if (unionType.BusinessObjectKind != StereotypeKind.None)
+		{
+			StereotypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.IsNullable && unionType.IsValueType)
+		{
+			NullableValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.SpecialType == SpecialType.System_String)
+		{
+			StringBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionType.IsValueType)
+		{
+			ValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (includeCustom)
+		{
+			CustomBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
 	}
 
 	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 

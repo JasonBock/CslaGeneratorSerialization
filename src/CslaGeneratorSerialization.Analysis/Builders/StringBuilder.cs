@@ -6,7 +6,22 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class StringBuilder
 {
-   internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+	{
+		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
+		indentWriter.WriteLines(
+			$$"""
+			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
+			{
+				return ({{unionType.FullyQualifiedName}}){{readOperation}};
+			}
+
+			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}});
+			""");
+	}
+	
+	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
 		indentWriter.WriteLines(
 		   $$"""
 			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
