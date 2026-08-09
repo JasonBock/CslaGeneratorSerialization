@@ -27,7 +27,7 @@ internal static class ClaimsPrincipalBuilder
 						}
 					}
 				case global::CslaGeneratorSerialization.SerializationState.Null:
-					return ({{unionType.FullyQualifiedName}})(null as global::System.Security.Claims.ClaimsPrincipal);
+					return ({{unionType.FullyQualifiedName}})(null as global::System.Security.Claims.ClaimsPrincipal)!;
 			}
 			""");
 

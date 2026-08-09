@@ -17,7 +17,7 @@ internal static class StringBuilder
 				return ({{unionType.FullyQualifiedName}}){{readOperation}};
 			}
 
-			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}});
+			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}})!;
 			""");
 	}
 	

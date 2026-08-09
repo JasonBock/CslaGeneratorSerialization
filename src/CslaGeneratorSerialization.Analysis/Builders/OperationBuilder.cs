@@ -19,31 +19,31 @@ internal static class OperationBuilder
 		{
 			UnionBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.TypeKind == TypeKind.Enum)
+		else if (unionCaseType.TypeKind == TypeKind.Enum)
 		{
 			EnumBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.IsSupportedArray)
+		else if (unionCaseType.IsSupportedArray)
 		{
 			ArrayBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
+		else if (unionCaseType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
 			ClaimsPrincipalBuilder.BuildUnionReader(indentWriter, unionType);
 		}
-		else if (unionType.BusinessObjectKind != StereotypeKind.None)
+		else if (unionCaseType.BusinessObjectKind != StereotypeKind.None)
 		{
 			StereotypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.IsNullable && unionType.IsValueType)
+		else if (unionCaseType.IsNullable && unionType.IsValueType)
 		{
 			NullableValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.SpecialType == SpecialType.System_String)
+		else if (unionCaseType.SpecialType == SpecialType.System_String)
 		{
 			StringBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
-		else if (unionType.IsValueType)
+		else if (unionCaseType.IsValueType)
 		{
 			ValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}

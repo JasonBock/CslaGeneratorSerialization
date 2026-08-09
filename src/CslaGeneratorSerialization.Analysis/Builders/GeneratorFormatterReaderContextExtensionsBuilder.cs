@@ -60,8 +60,8 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 				$$"""
 				if (typeof(T) == typeof({{unionType.FullyQualifiedName}}))
 				{
-				    switch(typeIdentifiers[typeIdentifierIndex])
-				    {
+					switch(typeIdentifiers[typeIdentifierIndex])
+					{
 				""");
 
 			indentWriter.Indent += 2;
@@ -78,7 +78,7 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 			indentWriter.WriteLines(
 				$$"""
 				default:
-				    throw new global::System.NotSupportedException($"Unexpected case identifier for type {{unionType.FullyQualifiedName}} at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
+					throw new global::System.NotSupportedException($"Unexpected case identifier for type {{unionType.FullyQualifiedName}} at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
 				""");
 			indentWriter.Indent -= 2;
 

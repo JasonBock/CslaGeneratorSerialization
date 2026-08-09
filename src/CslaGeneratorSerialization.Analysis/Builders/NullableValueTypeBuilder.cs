@@ -18,7 +18,7 @@ internal static class NullableValueTypeBuilder
 				return ({{unionType.FullyQualifiedName}}){{readOperation}};
 			}
 
-			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}});
+			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}})!;
 			""");
 	}
 

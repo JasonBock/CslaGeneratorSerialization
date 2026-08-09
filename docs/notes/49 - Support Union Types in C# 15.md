@@ -170,18 +170,18 @@ public static class GeneratorFormatterReaderContextExtensions
                         }
 
                         return (Stuff)(null as string?);
-                        break;
                     case 1:
                         // int
-                        return (Stuff)(context.Reader.ReadInt32());
-                        break;
+                        return (Stuff)context.Reader.ReadInt32();
                     case 2:
                         // MoreStuff
                         typeIdentifierIndex++;
-                        return (Stuff)((MoreStuff)context.ReadUnion<MoreStuff>(typeIdentifiers, typeIdentifierIndex));
-                        break;
+                        return (Stuff)(MoreStuff)context.ReadUnion<MoreStuff>(typeIdentifiers, typeIdentifierIndex);
+                    default:
+                        throw new global::System.NotSupportedException($"Unexpected case identifier for type Stuff at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
                 }
             }
+            
             if (typeof(T) == typeof(MoreStuff))
             {
                 switch(typeIdentifiers[typeIdentifierIndex])
@@ -189,11 +189,11 @@ public static class GeneratorFormatterReaderContextExtensions
                     case 0:
                         // Guid
                         return (MoreStuff)(new global::System.Guid(context.Reader.ReadBytes(16)));                            
-                        break;
                     case 1:
                         // DateTimeOffset
                         return (MoreStuff)(new global::System.DateTimeOffset(context.Reader.ReadInt64(), new global::System.TimeSpan(context.Reader.ReadInt64())));
-                        break;
+                    default:
+                        throw new global::System.NotSupportedException($"Unexpected case identifier at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
                 }
             }
         }
@@ -221,4 +221,12 @@ TODO:
 * Need tests for 
     * `GetFullyQualifiedName()` in `StringExtensions`
     * `BuilderHelpers`
+    * Write unit and integration tests for these cases:
+        * All the possible types from `OperationBuilder` (`string`, custom type, enum, etc.)
+        * BO has multiple properties with:
+            * Different union types
+            * Shared union types
+        * Unions with unions
+        * Recursive unions (though this can't be done until TypeReferenceModel is fixed)
+
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
