@@ -13,7 +13,7 @@ internal static class ClaimsPrincipalBuilder
 			switch (context.Reader.ReadStateValue())
 			{
 				case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-					return ({{unionType.FullyQualifiedName}})(global::System.Security.Claims.ClaimsPrincipal)context.GetReference(context.Reader.ReadInt32());
+					return ({{unionType.FullyQualifiedName}})(global::System.Security.Claims.ClaimsPrincipal)context.GetReference(context.Reader.ReadInt32())!;
 				case global::CslaGeneratorSerialization.SerializationState.Value:
 					var buffer = context.Reader.ReadByteArray();
 				
@@ -29,6 +29,7 @@ internal static class ClaimsPrincipalBuilder
 				case global::CslaGeneratorSerialization.SerializationState.Null:
 					return ({{unionType.FullyQualifiedName}})(null as global::System.Security.Claims.ClaimsPrincipal)!;
 			}
+			break;
 			""");
 
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
