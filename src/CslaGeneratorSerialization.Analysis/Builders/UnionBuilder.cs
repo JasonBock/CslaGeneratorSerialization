@@ -21,7 +21,7 @@ internal static class UnionBuilder
 			$$"""
 			{
 				var typeIdentifiers = context.Reader.ReadByteArray();
-				var typeIdentifiersIndex = 0;
+				var typeIdentifiersIndex = -1;
 				{{loadProperty}}
 			}
 			""");

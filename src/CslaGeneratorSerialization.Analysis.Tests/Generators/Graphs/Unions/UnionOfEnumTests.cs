@@ -2,7 +2,7 @@
 
 namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs.Unions;
 
-internal static class UnionOfUnionTests
+internal static class UnionOfEnumTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -17,9 +17,9 @@ internal static class UnionOfUnionTests
 			
 			namespace Domains;
 
-			public union Identifier(ChildIdentifier);
+			public enum Kinds { Unique, Duplicate }
 
-			public union ChildIdentifier(int, string);
+			public union Identifier(Kinds);
 
 			[GeneratorSerializable]
 			public partial class Customer
@@ -44,7 +44,7 @@ internal static class UnionOfUnionTests
 			
 			using CslaGeneratorSerialization.Extensions;
 			using CslaGeneratorSerialization.Analysis.Extensions;
-
+			
 			#nullable enable
 			
 			namespace Domains;
@@ -100,29 +100,10 @@ internal static class UnionOfUnionTests
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
 								case 0:
-									// global::Domains.ChildIdentifier
-									return (global::Domains.Identifier)(global::Domains.ChildIdentifier)context.ReadUnion<global::Domains.ChildIdentifier>(typeIdentifiers, ++typeIdentifiersIndex);
+									// global::Domains.Kinds
+									return (global::Domains.Identifier)(global::Domains.Kinds)context.Reader.ReadInt32();
 								default:
 									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.Identifier at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
-							}
-						}
-						if (typeof(T) == typeof(global::Domains.ChildIdentifier))
-						{
-							switch(typeIdentifiers[typeIdentifiersIndex])
-							{
-								case 0:
-									// int
-									return (global::Domains.ChildIdentifier)context.Reader.ReadInt32();
-								case 1:
-									// string
-									if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-									{
-										return (global::Domains.ChildIdentifier)context.Reader.ReadString();
-									}
-									
-									return (global::Domains.ChildIdentifier)(null as string)!;
-								default:
-									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.ChildIdentifier at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
 							}
 						}
 						
@@ -150,33 +131,10 @@ internal static class UnionOfUnionTests
 					{
 						switch(value)
 						{
-							case global::Domains.ChildIdentifier u0:
-								typeIdentifiers.Add(0);
-								context.WriteUnion(u0, typeIdentifiers);
-								break;
-						}
-					}
-					public void WriteUnion(global::Domains.ChildIdentifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
-					{
-						switch(value)
-						{
-							case int u0:
+							case global::Domains.Kinds u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								context.Writer.Write(u0);
-								break;
-							case string u1:
-								typeIdentifiers.Add(1);
-								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u1 is not null)
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-									context.Writer.Write(u1);
-								}
-								else
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-								}
+								context.Writer.Write((int)u0);
 								break;
 						}
 					}

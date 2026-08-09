@@ -10,7 +10,7 @@ internal static class EnumBuilder
 		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType.EnumUnderlyingType!);
-		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName}){readOperation};");
+		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName})({unionCaseType.FullyQualifiedName}){readOperation};");
 	}
 
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)

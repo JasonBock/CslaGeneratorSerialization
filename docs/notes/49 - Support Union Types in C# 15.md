@@ -224,11 +224,11 @@ TODO:
     * `GetFullyQualifiedName()` in `StringExtensions`
     * `BuilderHelpers`
     * Write unit and integration tests for these cases:
+        * Null value for the union itself
         * Union with multiple case types (common scenario)
-        * All the possible types from `OperationBuilder` (`string`, custom type, enum, etc.)
+        * All the possible types from `OperationBuilder` (`string`, custom type, enum, child union, etc.)
         * BO has multiple properties with:
             * Different union types
             * Shared union types
-        * Unions with unions
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
