@@ -53,8 +53,7 @@ internal static class OperationBuilder
 		}
 	}
 
-	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, 
-		int itemId, bool includeCustom)
+	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, bool includeCustom)
 	{
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
 		var propertyType = item.PropertyInfoDataType;

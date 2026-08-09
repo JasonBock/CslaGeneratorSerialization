@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs;
+namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs.Unions;
 
-internal static class UnionTests
+internal static class UnionOfUnionTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -17,7 +17,9 @@ internal static class UnionTests
 			
 			namespace Domains;
 
-			public union Identifier(string, int, Guid);
+			public union Identifier(ChildIdentifier);
+
+			public union ChildIdentifier(int, string);
 
 			[GeneratorSerializable]
 			public partial class Customer
@@ -91,28 +93,36 @@ internal static class UnionTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifierIndex)
+					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Identifier))
 						{
-							switch(typeIdentifiers[typeIdentifierIndex])
+							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
 								case 0:
+									// global::Domains.ChildIdentifier
+									return (global::Domains.Identifier)(global::Domains.ChildIdentifier)context.ReadUnion<global::Domains.ChildIdentifier>(typeIdentifiers, typeIdentifiersIndex);
+								default:
+									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.Identifier at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
+							}
+						}
+						if (typeof(T) == typeof(global::Domains.ChildIdentifier))
+						{
+							switch(typeIdentifiers[typeIdentifiersIndex])
+							{
+								case 0:
+									// int
+									return (global::Domains.ChildIdentifier)context.Reader.ReadInt32();
+								case 1:
 									// string
 									if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 									{
-										return (global::Domains.Identifier)context.Reader.ReadString();
+										return (global::Domains.ChildIdentifier)context.Reader.ReadString();
 									}
 									
-									return (global::Domains.Identifier)(null as string)!;
-								case 1:
-									// int
-									return (global::Domains.Identifier)context.Reader.ReadInt32();
-								case 2:
-									// global::System.Guid
-									return (global::Domains.Identifier)new global::System.Guid(context.Reader.ReadBytes(16));
+									return (global::Domains.ChildIdentifier)(null as string)!;
 								default:
-									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.Identifier at index {typeIdentifierIndex}: {typeIdentifiers[typeIdentifierIndex]}");
+									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.ChildIdentifier at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
 							}
 						}
 						
@@ -140,28 +150,33 @@ internal static class UnionTests
 					{
 						switch(value)
 						{
-							case string u0:
+							case global::Domains.ChildIdentifier u0:
+								typeIdentifiers.Add(0);
+								context.WriteUnion(u0, typeIdentifiers);
+								break;
+						}
+					}
+					public void WriteUnion(global::Domains.ChildIdentifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					{
+						switch(value)
+						{
+							case int u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u0 is not null)
+								context.Writer.Write(u0);
+								break;
+							case string u1:
+								typeIdentifiers.Add(1);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								if (u1 is not null)
 								{
 									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-									context.Writer.Write(u0);
+									context.Writer.Write(u1);
 								}
 								else
 								{
 									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 								}
-								break;
-							case int u1:
-								typeIdentifiers.Add(1);
-								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								context.Writer.Write(u1);
-								break;
-							case global::System.Guid u2:
-								typeIdentifiers.Add(2);
-								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								context.Writer.Write(u2);
 								break;
 						}
 					}

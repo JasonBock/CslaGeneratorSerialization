@@ -208,25 +208,27 @@ OK, reset...
 * DONE - I'll assume for writers that there will be an overloaded `WriteUnion(UnionType, ...)` methods and a `Read<TUnion>(...)` method. These will be extension methods put on the readers and writers.
 * DONE - Update all readers in `OperationBuilder.BuildReadOperation()` so the "read" can be "reused"
 * DONE - Rename the current `BuildReader()` methods to `BuildPropertyReader()`
-* Add a `BuildUnionReader()` to handle union creation, along with possible nullable values passed into the union constructor
-* Generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
-    * The readers for some types, like array, will need to be changed so the property assignment can be separated out.
+* DONE -Add a `BuildUnionReader()` to handle union creation, along with possible nullable values passed into the union constructor
+* DONE - Generate a separate .cs extension files for the readers and writers mentioned above. I can use the property item types as the root union types, and add other nested union types as needed.
+    * DONE -The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
 TODO:
+* Ask the compiler team why this is OK: `public union Stuff(string)`, why would you have a union of just one case type?
 * Need to address recursive `TypeReferenceModel`
-* `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
-* Why are we doing casts in the `BuildWriter()` methods?
-* Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
-* Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
+    * Need tests for recursive unions
+    * Need tests for recursive types
+* DONE - `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
+* DONE - Why are we doing casts in the `BuildWriter()` methods?
+* DONE - Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
 * Need tests for 
     * `GetFullyQualifiedName()` in `StringExtensions`
     * `BuilderHelpers`
     * Write unit and integration tests for these cases:
+        * Union with multiple case types (common scenario)
         * All the possible types from `OperationBuilder` (`string`, custom type, enum, etc.)
         * BO has multiple properties with:
             * Different union types
             * Shared union types
         * Unions with unions
-        * Recursive unions (though this can't be done until TypeReferenceModel is fixed)
-
+* Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?

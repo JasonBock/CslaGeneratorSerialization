@@ -28,7 +28,7 @@ internal static class ReadOnlyBaseBuilder
 		for (var i = 0; i < model.Items.Length; i++)
 		{
 			var item = model.Items[i];
-			OperationBuilder.BuildPropertyReadOperation(indentWriter, item, i, false);
+			OperationBuilder.BuildPropertyReadOperation(indentWriter, item, false);
 
 			if (i < model.Items.Length - 1)
 			{
