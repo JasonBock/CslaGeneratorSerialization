@@ -220,6 +220,7 @@ TODO:
 * DONE - `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
 * DONE - Why are we doing casts in the `BuildWriter()` methods?
 * DONE - Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
+* DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
 * Need tests for 
     * `GetFullyQualifiedName()` in `StringExtensions`
     * `BuilderHelpers`
@@ -230,8 +231,7 @@ TODO:
         * BO has multiple properties with:
             * Different union types
             * Shared union types
+* I think custom types need nullability checks in place.
+* Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
-* DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
 
-    // /0/Test0.cs(17,9): error CS0246: The type or namespace name 'ChildData' could not be found (are you missing a using directive or an assembly reference?)
-    DiagnosticResult.CompilerError("CS0246").WithSpan(17, 9, 17, 18).WithArguments("ChildData"),
