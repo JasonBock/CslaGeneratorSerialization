@@ -66,6 +66,15 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 
 			indentWriter.Indent += 2;
 
+			if (unionType.UnionCaseTypes.Any(unionType => unionType.IsNullable && unionType.IsValueType))
+			{
+				indentWriter.WriteLines(
+					$$"""
+					case {{unionType.UnionCaseTypes.Length}}:
+						return ({{unionType.FullyQualifiedName}})null;
+					""");
+			}
+
 			for (var i = 0; i < unionType.UnionCaseTypes.Length; i++)
 			{
 				var unionCaseType = unionType.UnionCaseTypes[i];

@@ -38,6 +38,19 @@ internal static class NullableValueTypeBuilder
 			""");
 	}
 
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, string valueVariable)
+	{
+		var enumCast = unionCaseType.IsNullable && unionCaseType.TypeArguments[0].TypeKind == TypeKind.Enum ?
+			$"({unionCaseType.TypeArguments[0].EnumUnderlyingType!.FullyQualifiedName})" : 
+			string.Empty;
+
+		indentWriter.WriteLines(
+			$$"""
+			context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+			context.Writer.Write({{enumCast}}{{valueVariable}});
+			""");
+	}
+
 	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		var valueToWrite = $"{valueVariable}.Value";

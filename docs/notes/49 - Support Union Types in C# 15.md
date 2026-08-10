@@ -232,3 +232,6 @@ TODO:
             * Shared union types
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
+
+    // /0/Test0.cs(17,9): error CS0246: The type or namespace name 'ChildData' could not be found (are you missing a using directive or an assembly reference?)
+    DiagnosticResult.CompilerError("CS0246").WithSpan(17, 9, 17, 18).WithArguments("ChildData"),

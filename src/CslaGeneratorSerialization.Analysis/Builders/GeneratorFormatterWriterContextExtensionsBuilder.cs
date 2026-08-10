@@ -59,13 +59,27 @@ internal sealed class GeneratorFormatterWriterContextExtensionsBuilder
 			""");
 		indentWriter.Indent += 2;
 
+		if (unionType.UnionCaseTypes.Any(unionType => unionType.IsNullable && unionType.IsValueType))
+		{
+			indentWriter.WriteLines(
+				$$"""
+				case null:
+					typeIdentifiers.Add({{unionType.UnionCaseTypes.Length}});
+					context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+					break;
+				""");
+		}
+
 		for (var i = 0; i < unionType.UnionCaseTypes.Length; i++)
 		{
 			var unionCaseType = unionType.UnionCaseTypes[i];
 			var valueVariable = $"u{i}";
+			var switchCaseType = unionCaseType.IsNullable && unionCaseType.IsValueType ?
+				unionCaseType.FullyQualifiedNameNoNullableAnnotation :
+				unionCaseType.FullyQualifiedName;
 			indentWriter.WriteLines(
 				$$"""
-				case {{unionCaseType.FullyQualifiedName}} {{valueVariable}}:
+				case {{switchCaseType}} {{valueVariable}}:
 					typeIdentifiers.Add({{i}});
 				""");
 

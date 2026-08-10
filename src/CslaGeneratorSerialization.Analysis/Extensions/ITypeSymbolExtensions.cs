@@ -64,7 +64,8 @@ internal static class ITypeSymbolExtensions
 		{
 			const string GlobalPrefix = "global::";
 
-			var symbolFormatter = SymbolDisplayFormat.FullyQualifiedFormat;
+			var symbolFormatter = SymbolDisplayFormat.FullyQualifiedFormat.AddMiscellaneousOptions(
+					SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
 			if (includeNullableAnnotation)
 			{
@@ -78,6 +79,11 @@ internal static class ITypeSymbolExtensions
 			}
 
 			var symbolName = self.ToDisplayString(symbolFormatter);
+
+			if (!includeNullableAnnotation && symbolName.EndsWith("?"))
+			{
+				symbolName = symbolName.Substring(0, symbolName.Length - 1);
+			}
 
 			// If the symbol name has "global::" at the start,
 			// then see if the type's assembly has at least one alias.

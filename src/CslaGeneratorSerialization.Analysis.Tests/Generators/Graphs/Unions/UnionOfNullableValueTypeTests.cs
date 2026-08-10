@@ -2,7 +2,7 @@
 
 namespace CslaGeneratorSerialization.Analysis.Tests.Generators.Graphs.Unions;
 
-internal static class UnionOfStringTests
+internal static class UnionOfNullableValueTypeTests
 {
 	[Test]
 	public static async Task GenerateAsync()
@@ -17,7 +17,7 @@ internal static class UnionOfStringTests
 			
 			namespace Domains;
 
-			public union Identifier(string);
+			public union Identifier(int?);
 
 			[GeneratorSerializable]
 			public partial class Customer
@@ -97,14 +97,16 @@ internal static class UnionOfStringTests
 						{
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
+								case 1:
+									return (global::Domains.Identifier)null;
 								case 0:
-									// string
+									// int?
 									if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
 									{
-										return (global::Domains.Identifier)context.Reader.ReadString();
+										return (global::Domains.Identifier)context.Reader.ReadInt32();
 									}
 									
-									return (global::Domains.Identifier)(null as string)!;
+									return (global::Domains.Identifier)(null as int?)!;
 								default:
 									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.Identifier at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
 							}
@@ -134,18 +136,15 @@ internal static class UnionOfStringTests
 					{
 						switch(value)
 						{
-							case string u0:
+							case null:
+								typeIdentifiers.Add(1);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								break;
+							case int u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u0 is not null)
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-									context.Writer.Write(u0);
-								}
-								else
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-								}
+								context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+								context.Writer.Write(u0);
 								break;
 						}
 					}

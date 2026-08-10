@@ -174,7 +174,7 @@ internal static class OperationBuilder
 		}
 		else if (unionCaseType.IsNullable && unionCaseType.IsValueType)
 		{
-			NullableValueTypeBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+			NullableValueTypeBuilder.BuildUnionWriter(indentWriter, unionCaseType, valueVariable);
 		}
 		else if (unionCaseType.SpecialType == SpecialType.System_String)
 		{
