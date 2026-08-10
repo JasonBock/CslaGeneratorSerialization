@@ -42,4 +42,21 @@ internal static class UnionOfArrayTests
 
 		Assert.That(newCustomer.Identifier.Value, Is.EquivalentTo([1, 2, 3]));
 	}
+
+	[Test]
+	public static async Task RoundtripNullAsync()
+	{
+		var provider = Shared.ServiceProvider;
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var portal = provider.GetRequiredService<IDataPortal<Customer>>();
+		var customer = await portal.CreateAsync();
+		customer.Identifier = null!;
+
+		using var stream = new MemoryStream();
+		formatter.Serialize(stream, customer);
+		stream.Position = 0;
+		var newCustomer = (Customer)formatter.Deserialize(stream)!;
+
+		Assert.That(newCustomer.Identifier.Value, Is.Null);
+	}
 }

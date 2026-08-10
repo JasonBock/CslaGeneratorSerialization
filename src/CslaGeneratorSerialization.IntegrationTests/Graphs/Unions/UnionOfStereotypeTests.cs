@@ -61,4 +61,21 @@ internal static class UnionOfStereotypeTests
 
 		Assert.That(((Data)newCustomer.Identifier.Value).Contents, Is.EqualTo("hello"));
 	}
+
+	[Test]
+	public static async Task RoundtripNullAsync()
+	{
+		var provider = Shared.ServiceProvider;
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var customerPortal = provider.GetRequiredService<IDataPortal<Customer>>();
+		var customer = await customerPortal.CreateAsync();
+		customer.Identifier = null!;
+
+		using var stream = new MemoryStream();
+		formatter.Serialize(stream, customer);
+		stream.Position = 0;
+		var newCustomer = (Customer)formatter.Deserialize(stream)!;
+
+		Assert.That(newCustomer.Identifier.Value, Is.Null);
+	}
 }
