@@ -1,7 +1,6 @@
 ﻿using Csla;
 using Csla.Configuration;
 using CslaGeneratorSerialization.Extensions;
-using CslaGeneratorSerialization.IntegrationTests.Graphs.CustomTestsDomain;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
@@ -33,7 +32,7 @@ public partial class Customer
 	}
 }
 
-internal static class UnionTests
+internal static class UnionOfCustomTests
 {
 	[Test]
 	public static async Task RoundtripAsync()

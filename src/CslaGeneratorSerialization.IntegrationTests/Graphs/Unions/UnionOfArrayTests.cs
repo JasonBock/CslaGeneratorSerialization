@@ -24,7 +24,7 @@ public partial class Customer
 	}
 }
 
-internal static class UnionTests
+internal static class UnionOfArrayTests
 {
 	[Test]
 	public static async Task RoundtripAsync()

@@ -1,13 +1,13 @@
 ﻿using Csla;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System.Security.Claims;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Graphs.Unions.UnionOfClaimsPrincipalTestsDomain;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs.Unions.MultipleUnionsInPropertiesTestsDomain;
 
 #pragma warning disable CA1815 // Override equals and operator equals on value types
 #pragma warning disable IDE0250 // Make struct 'readonly'
-public union Identifier(ClaimsPrincipal);
+public union Identifier(int);
+public union Description(string);
 
 [GeneratorSerializable]
 public partial class Customer
@@ -17,28 +17,33 @@ public partial class Customer
 	private void Create() { }
 
 	public static readonly PropertyInfo<Identifier> IdentifierProperty =
-		Customer.RegisterProperty<Identifier>(_ => _.Identifier);
+		Customer.RegisterProperty<Identifier>(nameof(Customer.Identifier));
 	public Identifier Identifier
 	{
 		get => this.GetProperty(Customer.IdentifierProperty);
 		set => this.SetProperty(Customer.IdentifierProperty, value);
 	}
+
+	public static readonly PropertyInfo<Description> DescriptionProperty =
+		Customer.RegisterProperty<Description>(nameof(Customer.Description));
+	public Description Description
+	{
+		get => this.GetProperty(Customer.DescriptionProperty);
+		set => this.SetProperty(Customer.DescriptionProperty, value);
+	}
 }
 
-internal static class UnionOfClaimsPrincipalTests
+internal static class MultipleUnionsInPropertiesTests
 {
 	[Test]
 	public static async Task RoundtripAsync()
 	{
 		var provider = Shared.ServiceProvider;
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
-		var portal = provider.GetRequiredService<IDataPortal<Customer>>();
-		var customer = await portal.CreateAsync();
-		customer.Identifier = new ClaimsPrincipal(
-			new ClaimsIdentity(
-			[
-				new Claim(ClaimTypes.Role, "admin")
-			], "fake auth"));
+		var customerPortal = provider.GetRequiredService<IDataPortal<Customer>>();
+		var customer = await customerPortal.CreateAsync();
+		customer.Identifier = 42;
+		customer.Description = "Joe";
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, customer);
@@ -47,11 +52,8 @@ internal static class UnionOfClaimsPrincipalTests
 
 		using (Assert.EnterMultipleScope())
 		{
-			var identity = ((ClaimsPrincipal)newCustomer.Identifier.Value).Identities.Single();
-			Assert.That(identity.AuthenticationType, Is.EqualTo("fake auth"));
-			var claim = identity.Claims.Single();
-			Assert.That(claim.Type, Is.EqualTo("http://schemas.microsoft.com/ws/2008/06/identity/claims/role"));
-			Assert.That(claim.Value, Is.EqualTo("admin"));
+			Assert.That(newCustomer.Identifier.Value, Is.EqualTo(42));
+			Assert.That(newCustomer.Description.Value, Is.EqualTo("Joe"));
 		}
 	}
 }

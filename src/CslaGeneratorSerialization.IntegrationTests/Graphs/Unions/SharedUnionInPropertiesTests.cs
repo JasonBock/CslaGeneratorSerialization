@@ -2,27 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace CslaGeneratorSerialization.IntegrationTests.Graphs.Unions.UnionOfStereotypeTestsDomain;
+namespace CslaGeneratorSerialization.IntegrationTests.Graphs.Unions.SharedUnionInPropertiesTestsDomain;
 
 #pragma warning disable CA1815 // Override equals and operator equals on value types
 #pragma warning disable IDE0250 // Make struct 'readonly'
-public union Identifier(Data);
-
-[GeneratorSerializable]
-public sealed partial class Data
-	: BusinessBase<Data>
-{
-	[Create]
-	private void Create() { }
-
-	public static readonly PropertyInfo<string> ContentsProperty =
-		RegisterProperty<string>(_ => _.Contents);
-	public string Contents
-	{
-		get => this.GetProperty(Data.ContentsProperty)!;
-		set => this.SetProperty(Data.ContentsProperty, value);
-	}
-}
+public union Data(int, string);
 
 [GeneratorSerializable]
 public partial class Customer
@@ -31,16 +15,24 @@ public partial class Customer
 	[Create]
 	private void Create() { }
 
-	public static readonly PropertyInfo<Identifier> IdentifierProperty =
-		Customer.RegisterProperty<Identifier>(_ => _.Identifier);
-	public Identifier Identifier
+	public static readonly PropertyInfo<Data> IdentifierProperty =
+		Customer.RegisterProperty<Data>(nameof(Customer.Identifier));
+	public Data Identifier
 	{
 		get => this.GetProperty(Customer.IdentifierProperty);
 		set => this.SetProperty(Customer.IdentifierProperty, value);
 	}
+
+	public static readonly PropertyInfo<Data> DescriptionProperty =
+		Customer.RegisterProperty<Data>(nameof(Customer.Description));
+	public Data Description
+	{
+		get => this.GetProperty(Customer.DescriptionProperty);
+		set => this.SetProperty(Customer.DescriptionProperty, value);
+	}
 }
 
-internal static class UnionOfStereotypeTests
+internal static class SharedUnionInPropertiesTests
 {
 	[Test]
 	public static async Task RoundtripAsync()
@@ -49,16 +41,18 @@ internal static class UnionOfStereotypeTests
 		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
 		var customerPortal = provider.GetRequiredService<IDataPortal<Customer>>();
 		var customer = await customerPortal.CreateAsync();
-		var dataPortal = provider.GetRequiredService<IChildDataPortal<Data>>();
-		var data = await dataPortal.CreateChildAsync();
-		data.Contents = "hello";
-		customer.Identifier = data;
+		customer.Identifier = 42;
+		customer.Description = "Joe";
 
 		using var stream = new MemoryStream();
 		formatter.Serialize(stream, customer);
 		stream.Position = 0;
 		var newCustomer = (Customer)formatter.Deserialize(stream)!;
 
-		Assert.That(((Data)newCustomer.Identifier.Value).Contents, Is.EqualTo("hello"));
+		using (Assert.EnterMultipleScope())
+		{
+			Assert.That(newCustomer.Identifier.Value, Is.EqualTo(42));
+			Assert.That(newCustomer.Description.Value, Is.EqualTo("Joe"));
+		}
 	}
 }

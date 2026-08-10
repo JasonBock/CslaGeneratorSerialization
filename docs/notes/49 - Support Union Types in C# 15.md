@@ -221,17 +221,17 @@ TODO:
 * DONE - Why are we doing casts in the `BuildWriter()` methods?
 * DONE - Why can't we push all logic into methods on the reader and writer contexts? e.g. look at `StringBuilder.BuildWriter()`.
 * DONE - Why does `EquatableArray<>` not like it when you assign `[]` to a value and then look at `.IsEmpty` or `.Length`?
-* Need tests for 
-    * `GetFullyQualifiedName()` in `StringExtensions`
-    * `BuilderHelpers`
-    * Write unit and integration tests for these cases:
-        * Null value for the union itself
-        * Union with multiple case types (common scenario)
-        * All the possible types from `OperationBuilder` (`string`, custom type, enum, child union, etc.)
-        * BO has multiple properties with:
-            * Different union types
-            * Shared union types
+* DONE - Need tests for 
+    * DONE - `GetFullyQualifiedName()` in `StringExtensions`
+    * DONE - Write unit and integration tests for these cases:
+        * DONE - Union with multiple case types (common scenario)
+        * DONE - All the possible types from `OperationBuilder` (`string`, custom type, enum, child union, etc.)
+        * DONE - BO has multiple properties with:
+            * DONE - Different union types
+            * DONE - Shared union types
 * I think custom types need nullability checks in place.
 * Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 
+FUTURE:
+* Union null testing. This is problematic right now because the default `union` is a `struct`, but people can make custom unions that are `class`-based. So trying to figure out if it's a `Nullable<MyUnion>` or `MyUnion?` and specifically the union case types...I should wait until Preview 7 to see if the `UnionCaseTypes` collection is added (https://github.com/dotnet/roslyn/pull/84707) - I'm guessing it will be, at the very least, it should be in by .NET 11 final release.
