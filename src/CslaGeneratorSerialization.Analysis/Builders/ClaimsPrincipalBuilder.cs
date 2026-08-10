@@ -6,32 +6,6 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class ClaimsPrincipalBuilder
 {
-	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType) =>
-		indentWriter.WriteLines(
-			$$"""
-			switch (context.Reader.ReadStateValue())
-			{
-				case global::CslaGeneratorSerialization.SerializationState.Duplicate:
-					return ({{unionType.FullyQualifiedName}})(global::System.Security.Claims.ClaimsPrincipal)context.GetReference(context.Reader.ReadInt32())!;
-				case global::CslaGeneratorSerialization.SerializationState.Value:
-					var buffer = context.Reader.ReadByteArray();
-				
-					using (var stream = new global::System.IO.MemoryStream(buffer))
-					{
-						using (var reader = new global::System.IO.BinaryReader(stream))
-						{
-							var principal = new global::System.Security.Claims.ClaimsPrincipal(reader);
-							context.AddReference(principal);
-							return ({{unionType.FullyQualifiedName}})principal;
-						}
-					}
-				case global::CslaGeneratorSerialization.SerializationState.Null:
-					return ({{unionType.FullyQualifiedName}})(null as global::System.Security.Claims.ClaimsPrincipal)!;
-			}
-			break;
-			""");
-
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) =>
 		indentWriter.WriteLines(
 			$$"""
@@ -58,7 +32,7 @@ internal static class ClaimsPrincipalBuilder
 			}
 			""");
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
 			if ({{valueVariable}} is not null)
@@ -88,6 +62,55 @@ internal static class ClaimsPrincipalBuilder
 			else
 			{
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+			}
+			""");
+
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter, TypeReferenceModel unionType) =>
+		indentWriter.WriteLines(
+			$$"""
+			switch (context.Reader.ReadStateValue())
+			{
+				case global::CslaGeneratorSerialization.SerializationState.Duplicate:
+					return ({{unionType.FullyQualifiedName}})(global::System.Security.Claims.ClaimsPrincipal)context.GetReference(context.Reader.ReadInt32())!;
+				case global::CslaGeneratorSerialization.SerializationState.Value:
+					var buffer = context.Reader.ReadByteArray();
+				
+					using (var stream = new global::System.IO.MemoryStream(buffer))
+					{
+						using (var reader = new global::System.IO.BinaryReader(stream))
+						{
+							var principal = new global::System.Security.Claims.ClaimsPrincipal(reader);
+							context.AddReference(principal);
+							return ({{unionType.FullyQualifiedName}})principal;
+						}
+					}
+			}
+			break;
+			""");
+
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+		indentWriter.WriteLines(
+			$$"""
+			(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}});
+				
+			if (isReferenceDuplicate)
+			{
+				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
+				context.Writer.Write(referenceId);
+			}
+			else
+			{
+				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+
+				using (var {{valueVariable}}stream = new global::System.IO.MemoryStream())
+				{
+					using (var {{valueVariable}}writer = new global::System.IO.BinaryWriter({{valueVariable}}stream))
+					{
+						{{valueVariable}}.WriteTo({{valueVariable}}writer);
+						var {{valueVariable}}buffer = {{valueVariable}}stream.ToArray();
+						context.Writer.Write(({{valueVariable}}buffer.Length, {{valueVariable}}buffer));
+					}
+				}
 			}
 			""");
 }

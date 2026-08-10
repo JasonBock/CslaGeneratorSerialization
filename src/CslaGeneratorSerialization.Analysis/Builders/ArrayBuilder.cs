@@ -13,12 +13,7 @@ internal static class ArrayBuilder
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLines(
 			$$"""
-			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-			{
-				return ({{unionType.FullyQualifiedName}}){{readOperation}};
-			}
-
-			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}})!;
+			return ({{unionType.FullyQualifiedName}}){{readOperation}};
 			""");
 	}
 
@@ -36,7 +31,7 @@ internal static class ArrayBuilder
 			""");
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.Array!.Rank == 1 &&
 			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
@@ -56,7 +51,23 @@ internal static class ArrayBuilder
 		}
 		else
 		{
-			CustomBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			CustomBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
+		}
+	}
+
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	{
+		if (propertyType.Array!.Rank == 1 &&
+			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
+		{
+			indentWriter.WriteLines(
+				$$"""
+				context.Writer.Write(({{valueVariable}}.Length, {{valueVariable}}));
+				""");
+		}
+		else
+		{
+			CustomBuilder.BuildUnionWriter(indentWriter, propertyType, valueVariable);
 		}
 	}
 }

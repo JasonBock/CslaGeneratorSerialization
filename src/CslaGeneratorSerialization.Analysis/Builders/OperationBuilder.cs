@@ -9,50 +9,6 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 // from properties with managed backing fields.
 internal static class OperationBuilder
 {
-	internal static void BuildUnionReadOperation(
-		IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType, bool includeCustom)
-	{
-		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
-
-		if (!unionCaseType.UnionCaseTypes.IsEmpty)
-		{
-			UnionBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.TypeKind == TypeKind.Enum)
-		{
-			EnumBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.IsSupportedArray)
-		{
-			ArrayBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
-		{
-			ClaimsPrincipalBuilder.BuildUnionReader(indentWriter, unionType);
-		}
-		else if (unionCaseType.BusinessObjectKind != StereotypeKind.None)
-		{
-			StereotypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.IsNullable && unionType.IsValueType)
-		{
-			NullableValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.SpecialType == SpecialType.System_String)
-		{
-			StringBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (unionCaseType.IsValueType)
-		{
-			ValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-		else if (includeCustom)
-		{
-			CustomBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
-		}
-	}
-
 	internal static void BuildPropertyReadOperation(IndentedTextWriter indentWriter, SerializationItemModel item, bool includeCustom)
 	{
 		indentWriter.WriteLine($"// {item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}");
@@ -121,11 +77,11 @@ internal static class OperationBuilder
 		}
 		else if (propertyType.IsSupportedArray)
 		{
-			ArrayBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			ArrayBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
-			ClaimsPrincipalBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			ClaimsPrincipalBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.BusinessObjectKind != StereotypeKind.None)
 		{
@@ -133,11 +89,11 @@ internal static class OperationBuilder
 		}
 		else if (propertyType.IsNullable && propertyType.IsValueType)
 		{
-			NullableValueTypeBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			NullableValueTypeBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			StringBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
 		}
 		else if (propertyType.IsValueType)
 		{
@@ -145,7 +101,51 @@ internal static class OperationBuilder
 		}
 		else if (includeCustom)
 		{
-			CustomBuilder.BuildWriter(indentWriter, propertyType, valueVariable);
+			CustomBuilder.BuildPropertyWriter(indentWriter, propertyType, valueVariable);
+		}
+	}
+
+	internal static void BuildUnionReadOperation(
+		IndentedTextWriter indentWriter,
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType, bool includeCustom)
+	{
+		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
+
+		if (!unionCaseType.UnionCaseTypes.IsEmpty)
+		{
+			UnionBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.TypeKind == TypeKind.Enum)
+		{
+			EnumBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.IsSupportedArray)
+		{
+			ArrayBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
+		{
+			ClaimsPrincipalBuilder.BuildUnionReader(indentWriter, unionType);
+		}
+		else if (unionCaseType.BusinessObjectKind != StereotypeKind.None)
+		{
+			StereotypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.IsNullable && unionType.IsValueType)
+		{
+			NullableValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.SpecialType == SpecialType.System_String)
+		{
+			StringBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (unionCaseType.IsValueType)
+		{
+			ValueTypeBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
+		}
+		else if (includeCustom)
+		{
+			CustomBuilder.BuildUnionReader(indentWriter, unionType, unionCaseType);
 		}
 	}
 
@@ -162,11 +162,11 @@ internal static class OperationBuilder
 		}
 		else if (unionCaseType.IsSupportedArray)
 		{
-			ArrayBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+			ArrayBuilder.BuildUnionWriter(indentWriter, unionCaseType, valueVariable);
 		}
 		else if (unionCaseType.FullyQualifiedName == Shared.ClaimsPrincipalFullyQualifiedName)
 		{
-			ClaimsPrincipalBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+			ClaimsPrincipalBuilder.BuildUnionWriter(indentWriter, unionCaseType, valueVariable);
 		}
 		else if (unionCaseType.BusinessObjectKind != StereotypeKind.None)
 		{
@@ -178,7 +178,7 @@ internal static class OperationBuilder
 		}
 		else if (unionCaseType.SpecialType == SpecialType.System_String)
 		{
-			StringBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+			StringBuilder.BuildUnionWriter(indentWriter, unionCaseType, valueVariable);
 		}
 		else if (unionCaseType.IsValueType)
 		{
@@ -186,7 +186,7 @@ internal static class OperationBuilder
 		}
 		else if (includeCustom)
 		{
-			CustomBuilder.BuildWriter(indentWriter, unionCaseType, valueVariable);
+			CustomBuilder.BuildUnionWriter(indentWriter, unionCaseType, valueVariable);
 		}
 	}
 }

@@ -7,21 +7,6 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class NullableValueTypeBuilder
 {
-	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
-	{
-		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
-		indentWriter.WriteLines(
-			$$"""
-			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-			{
-				return ({{unionType.FullyQualifiedName}}){{readOperation}};
-			}
-
-			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}})!;
-			""");
-	}
-
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item)
 	{
 		var propertyType = item.PropertyInfoDataType;
@@ -38,20 +23,7 @@ internal static class NullableValueTypeBuilder
 			""");
 	}
 
-	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, string valueVariable)
-	{
-		var enumCast = unionCaseType.IsNullable && unionCaseType.TypeArguments[0].TypeKind == TypeKind.Enum ?
-			$"({unionCaseType.TypeArguments[0].EnumUnderlyingType!.FullyQualifiedName})" : 
-			string.Empty;
-
-		indentWriter.WriteLines(
-			$$"""
-			context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-			context.Writer.Write({{enumCast}}{{valueVariable}});
-			""");
-	}
-
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
 	{
 		var valueToWrite = $"{valueVariable}.Value";
 
@@ -69,6 +41,28 @@ internal static class NullableValueTypeBuilder
 			{
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 			}
+			""");
+	}
+
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+	{
+		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
+		indentWriter.WriteLines(
+			$$"""
+			return ({{unionType.FullyQualifiedName}}){{readOperation}};
+			""");
+	}
+
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, string valueVariable)
+	{
+		var enumCast = unionCaseType.IsNullable && unionCaseType.TypeArguments[0].TypeKind == TypeKind.Enum ?
+			$"({unionCaseType.TypeArguments[0].EnumUnderlyingType!.FullyQualifiedName})" : 
+			string.Empty;
+
+		indentWriter.WriteLines(
+			$$"""
+			context.Writer.Write({{enumCast}}{{valueVariable}});
 			""");
 	}
 }

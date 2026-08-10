@@ -74,4 +74,40 @@ internal static class UnionOfCustomTests
 			Assert.That(value.Name, Is.EqualTo("Jane"));
 		}
 	}
+
+	[Test]
+	public static async Task RoundtripNullAsync()
+	{
+		var services = new ServiceCollection();
+		_ = services.AddCsla(o =>
+			o.Serialization(so => so.UseSerializationFormatter<GeneratorFormatter>()));
+		_ = services.AddCslaGeneratorSerialization(
+			new CustomSerialization<CustomData>(
+				(data, writer) =>
+				{
+					writer.Write(data.Id);
+					writer.Write(data.Name);
+				},
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
+			new CustomSerialization<CustomData>(
+				(data, writer) =>
+				{
+					writer.Write(data.Id);
+					writer.Write(data.Name);
+				},
+				(reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!);
+
+		var provider = services.BuildServiceProvider();
+		var formatter = new GeneratorFormatter(provider.GetRequiredService<ApplicationContext>(), new(provider));
+		var portal = provider.GetRequiredService<IDataPortal<Customer>>();
+		var customer = await portal.CreateAsync();
+		customer.Identifier = null!;
+
+		using var stream = new MemoryStream();
+		formatter.Serialize(stream, customer);
+		stream.Position = 0;
+		var newCustomer = (Customer)formatter.Deserialize(stream)!;
+
+		Assert.That(newCustomer.Identifier.Value, Is.Null);
+	}
 }

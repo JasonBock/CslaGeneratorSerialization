@@ -229,7 +229,7 @@ TODO:
         * DONE - BO has multiple properties with:
             * DONE - Different union types
             * DONE - Shared union types
-* I think custom types need nullability checks in place.
+* I think custom types need nullability checks in place. Actually, I think if there are **any** nullable value types or reference types (null or not), I think we need to do the trick to put `case null:` in first, and use the (count of union case types + 1) trick.
 * Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 

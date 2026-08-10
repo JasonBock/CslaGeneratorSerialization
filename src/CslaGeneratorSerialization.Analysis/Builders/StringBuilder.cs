@@ -6,21 +6,6 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal static class StringBuilder
 {
-	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
-	{
-		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
-		indentWriter.WriteLines(
-			$$"""
-			if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-			{
-				return ({{unionType.FullyQualifiedName}}){{readOperation}};
-			}
-
-			return ({{unionType.FullyQualifiedName}})(null as {{unionCaseType.FullyQualifiedName}})!;
-			""");
-	}
-	
 	internal static void BuildPropertyReader(IndentedTextWriter indentWriter, SerializationItemModel item) => 
 		indentWriter.WriteLines(
 		   $$"""
@@ -30,7 +15,7 @@ internal static class StringBuilder
 			}
 			""");
 
-   internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+   internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
 			if ({{valueVariable}} is not null)
@@ -42,5 +27,21 @@ internal static class StringBuilder
 			{
 				context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
 			}
+			""");
+
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
+		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+	{
+		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
+		indentWriter.WriteLines(
+			$$"""
+			return ({{unionType.FullyQualifiedName}}){{readOperation}};
+			""");
+	}
+
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+		indentWriter.WriteLines(
+			$$"""
+			context.Writer.Write({{valueVariable}});
 			""");
 }
