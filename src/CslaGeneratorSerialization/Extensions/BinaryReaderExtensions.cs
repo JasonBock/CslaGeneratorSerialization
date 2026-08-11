@@ -23,5 +23,83 @@ public static class BinaryReaderExtensions
 			var length = self.ReadInt32();
 			return self.ReadChars(length);
 		}
+
+		public short[] ReadInt16Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new short[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadInt16();
+			}
+
+			return buffer;
+		}
+
+		public ushort[] ReadUInt16Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new ushort[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadUInt16();	
+			}
+
+			return buffer;
+		}
+
+		public int[] ReadInt32Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new int[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadInt32();
+			}
+
+			return buffer;
+		}
+
+		public uint[] ReadUInt32Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new uint[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadUInt32();
+			}
+
+			return buffer;
+		}
+
+		public long[] ReadInt64Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new long[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadInt64();
+			}
+
+			return buffer;
+		}
+
+		public ulong[] ReadUInt64Array()
+		{
+			var length = self.ReadInt32();
+			var buffer = new ulong[length];
+
+			for (var i = 0; i < length; i++)
+			{
+				buffer[i] = self.ReadUInt64();
+			}
+
+			return buffer;
+		}
 	}
 }

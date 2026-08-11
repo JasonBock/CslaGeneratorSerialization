@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Added support for union types (issue [#49](https://github.com/JasonBock/CslaGeneratorSerialization/issues/49))
+* Native serialization support added for `short`, `ushort`, `int`, `uint`, `long`, and `ulong` arrays (issue [#49](https://github.com/JasonBock/CslaGeneratorSerialization/issues/49))
 
 ### Fixed
 * Collection expressions on `EquatableArray` works as expected (issue [#50](https://github.com/JasonBock/CslaGeneratorSerialization/issues/50))

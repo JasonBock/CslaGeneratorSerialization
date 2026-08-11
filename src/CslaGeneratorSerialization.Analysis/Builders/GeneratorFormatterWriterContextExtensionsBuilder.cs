@@ -52,7 +52,7 @@ internal sealed class GeneratorFormatterWriterContextExtensionsBuilder
 	{
 		indentWriter.WriteLines(
 			$$"""
-			public void WriteUnion({{unionType.FullyQualifiedName}} value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+			public void WriteUnion({{unionType.FullyQualifiedName}} value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 			{
 				switch(value)
 				{

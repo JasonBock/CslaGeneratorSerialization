@@ -73,35 +73,27 @@ var provider = services.BuildServiceProvider();
 
 You need to register `GeneratorFormatter` as the serialization formatter CSLA. The call to `AddCslaGeneratorSerialization()` sets up other things that the generator needs. That should do it to get your application to start using this custom serialization formatter. If you find any issues with this serializer, you can always back out by changing the serializer back to `MobileFormatter` in your call to `AddCsla()`.
 
-You can also add support for types that the generator doesn't know how to serialize. You need to call `AddCslaGeneratorSerialiation()` on your `IServiceCollection` instance, and then register instances of `CustomSerialization` for each type you want to support. For example, if you wanted to add support for `int[]`, you could do this:
+You can also add support for types that the generator doesn't know how to serialize. You need to call `AddCslaGeneratorSerialiation()` on your `IServiceCollection` instance, and then register instances of `CustomSerialization` for each type you want to support. For example, if you wanted to add support for a type called `DataContent`, you could do this:
 
 ```c#
+public sealed class DataContent
+{
+	public int Id { get; set; }
+	public required string Name { get; set; }
+}
+
 services.AddCslaGeneratorSerialization();
 services.AddSingleton(
-  new CustomSerialization<int[]>(
+  new CustomSerialization<DataContent>(
     (data, writer) =>
     {
-      writer.Write(data.Length);
-
-      foreach (var item in data)
-      {
-        writer.Write(item);
-      }
+      writer.Write(data.Id);
+      writer.Write(data.Name);
     },
-    (reader) =>
-    {
-      var data = new int[reader.ReadInt32()];
-
-      for (var i = 0; i < data.Length; i++)
-      {
-        data[i] = reader.ReadInt32();
-      }
-
-      return data;
-    }));
+    (reader) => new() { Id = reader.ReadInt32(), Name = reader.ReadString() })!,
 ```
 
-Now, if your managed backing field uses `int[]`, it'll serialize without any issues.
+Now, if your managed backing field uses `DataContent`, it'll serialize without any issues.
 
 You can also perform custom serialization within your business object by implementing `IGeneratorSerializableCustomization`:
 

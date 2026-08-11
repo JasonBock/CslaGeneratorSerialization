@@ -20,7 +20,7 @@ internal static class UnionBuilder
 		indentWriter.WriteLines(
 			$$"""
 			{
-				var typeIdentifiers = context.Reader.ReadByteArray();
+				var typeIdentifiers = context.Reader.ReadUInt32Array();
 				var typeIdentifiersIndex = -1;
 				{{loadProperty}}
 			}

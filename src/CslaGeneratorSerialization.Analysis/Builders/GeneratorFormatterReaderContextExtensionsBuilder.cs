@@ -48,7 +48,7 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 	{
 		indentWriter.WriteLines(
 			$$"""
-			public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+			public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 			{
 			""");
 

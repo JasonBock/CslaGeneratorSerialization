@@ -23,6 +23,66 @@ public static class BinaryWriterExtensions
 			self.Write(value.buffer);
 		}
 
+		public void Write((int length, short[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
+		public void Write((int length, ushort[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
+		public void Write((int length, int[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
+		public void Write((int length, uint[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
+		public void Write((int length, long[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
+		public void Write((int length, ulong[] buffer) value)
+		{
+			self.Write(value.length);
+
+			foreach (var item in value.buffer)
+			{
+				self.Write(item);
+			}
+		}
+
 		public void Write(DateTime value) =>
 			self.Write(value.Ticks);
 

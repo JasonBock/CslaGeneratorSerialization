@@ -69,7 +69,7 @@ internal static class OperationBuilder
 			
 		if (!propertyType.UnionCaseTypes.IsEmpty)
 		{
-			UnionBuilder.BuildWriter(indentWriter, valueVariable, "new global::System.Collections.Generic.List<byte>()");
+			UnionBuilder.BuildWriter(indentWriter, valueVariable, "new global::System.Collections.Generic.List<uint>()");
 		}
 		else if (propertyType.TypeKind == TypeKind.Enum)
 		{

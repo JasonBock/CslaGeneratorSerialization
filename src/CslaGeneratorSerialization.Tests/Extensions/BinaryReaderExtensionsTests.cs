@@ -63,4 +63,60 @@ internal static class BinaryReaderExtensionsTests
 		using var reader = new BinaryReader(stream);
 		Assert.That(reader.ReadCharArray(), Is.EquivalentTo(value));
 	}
+
+	[Test]
+	public static void ReadInt32Array()
+	{
+		int[] value = [22, 33, 44];
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write((value.Length, value));
+
+		stream.Position = 0;
+
+		using var reader = new BinaryReader(stream);
+		Assert.That(reader.ReadInt32Array(), Is.EquivalentTo(value));
+	}
+
+	[Test]
+	public static void ReadUInt32Array()
+	{
+		uint[] value = [22, 33, 44];
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write((value.Length, value));
+
+		stream.Position = 0;
+
+		using var reader = new BinaryReader(stream);
+		Assert.That(reader.ReadUInt32Array(), Is.EquivalentTo(value));
+	}
+
+	[Test]
+	public static void ReadInt64Array()
+	{
+		long[] value = [22, 33, 44];
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write((value.Length, value));
+
+		stream.Position = 0;
+
+		using var reader = new BinaryReader(stream);
+		Assert.That(reader.ReadInt64Array(), Is.EquivalentTo(value));
+	}
+
+	[Test]
+	public static void ReadUInt64Array()
+	{
+		ulong[] value = [22, 33, 44];
+		var stream = new MemoryStream();
+		using var writer = new BinaryWriter(stream);
+		writer.Write((value.Length, value));
+
+		stream.Position = 0;
+
+		using var reader = new BinaryReader(stream);
+		Assert.That(reader.ReadUInt64Array(), Is.EquivalentTo(value));
+	}
 }
