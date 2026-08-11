@@ -2,19 +2,19 @@
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="Csla" Version="10.1.0" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0-1.26376.3" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.9.0-1.26376.3" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0-1.26376.3" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.10.0-1.26402.102" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.10.0-1.26402.102" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.10.0-1.26402.102" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.4" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing" Version="1.1.4" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.9.0-1.26376.3" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.10.0-1.26402.102" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-preview.6.26359.118" />
-    <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.9.0-1.26376.3" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.10.0-1.26402.102" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
-    <PackageVersion Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.3.2" />
-    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="2.3.2" />
-    <PackageVersion Include="NuGet.Frameworks" Version="7.6.0" />
+    <PackageVersion Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.3.3" />
+    <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="2.3.3" />
+    <PackageVersion Include="NuGet.Frameworks" Version="7.9.0" />
     <PackageVersion Include="NUnit" Version="4.6.1" />
     <PackageVersion Include="NUnit.Analyzers" Version="4.14.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.2.0" />
