@@ -237,7 +237,5 @@ TODO:
 					break;
 ```
 * DONE - Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
-* Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
-
-FUTURE:
 * DONE - Union null testing. This is problematic right now because the default `union` is a `struct`, but people can make custom unions that are `class`-based. So trying to figure out if it's a `Nullable<MyUnion>` or `MyUnion?` and specifically the union case types...I should wait until Preview 7 to see if the `UnionCaseTypes` collection is added (https://github.com/dotnet/roslyn/pull/84707) - I'm guessing it will be, at the very least, it should be in by .NET 11 final release.
+* Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?

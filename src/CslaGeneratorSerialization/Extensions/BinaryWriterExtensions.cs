@@ -7,10 +7,11 @@ public static class BinaryWriterExtensions
 	extension(BinaryWriter self)
 	{
 		// Before I forget...
-		// the reason I have these two extensions is that
+		// the reason I have these array extensions is that
 		// there are already methods to handle a byte[] or char[],
 		// but I need to put the length in first.
 		// So I need a different method signature.
+		// For the others...I just wanted direct support.
 		public void Write((int length, byte[] buffer) value)
 		{
 			self.Write(value.length);
