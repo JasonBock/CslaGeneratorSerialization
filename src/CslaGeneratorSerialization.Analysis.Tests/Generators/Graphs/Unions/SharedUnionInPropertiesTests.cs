@@ -62,11 +62,11 @@ internal static class SharedUnionInPropertiesTests
 				{
 					// global::Domains.Customer.DescriptionProperty
 					var value0 = this.ReadProperty<global::Domains.Data>(global::Domains.Customer.DescriptionProperty)!;
-					context.WriteUnion(value0, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value0, new global::System.Collections.Generic.List<uint>());
 					
 					// global::Domains.Customer.IdentifierProperty
 					var value1 = this.ReadProperty<global::Domains.Data>(global::Domains.Customer.IdentifierProperty)!;
-					context.WriteUnion(value1, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value1, new global::System.Collections.Generic.List<uint>());
 					
 					// General Serialization
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
@@ -77,14 +77,14 @@ internal static class SharedUnionInPropertiesTests
 				{
 					// global::Domains.Customer.DescriptionProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.DescriptionProperty, (global::Domains.Data)context.ReadUnion<global::Domains.Data>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
 					
 					// global::Domains.Customer.IdentifierProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.IdentifierProperty, (global::Domains.Data)context.ReadUnion<global::Domains.Data>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
@@ -110,23 +110,20 @@ internal static class SharedUnionInPropertiesTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+					public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Data))
 						{
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
+								case 2:
+									return (global::Domains.Data)null!;
 								case 0:
 									// int
 									return (global::Domains.Data)context.Reader.ReadInt32();
 								case 1:
 									// string
-									if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-									{
-										return (global::Domains.Data)context.Reader.ReadString();
-									}
-									
-									return (global::Domains.Data)(null as string)!;
+									return (global::Domains.Data)context.Reader.ReadString();
 								default:
 									throw new global::System.NotSupportedException($"Unexpected case identifier for type global::Domains.Data at index {typeIdentifiersIndex}: {typeIdentifiers[typeIdentifiersIndex]}");
 							}
@@ -152,10 +149,14 @@ internal static class SharedUnionInPropertiesTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					public void WriteUnion(global::Domains.Data value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					public void WriteUnion(global::Domains.Data value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 					{
 						switch(value)
 						{
+							case null:
+								typeIdentifiers.Add(2);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								break;
 							case int u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
@@ -164,15 +165,7 @@ internal static class SharedUnionInPropertiesTests
 							case string u1:
 								typeIdentifiers.Add(1);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u1 is not null)
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-									context.Writer.Write(u1);
-								}
-								else
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-								}
+								context.Writer.Write(u1);
 								break;
 						}
 					}

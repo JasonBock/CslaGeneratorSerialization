@@ -56,7 +56,7 @@ internal static class UnionOfEnumTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					var value0 = this.ReadProperty<global::Domains.Identifier>(global::Domains.Customer.IdentifierProperty)!;
-					context.WriteUnion(value0, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value0, new global::System.Collections.Generic.List<uint>());
 					
 					// General Serialization
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
@@ -67,7 +67,7 @@ internal static class UnionOfEnumTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.IdentifierProperty, (global::Domains.Identifier)context.ReadUnion<global::Domains.Identifier>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
@@ -93,7 +93,7 @@ internal static class UnionOfEnumTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+					public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Identifier))
 						{
@@ -127,7 +127,7 @@ internal static class UnionOfEnumTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 					{
 						switch(value)
 						{

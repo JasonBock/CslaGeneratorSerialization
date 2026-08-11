@@ -55,7 +55,7 @@ internal static class UnionOfClaimsPrincipalTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					var value0 = this.ReadProperty<global::Domains.Identifier>(global::Domains.Customer.IdentifierProperty)!;
-					context.WriteUnion(value0, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value0, new global::System.Collections.Generic.List<uint>());
 					
 					// General Serialization
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
@@ -66,7 +66,7 @@ internal static class UnionOfClaimsPrincipalTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.IdentifierProperty, (global::Domains.Identifier)context.ReadUnion<global::Domains.Identifier>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
@@ -92,12 +92,14 @@ internal static class UnionOfClaimsPrincipalTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+					public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Identifier))
 						{
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
+								case 1:
+									return (global::Domains.Identifier)null!;
 								case 0:
 									// global::System.Security.Claims.ClaimsPrincipal
 									switch (context.Reader.ReadStateValue())
@@ -116,8 +118,6 @@ internal static class UnionOfClaimsPrincipalTests
 													return (global::Domains.Identifier)principal;
 												}
 											}
-										case global::CslaGeneratorSerialization.SerializationState.Null:
-											return (global::Domains.Identifier)(null as global::System.Security.Claims.ClaimsPrincipal)!;
 									}
 									break;
 								default:
@@ -145,40 +145,37 @@ internal static class UnionOfClaimsPrincipalTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 					{
 						switch(value)
 						{
+							case null:
+								typeIdentifiers.Add(1);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								break;
 							case global::System.Security.Claims.ClaimsPrincipal u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u0 is not null)
-								{
-									(var isReferenceDuplicate, var referenceId) = context.GetReference(u0);
+								(var isReferenceDuplicate, var referenceId) = context.GetReference(u0);
 									
-									if (isReferenceDuplicate)
-									{
-										context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
-										context.Writer.Write(referenceId);
-									}
-									else
-									{
-										context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-								
-										using (var u0stream = new global::System.IO.MemoryStream())
-										{
-											using (var u0writer = new global::System.IO.BinaryWriter(u0stream))
-											{
-												u0.WriteTo(u0writer);
-												var u0buffer = u0stream.ToArray();
-												context.Writer.Write((u0buffer.Length, u0buffer));
-											}
-										}
-									}
+								if (isReferenceDuplicate)
+								{
+									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Duplicate);
+									context.Writer.Write(referenceId);
 								}
 								else
 								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
+									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
+								
+									using (var u0stream = new global::System.IO.MemoryStream())
+									{
+										using (var u0writer = new global::System.IO.BinaryWriter(u0stream))
+										{
+											u0.WriteTo(u0writer);
+											var u0buffer = u0stream.ToArray();
+											context.Writer.Write((u0buffer.Length, u0buffer));
+										}
+									}
 								}
 								break;
 						}

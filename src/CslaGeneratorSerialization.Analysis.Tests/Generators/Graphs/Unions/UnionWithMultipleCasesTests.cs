@@ -42,7 +42,7 @@ internal static class UnionWithMultipleCasesTests
 			
 			using CslaGeneratorSerialization.Extensions;
 			using CslaGeneratorSerialization.Analysis.Extensions;
-
+			
 			#nullable enable
 			
 			namespace Domains;
@@ -54,7 +54,7 @@ internal static class UnionWithMultipleCasesTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					var value0 = this.ReadProperty<global::Domains.Identifier>(global::Domains.Customer.IdentifierProperty)!;
-					context.WriteUnion(value0, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value0, new global::System.Collections.Generic.List<uint>());
 					
 					// General Serialization
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
@@ -65,7 +65,7 @@ internal static class UnionWithMultipleCasesTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.IdentifierProperty, (global::Domains.Identifier)context.ReadUnion<global::Domains.Identifier>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
@@ -91,20 +91,17 @@ internal static class UnionWithMultipleCasesTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+					public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Identifier))
 						{
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
+								case 3:
+									return (global::Domains.Identifier)null!;
 								case 0:
 									// string
-									if (context.Reader.ReadStateValue() == global::CslaGeneratorSerialization.SerializationState.Value)
-									{
-										return (global::Domains.Identifier)context.Reader.ReadString();
-									}
-									
-									return (global::Domains.Identifier)(null as string)!;
+									return (global::Domains.Identifier)context.Reader.ReadString();
 								case 1:
 									// int
 									return (global::Domains.Identifier)context.Reader.ReadInt32();
@@ -136,22 +133,18 @@ internal static class UnionWithMultipleCasesTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 					{
 						switch(value)
 						{
+							case null:
+								typeIdentifiers.Add(3);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								break;
 							case string u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
-								if (u0 is not null)
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Value);
-									context.Writer.Write(u0);
-								}
-								else
-								{
-									context.Writer.Write((byte)global::CslaGeneratorSerialization.SerializationState.Null);
-								}
+								context.Writer.Write(u0);
 								break;
 							case int u1:
 								typeIdentifiers.Add(1);

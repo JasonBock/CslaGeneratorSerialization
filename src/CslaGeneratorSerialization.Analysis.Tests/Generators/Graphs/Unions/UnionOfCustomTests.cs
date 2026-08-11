@@ -48,7 +48,7 @@ internal static class UnionOfCustomTests
 			
 			using CslaGeneratorSerialization.Extensions;
 			using CslaGeneratorSerialization.Analysis.Extensions;
-
+			
 			#nullable enable
 			
 			namespace Domains;
@@ -60,7 +60,7 @@ internal static class UnionOfCustomTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					var value0 = this.ReadProperty<global::Domains.Identifier>(global::Domains.Customer.IdentifierProperty)!;
-					context.WriteUnion(value0, new global::System.Collections.Generic.List<byte>());
+					context.WriteUnion(value0, new global::System.Collections.Generic.List<uint>());
 					
 					// General Serialization
 					var metastate = ((global::Csla.Serialization.Mobile.IMobileObjectMetastate)this).GetMetastate();
@@ -71,7 +71,7 @@ internal static class UnionOfCustomTests
 				{
 					// global::Domains.Customer.IdentifierProperty
 					{
-						var typeIdentifiers = context.Reader.ReadByteArray();
+						var typeIdentifiers = context.Reader.ReadUInt32Array();
 						var typeIdentifiersIndex = -1;
 						this.LoadProperty(global::Domains.Customer.IdentifierProperty, (global::Domains.Identifier)context.ReadUnion<global::Domains.Identifier>(typeIdentifiers, ++typeIdentifiersIndex));
 					}
@@ -97,12 +97,14 @@ internal static class UnionOfCustomTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterReaderContext context)
 				{
-					public object ReadUnion<T>(byte[] typeIdentifiers, int typeIdentifiersIndex)
+					public object ReadUnion<T>(uint[] typeIdentifiers, int typeIdentifiersIndex)
 					{
 						if (typeof(T) == typeof(global::Domains.Identifier))
 						{
 							switch(typeIdentifiers[typeIdentifiersIndex])
 							{
+								case 1:
+									return (global::Domains.Identifier)null!;
 								case 0:
 									// global::Domains.CustomData
 									return (global::Domains.Identifier)context.ReadCustom<global::Domains.CustomData>()!;
@@ -131,10 +133,14 @@ internal static class UnionOfCustomTests
 			{
 				extension(global::CslaGeneratorSerialization.GeneratorFormatterWriterContext context)
 				{
-					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<byte> typeIdentifiers)
+					public void WriteUnion(global::Domains.Identifier value, global::System.Collections.Generic.List<uint> typeIdentifiers)
 					{
 						switch(value)
 						{
+							case null:
+								typeIdentifiers.Add(1);
+								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+								break;
 							case global::Domains.CustomData u0:
 								typeIdentifiers.Add(0);
 								context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
