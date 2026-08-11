@@ -213,8 +213,8 @@ OK, reset...
     * DONE -The readers for some types, like array, will need to be changed so the property assignment can be separated out.
 
 TODO:
-* Ask the compiler team why this is OK: `public union Stuff(string)`, why would you have a union of just one case type?
-* Need to address recursive `TypeReferenceModel`
+* DONE - Ask the compiler team why this is OK: `public union Stuff(string)`, why would you have a union of just one case type?
+* DONE (added GitHub issue) - Need to address recursive `TypeReferenceModel`
     * Need tests for recursive unions
     * Need tests for recursive types
 * DONE - `OperationBuilder.BuildReadOperation()` - `itemId` isn't used.
@@ -229,9 +229,15 @@ TODO:
         * DONE - BO has multiple properties with:
             * DONE - Different union types
             * DONE - Shared union types
-* I think custom types need nullability checks in place. Actually, I think if there are **any** nullable value types or reference types (null or not), I think we need to do the trick to put `case null:` in first, and use the (count of union case types + 1) trick.
-* Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
+* DONE - I think custom types need nullability checks in place. Actually, I think if there are **any** nullable value types or reference types (null or not), I think we need to do the trick to put `case null:` in first, and use the (count of union case types + 1) trick.
+```c#
+				case null:
+					typeIdentifiers.Add(1);
+					context.Writer.Write((typeIdentifiers.Count, typeIdentifiers.ToArray()));
+					break;
+```
+* DONE - Given the little "hack" I did for nullable value types by using the (count of union case types + 1) as the "marker" for the null value, maybe I add native support for `uint[]`, and then I'm not limited to 254 union case types because I can use a `uint[]` and it'll work (though seriously, who is going to create a union with over 4 billion union case types?)
 * Can we make a `IBuilder` interface with the static methods `BuildWriter()`, `BuildPropertyReader()`, and `BuildUnionReader()`, and have all the builders implement that so we're consistent?
 
 FUTURE:
-* Union null testing. This is problematic right now because the default `union` is a `struct`, but people can make custom unions that are `class`-based. So trying to figure out if it's a `Nullable<MyUnion>` or `MyUnion?` and specifically the union case types...I should wait until Preview 7 to see if the `UnionCaseTypes` collection is added (https://github.com/dotnet/roslyn/pull/84707) - I'm guessing it will be, at the very least, it should be in by .NET 11 final release.
+* DONE - Union null testing. This is problematic right now because the default `union` is a `struct`, but people can make custom unions that are `class`-based. So trying to figure out if it's a `Nullable<MyUnion>` or `MyUnion?` and specifically the union case types...I should wait until Preview 7 to see if the `UnionCaseTypes` collection is added (https://github.com/dotnet/roslyn/pull/84707) - I'm guessing it will be, at the very least, it should be in by .NET 11 final release.
