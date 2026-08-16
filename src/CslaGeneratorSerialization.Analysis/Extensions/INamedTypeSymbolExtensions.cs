@@ -8,6 +8,8 @@ internal static class INamedTypeSymbolExtensions
 {
 	extension(INamedTypeSymbol self)
 	{
+		// Hopefully at some point, I can remove this in favor of a UnionCaseTypes property:
+		// 
 		internal ImmutableArray<TypeReferenceModel> GetUnionCaseTypes(Compilation compilation, Stereotypes stereotypes)
 		{
 			// First, check if the type has [Union] on it.
