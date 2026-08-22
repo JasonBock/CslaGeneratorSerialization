@@ -21,8 +21,8 @@ internal sealed class ModelContext
 		else
 		{
 			var newModel = new TypeReferenceModel(typeSymbol, stereotypes, this);
-			newModel.Initialize(typeSymbol, stereotypes, this);
 			this.typeMap.Add(typeSymbol, newModel);
+			newModel.Initialize(typeSymbol, stereotypes, this);
 			return newModel;
 		}
 	}
