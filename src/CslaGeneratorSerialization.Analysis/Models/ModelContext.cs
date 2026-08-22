@@ -21,6 +21,7 @@ internal sealed class ModelContext
 		else
 		{
 			var newModel = new TypeReferenceModel(typeSymbol, stereotypes, this);
+			newModel.Initialize(typeSymbol, stereotypes, this);
 			this.typeMap.Add(typeSymbol, newModel);
 			return newModel;
 		}
@@ -55,7 +56,7 @@ internal sealed class ModelContext
 
 			(this.BusinessObjectKind, this.BusinessObjectTarget) = kind switch
 			{
-				StereotypeKind.BusinessListBase or StereotypeKind.BusinessDocumentBase or StereotypeKind.ReadOnlyListBase => (kind, new TypeReferenceModel(targetType!, stereotypes, modelContext)),
+				StereotypeKind.BusinessListBase or StereotypeKind.BusinessDocumentBase or StereotypeKind.ReadOnlyListBase => (kind, modelContext.CreateTypeReference(targetType!, stereotypes)),
 				_ => (kind, null)
 			};
 
@@ -72,19 +73,25 @@ internal sealed class ModelContext
 			if (type is INamedTypeSymbol namedTypeSymbol)
 			{
 				this.TypeArguments = namedTypeSymbol.TypeArguments.Select(
-					_ => new TypeReferenceModel(_, stereotypes, modelContext)).ToImmutableArray<ITypeReferenceModel>();
+					_ => modelContext.CreateTypeReference(_, stereotypes)).ToImmutableArray<ITypeReferenceModel>();
 
 				if (namedTypeSymbol.EnumUnderlyingType is not null)
 				{
-					this.EnumUnderlyingType = new TypeReferenceModel(namedTypeSymbol.EnumUnderlyingType, stereotypes, modelContext);
+					this.EnumUnderlyingType = modelContext.CreateTypeReference(namedTypeSymbol.EnumUnderlyingType, stereotypes);
 				}
-
-				this.UnionCaseTypes = namedTypeSymbol.GetUnionCaseTypes(modelContext, stereotypes);
 			}
 			else
 			{
 				this.TypeArguments = [];
 				this.UnionCaseTypes = [];
+			}
+		}
+
+		public void Initialize(ITypeSymbol type, Stereotypes stereotypes, ModelContext modelContext)
+		{
+			if (type is INamedTypeSymbol namedTypeSymbol)
+			{
+				this.UnionCaseTypes = namedTypeSymbol.GetUnionCaseTypes(modelContext, stereotypes);
 			}
 		}
 
@@ -128,6 +135,6 @@ internal sealed class ModelContext
 		public EquatableArray<ITypeReferenceModel> TypeArguments { get; }
 		public SpecialType SpecialType { get; }
 		public TypeKind TypeKind { get; }
-		public EquatableArray<ITypeReferenceModel> UnionCaseTypes { get; }
+		public EquatableArray<ITypeReferenceModel> UnionCaseTypes { get; private set; }
 	}
 }
