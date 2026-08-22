@@ -17,12 +17,13 @@ internal sealed class GeneratorSerializationGenerator
 				(context, token) =>
 				{
 					var models = new List<SerializationModel>(context.Attributes.Length);
+					var modelContext = new ModelContext(context.SemanticModel);
 
 					foreach (var attribute in context.Attributes)
 					{
 						if (context.TargetSymbol is INamedTypeSymbol type &&
 							type.IsMobileObject() &&
-							SerializationModel.TryCreate(type, context.SemanticModel.Compilation, out var model))
+							SerializationModel.TryCreate(type, modelContext, out var model))
 						{
 							models.Add(model!);
 						}
@@ -38,7 +39,7 @@ internal sealed class GeneratorSerializationGenerator
 
 	private static void CreateOutput(ImmutableArray<SerializationModel> models, SourceProductionContext context)
 	{
-		var propertyUnionTypes = new HashSet<TypeReferenceModel>();
+		var propertyUnionTypes = new HashSet<ITypeReferenceModel>();
 
 		foreach (var model in models.Distinct())
 		{

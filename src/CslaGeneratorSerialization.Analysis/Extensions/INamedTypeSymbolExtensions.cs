@@ -10,7 +10,7 @@ internal static class INamedTypeSymbolExtensions
 	{
 		// Hopefully at some point, I can remove this in favor of a UnionCaseTypes property:
 		// 
-		internal ImmutableArray<TypeReferenceModel> GetUnionCaseTypes(Compilation compilation, Stereotypes stereotypes)
+		internal ImmutableArray<ITypeReferenceModel> GetUnionCaseTypes(ModelContext modelContext, Stereotypes stereotypes)
 		{
 			// First, check if the type has [Union] on it.
 			if (self.IsUnion)
@@ -22,7 +22,7 @@ internal static class INamedTypeSymbolExtensions
 				if (constructors.Length > 0)
 				{
 					return [.. constructors.Select(
-						constructor => new TypeReferenceModel(constructor.Parameters[0].Type, compilation, stereotypes))];
+						constructor => modelContext.CreateTypeReference(constructor.Parameters[0].Type, stereotypes))];
 				}
 				else
 				{

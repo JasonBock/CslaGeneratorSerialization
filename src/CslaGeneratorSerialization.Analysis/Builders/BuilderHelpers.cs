@@ -8,7 +8,7 @@ internal static class BuilderHelpers
 	internal static string GetLoadProperty(SerializationItemModel item, string readerInvocation) =>
 		$"this.LoadProperty({item.PropertyInfoContainingType.FullyQualifiedName}.{item.PropertyInfoFieldName}, {readerInvocation});";
 
-	internal static string GetReadOperation(TypeReferenceModel type)
+	internal static string GetReadOperation(ITypeReferenceModel type)
 	{
 		// Unions
 		if (type.UnionCaseTypes.Length > 0)

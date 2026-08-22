@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class StereotypeBuilder
 {
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName}){readOperation};");
@@ -19,7 +19,7 @@ internal static class StereotypeBuilder
 			this.LoadProperty({{item.PropertyInfoContainingType.FullyQualifiedName}}.{{item.PropertyInfoFieldName}}, {{BuilderHelpers.GetReadOperation(item.PropertyInfoDataType)}});
 			""");
 
-   internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+   internal static void BuildWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.ParticipatesInGeneratorSerialization)
 		{

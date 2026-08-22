@@ -6,7 +6,7 @@ namespace CslaGeneratorSerialization.Analysis.Models;
 
 internal sealed record SerializationModel
 {
-	internal static bool TryCreate(INamedTypeSymbol type, Compilation compilation, out SerializationModel? model)
+	internal static bool TryCreate(INamedTypeSymbol type, ModelContext modelContext, out SerializationModel? model)
 	{
 		if (type.HasErrors())
 		{
@@ -26,12 +26,12 @@ internal sealed record SerializationModel
 
 		if (type.TypeKind == TypeKind.Class)
 		{
-			model = new SerializationModel(type, type.GetPropertyInfoFields(), compilation);
+			model = new SerializationModel(type, type.GetPropertyInfoFields(), modelContext);
 			return true;
 		}
 		else if (type.TypeKind == TypeKind.Interface)
 		{
-			model = new SerializationModel(type, [], compilation);
+			model = new SerializationModel(type, [], modelContext);
 			return true;
 		}
 		else
@@ -41,25 +41,25 @@ internal sealed record SerializationModel
 		}
 	}
 
-	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, Compilation compilation)
+	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, ModelContext modelContext)
 	{
 		this.IsCustomizable = businessObjectType.DerivesFrom("IGeneratorSerializableCustomization", "CslaGeneratorSerialization");
 		this.RequiresDeserializationNotification = businessObjectType.DerivesFrom("ISerializationNotification", "Csla.Serialization.Mobile");
 		this.ImplementsMetastate = businessObjectType.DerivesFrom("IMobileObjectMetastate", "Csla.Serialization.Mobile")!;
 
-		var stereotypes = new Stereotypes(compilation);
-		this.BusinessObject = new TypeReferenceModel(businessObjectType, compilation, stereotypes);
+		var stereotypes = new Stereotypes(modelContext.SemanticModel.Compilation);
+		this.BusinessObject = modelContext.CreateTypeReference(businessObjectType, stereotypes);
 		this.Items = propertyInfoFields.Select(_ =>
 		{
 			var fieldContainingType = _.ContainingType;
 			var fieldType = (INamedTypeSymbol)_.Type;
 			var propertyInfoType = fieldType.TypeArguments[0];
 			return new SerializationItemModel(_.Name,
-				new TypeReferenceModel(fieldContainingType, compilation, stereotypes), new TypeReferenceModel(propertyInfoType, compilation, stereotypes));
+				modelContext.CreateTypeReference(fieldContainingType, stereotypes), modelContext.CreateTypeReference(propertyInfoType, stereotypes));
 		}).OrderBy(_ => _.PropertyInfoDataType.BusinessObjectKind).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
 	}
 
-	internal TypeReferenceModel BusinessObject { get; }
+	internal ITypeReferenceModel BusinessObject { get; }
 	internal bool IsCustomizable { get; }
 	public bool ImplementsMetastate { get; }
 	internal EquatableArray<SerializationItemModel> Items { get; }

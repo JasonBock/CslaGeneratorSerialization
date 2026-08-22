@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class UnionBuilder
 {
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter, 
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName}){readOperation};");

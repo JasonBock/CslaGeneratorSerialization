@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class ValueTypeBuilder
 {
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName}){readOperation};");
@@ -17,7 +17,7 @@ internal static class ValueTypeBuilder
 		indentWriter.WriteLine(
 			$"{BuilderHelpers.GetLoadProperty(item, BuilderHelpers.GetReadOperation(item.PropertyInfoDataType))}");
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.FullyQualifiedName == "global::System.Guid" ||
 			propertyType.FullyQualifiedName == "global::System.Decimal" ||

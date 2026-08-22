@@ -23,7 +23,7 @@ internal static class NullableValueTypeBuilder
 			""");
 	}
 
-	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable)
 	{
 		var valueToWrite = $"{valueVariable}.Value";
 
@@ -45,7 +45,7 @@ internal static class NullableValueTypeBuilder
 	}
 
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLines(
@@ -54,7 +54,7 @@ internal static class NullableValueTypeBuilder
 			""");
 	}
 
-	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, string valueVariable)
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, ITypeReferenceModel unionCaseType, string valueVariable)
 	{
 		var enumCast = unionCaseType.IsNullable && unionCaseType.TypeArguments[0].TypeKind == TypeKind.Enum ?
 			$"({unionCaseType.TypeArguments[0].EnumUnderlyingType!.FullyQualifiedName})" : 

@@ -1,3 +1,3 @@
 ﻿namespace CslaGeneratorSerialization.Analysis.Models;
 
-internal sealed record SerializationItemModel(string PropertyInfoFieldName, TypeReferenceModel PropertyInfoContainingType, TypeReferenceModel PropertyInfoDataType);
+internal sealed record SerializationItemModel(string PropertyInfoFieldName, ITypeReferenceModel PropertyInfoContainingType, ITypeReferenceModel PropertyInfoDataType);

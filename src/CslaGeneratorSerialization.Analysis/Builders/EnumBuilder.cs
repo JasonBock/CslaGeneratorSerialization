@@ -7,7 +7,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class EnumBuilder
 {
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter, 
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType.EnumUnderlyingType!);
 		indentWriter.WriteLine($"return ({unionType.FullyQualifiedName})({unionCaseType.FullyQualifiedName}){readOperation};");
@@ -23,6 +23,6 @@ internal static class EnumBuilder
 			""");
 	}
 
-	internal static void BuildWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+	internal static void BuildWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLine($"context.Writer.Write(({propertyType.EnumUnderlyingType!.FullyQualifiedName}){valueVariable});");
 }

@@ -8,7 +8,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 
 internal sealed class GeneratorFormatterWriterContextExtensionsBuilder
 {
-	internal GeneratorFormatterWriterContextExtensionsBuilder(List<TypeReferenceModel> unionTypes)
+	internal GeneratorFormatterWriterContextExtensionsBuilder(List<ITypeReferenceModel> unionTypes)
 	{
 		using var writer = new StringWriter();
 		using var indentWriter = new IndentedTextWriter(writer, "\t");
@@ -48,7 +48,7 @@ internal sealed class GeneratorFormatterWriterContextExtensionsBuilder
 		this.FileName = "GeneratorFormatterWriterContextExtensions.g.cs";
 	}
 
-	private static void BuildWriteUnion(IndentedTextWriter indentWriter, TypeReferenceModel unionType)
+	private static void BuildWriteUnion(IndentedTextWriter indentWriter, ITypeReferenceModel unionType)
 	{
 		indentWriter.WriteLines(
 			$$"""

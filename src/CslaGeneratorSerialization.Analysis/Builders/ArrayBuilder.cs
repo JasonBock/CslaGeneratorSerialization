@@ -8,7 +8,7 @@ namespace CslaGeneratorSerialization.Analysis.Builders;
 internal static class ArrayBuilder
 {
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLines(
@@ -31,7 +31,7 @@ internal static class ArrayBuilder
 			""");
 	}
 
-	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.Array!.Rank == 1 &&
 			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))
@@ -55,7 +55,7 @@ internal static class ArrayBuilder
 		}
 	}
 
-	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable)
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable)
 	{
 		if (propertyType.Array!.Rank == 1 &&
 			(propertyType.Array.ElementType.SpecialType == SpecialType.System_Byte || propertyType.Array.ElementType.SpecialType == SpecialType.System_Char))

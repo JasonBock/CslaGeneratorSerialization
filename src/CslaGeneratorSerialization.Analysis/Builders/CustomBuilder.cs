@@ -15,7 +15,7 @@ internal static class CustomBuilder
 			}
 			""");
 
-   internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) => 
+   internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable) => 
 		indentWriter.WriteLines(
 		   $$"""
 			if ({{valueVariable}} is not null)
@@ -30,7 +30,7 @@ internal static class CustomBuilder
 			""");
 
 	internal static void BuildUnionReader(IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType)
 	{
 		var readOperation = BuilderHelpers.GetReadOperation(unionCaseType);
 		indentWriter.WriteLines(
@@ -39,7 +39,7 @@ internal static class CustomBuilder
 			""");
 	}
 
-	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
 			context.WriteCustom<{{propertyType.FullyQualifiedNameNoNullableAnnotation}}>({{valueVariable}});

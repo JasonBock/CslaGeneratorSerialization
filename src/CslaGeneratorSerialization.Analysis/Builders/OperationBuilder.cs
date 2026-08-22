@@ -107,7 +107,7 @@ internal static class OperationBuilder
 
 	internal static void BuildUnionReadOperation(
 		IndentedTextWriter indentWriter,
-		TypeReferenceModel unionType, TypeReferenceModel unionCaseType, bool includeCustom)
+		ITypeReferenceModel unionType, ITypeReferenceModel unionCaseType, bool includeCustom)
 	{
 		indentWriter.WriteLine($"// {unionCaseType.FullyQualifiedName}");
 
@@ -149,7 +149,7 @@ internal static class OperationBuilder
 		}
 	}
 
-	internal static void BuildUnionWriteOperation(IndentedTextWriter indentWriter, TypeReferenceModel unionCaseType, 
+	internal static void BuildUnionWriteOperation(IndentedTextWriter indentWriter, ITypeReferenceModel unionCaseType, 
 		string valueVariable, bool includeCustom)
 	{
 		if (!unionCaseType.UnionCaseTypes.IsEmpty)

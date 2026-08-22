@@ -32,7 +32,7 @@ internal static class ClaimsPrincipalBuilder
 			}
 			""");
 
-	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+	internal static void BuildPropertyWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
 			if ({{valueVariable}} is not null)
@@ -65,7 +65,7 @@ internal static class ClaimsPrincipalBuilder
 			}
 			""");
 
-	internal static void BuildUnionReader(IndentedTextWriter indentWriter, TypeReferenceModel unionType) =>
+	internal static void BuildUnionReader(IndentedTextWriter indentWriter, ITypeReferenceModel unionType) =>
 		indentWriter.WriteLines(
 			$$"""
 			switch (context.Reader.ReadStateValue())
@@ -88,7 +88,7 @@ internal static class ClaimsPrincipalBuilder
 			break;
 			""");
 
-	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, TypeReferenceModel propertyType, string valueVariable) =>
+	internal static void BuildUnionWriter(IndentedTextWriter indentWriter, ITypeReferenceModel propertyType, string valueVariable) =>
 		indentWriter.WriteLines(
 			$$"""
 			(var isReferenceDuplicate, var referenceId) = context.GetReference({{valueVariable}});
