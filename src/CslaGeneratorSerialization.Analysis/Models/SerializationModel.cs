@@ -26,7 +26,7 @@ internal sealed record SerializationModel
 
 		if (type.TypeKind == TypeKind.Class)
 		{
-			model = new SerializationModel(type, type.GetPropertyInfoFields(), modelContext);
+			model = new SerializationModel(type, type.GetPropertyInfoDefinitions(), modelContext);
 			return true;
 		}
 		else if (type.TypeKind == TypeKind.Interface)
@@ -41,7 +41,7 @@ internal sealed record SerializationModel
 		}
 	}
 
-	private SerializationModel(INamedTypeSymbol businessObjectType, List<IFieldSymbol> propertyInfoFields, ModelContext modelContext)
+	private SerializationModel(INamedTypeSymbol businessObjectType, List<SerializationItemDefinition> serializationDefinitions, ModelContext modelContext)
 	{
 		this.IsCustomizable = businessObjectType.DerivesFrom("IGeneratorSerializableCustomization", "CslaGeneratorSerialization");
 		this.RequiresDeserializationNotification = businessObjectType.DerivesFrom("ISerializationNotification", "Csla.Serialization.Mobile");
@@ -49,14 +49,11 @@ internal sealed record SerializationModel
 
 		var stereotypes = new Stereotypes(modelContext.SemanticModel.Compilation);
 		this.BusinessObject = modelContext.CreateTypeReference(businessObjectType, stereotypes);
-		this.Items = propertyInfoFields.Select(_ =>
-		{
-			var fieldContainingType = _.ContainingType;
-			var fieldType = (INamedTypeSymbol)_.Type;
-			var propertyInfoType = fieldType.TypeArguments[0];
-			return new SerializationItemModel(_.Name,
-				modelContext.CreateTypeReference(fieldContainingType, stereotypes), modelContext.CreateTypeReference(propertyInfoType, stereotypes));
-		}).OrderBy(_ => _.PropertyInfoDataType.BusinessObjectKind).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
+		this.Items = serializationDefinitions.Select(definition =>
+			new SerializationItemModel(definition.PropertyInfoFieldName,
+				modelContext.CreateTypeReference(definition.PropertyInfoContainingType, stereotypes), 
+				modelContext.CreateTypeReference(definition.PropertyInfoDataType, stereotypes)))
+			.OrderBy(_ => _.PropertyInfoDataType.BusinessObjectKind).ThenBy(_ => _.PropertyInfoFieldName).ToImmutableArray();
 	}
 
 	internal ITypeReferenceModel BusinessObject { get; }

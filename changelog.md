@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [3.0.0-alpha.2] - Not Yet Released
 
+### Added
+* Business objects that use `[CslaImplementProperties]` are now supported (issue [#48](https://github.com/JasonBock/CslaGeneratorSerialization/issues/48))
+
 ### Fixed
 * Recursive unions are now supported (issue [#54](https://github.com/JasonBock/CslaGeneratorSerialization/issues/54))
 

@@ -10,7 +10,7 @@ namespace CslaGeneratorSerialization.Analysis.Tests.Extensions;
 internal static class INamedTypeSymbolExtensionsTests
 {
 	[Test]
-	public static async Task GetPropertyInfoFieldsWhenTypeHasPropertyInfoFieldsAsync()
+	public static async Task GetPropertyInfoDefinitionsWhenTypeHasPropertyInfoFieldsAsync()
 	{
 		var code =
 			"""
@@ -30,17 +30,17 @@ internal static class INamedTypeSymbolExtensionsTests
 			""";
 
 		var typeSymbol = await INamedTypeSymbolExtensionsTests.GetNamedTypeSymbolAsync(code);
-		var fields = typeSymbol.GetPropertyInfoFields();
+		var fields = typeSymbol.GetPropertyInfoDefinitions();
 
 		using (Assert.EnterMultipleScope())
 		{
 			Assert.That(fields, Has.Count.EqualTo(1));
-			Assert.That(fields[0].Name, Is.EqualTo("AgeProperty"));
+			Assert.That(fields[0].PropertyInfoFieldName, Is.EqualTo("AgeProperty"));
 		}
 	}
 
 	[Test]
-	public static async Task GetPropertyInfoFieldsWhenTypeDoesNotHavePropertyInfoFieldsAsync()
+	public static async Task GetPropertyInfoDefinitionsWhenTypeDoesNotHavePropertyInfoFieldsAsync()
 	{
 		var code =
 			"""
@@ -53,7 +53,7 @@ internal static class INamedTypeSymbolExtensionsTests
 			""";
 
 		var typeSymbol = await INamedTypeSymbolExtensionsTests.GetNamedTypeSymbolAsync(code);
-		var fields = typeSymbol.GetPropertyInfoFields();
+		var fields = typeSymbol.GetPropertyInfoDefinitions();
 		Assert.That(fields, Has.Count.EqualTo(0));
 	}
 
