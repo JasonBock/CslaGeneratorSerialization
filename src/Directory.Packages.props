@@ -2,6 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="Csla" Version="10.1.0" />
+    <PackageVersion Include="Csla.Generator.AutoImplementProperties.CSharp" Version="10.1.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="5.10.0-1.26402.102" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Common" Version="5.10.0-1.26402.102" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.10.0-1.26402.102" />
