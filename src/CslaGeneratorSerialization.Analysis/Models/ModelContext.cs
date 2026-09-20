@@ -44,7 +44,6 @@ internal sealed class ModelContext
 			this.FullyQualifiedNameNoNullableAnnotation = type.GetFullyQualifiedName(compilation, false);
 
 			this.IsValueType = type.IsValueType;
-			this.IsNullable = type.NullableAnnotation == NullableAnnotation.Annotated;
 			this.IsSealed = type.IsSealed;
 			this.IsAbstract = type.IsAbstract;
 
@@ -72,6 +71,7 @@ internal sealed class ModelContext
 
 			if (type is INamedTypeSymbol namedTypeSymbol)
 			{
+				this.IsNullable = namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T || namedTypeSymbol.IsReferenceType;
 				this.TypeArguments = namedTypeSymbol.TypeArguments.Select(
 					_ => modelContext.CreateTypeReference(_, stereotypes)).ToImmutableArray<ITypeReferenceModel>();
 
@@ -82,6 +82,7 @@ internal sealed class ModelContext
 			}
 			else
 			{
+				this.IsNullable = SymbolEqualityComparer.Default.Equals(type, compilation.GetTypeByMetadataName("System.Nullable`1")) || type.IsReferenceType;
 				this.TypeArguments = [];
 				this.UnionCaseTypes = [];
 			}
@@ -91,7 +92,7 @@ internal sealed class ModelContext
 		{
 			if (type is INamedTypeSymbol namedTypeSymbol)
 			{
-				this.UnionCaseTypes = namedTypeSymbol.GetUnionCaseTypes(modelContext, stereotypes);
+				this.UnionCaseTypes = [.. namedTypeSymbol.UnionCaseTypes.Select(caseType => modelContext.CreateTypeReference(caseType, stereotypes))];
 			}
 		}
 

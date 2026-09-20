@@ -66,7 +66,7 @@ internal sealed class GeneratorFormatterReaderContextExtensionsBuilder
 
 			indentWriter.Indent += 2;
 
-			if (unionType.UnionCaseTypes.Any(unionType => unionType.IsNullable || !unionType.IsValueType))
+			if (unionType.UnionCaseTypes.Any(unionType => unionType.IsNullable))
 			{
 				// We have a null check first, as the union's Value property
 				// will just be assigned to null in that case. We don't
