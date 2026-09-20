@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 * Recursive unions are now supported (issue [#54](https://github.com/JasonBock/CslaGeneratorSerialization/issues/54))
+* Altered definition of `IsNullable` based on `UnionCaseTypes` values (issue [#55](https://github.com/JasonBock/CslaGeneratorSerialization/issues/55))
 
 ## [3.0.0-alpha.1] - 2026-08-11
 

@@ -12,7 +12,7 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="5.11.0-1.26461.3" />
     <PackageVersion Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-preview.6.26359.118" />
     <PackageVersion Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.11.0-1.26461.3" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0-release-26469-109" />
     <PackageVersion Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.3.3" />
     <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="2.3.3" />
     <PackageVersion Include="NuGet.Frameworks" Version="7.11.0-rc.65534" />
