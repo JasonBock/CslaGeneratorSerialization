@@ -72,8 +72,7 @@ internal sealed class ModelContext
 			if (type is INamedTypeSymbol namedTypeSymbol)
 			{
 				this.IsNullable = namedTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T || namedTypeSymbol.IsReferenceType;
-				this.TypeArguments = namedTypeSymbol.TypeArguments.Select(
-					_ => modelContext.CreateTypeReference(_, stereotypes)).ToImmutableArray<ITypeReferenceModel>();
+				this.TypeArguments = [.. namedTypeSymbol.TypeArguments.Select(_ => modelContext.CreateTypeReference(_, stereotypes))];
 
 				if (namedTypeSymbol.EnumUnderlyingType is not null)
 				{
