@@ -5,7 +5,7 @@
 		<Copyright>Copyright © 2026</Copyright>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<LangVersion>preview</LangVersion>
+		<LangVersion>latest</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<!-- Ignoring NU1603 for Roslyn pre-release package sanity -->
 		<NoWarn>CA1861;CSLA0007;NU1603</NoWarn>
@@ -17,6 +17,6 @@
 		<TargetFramework>net11.0</TargetFramework>
 		<TreatWarningsAsErrors>True</TreatWarningsAsErrors>
 		<UseArtifactsOutput>true</UseArtifactsOutput>
-		<Version>3.0.0-alpha.3</Version>
+		<Version>3.0.0</Version>
 	</PropertyGroup>
 </Project>
